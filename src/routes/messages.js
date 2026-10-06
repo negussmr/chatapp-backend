@@ -11,7 +11,8 @@ const SELECT_MESSAGE = `
          CASE WHEN m.deleted_at IS NULL THEN m.body END AS body,
          m.reply_to_id,
          CASE WHEN r.deleted_at IS NULL THEN left(r.body, 100) END AS reply_preview,
-         m.created_at, m.edited_at, (m.deleted_at IS NOT NULL) AS deleted
+         m.created_at, m.edited_at, (m.deleted_at IS NOT NULL) AS deleted,
+         COALESCE((SELECT json_object_agg(reaction, cnt) FROM (SELECT reaction, count(*)::int AS cnt FROM message_reactions WHERE message_id = m.id GROUP BY reaction) x), '{}'::json) AS reactions
   FROM messages m
   LEFT JOIN users u ON u.id = m.sender_id
   LEFT JOIN messages r ON r.id = m.reply_to_id`;
