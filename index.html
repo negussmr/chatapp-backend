@@ -3,2241 +3,2864 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#080808">
 <title>ChatApp</title>
 
 <style>
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
-html, body {
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  background: #080808;
-  color: #f5f5f5;
-  font-family: Arial, Helvetica, sans-serif;
+:root {
+    --bg: #0b0d10;
+    --panel: #12161b;
+    --panel2: #181d23;
+    --border: #252c34;
+    --text: #f2f4f7;
+    --muted: #8d96a3;
+    --accent: #6c8cff;
+    --accent2: #4f6fe8;
+    --danger: #ff5c6c;
+    --success: #4fd18b;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 button,
 input,
 textarea {
-  font: inherit;
+    font: inherit;
 }
 
 button {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .hidden {
-  display: none !important;
+    display: none !important;
 }
 
-/* =========================
-   AUTH
-   ========================= */
-
-#authScreen {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  background:
-    radial-gradient(circle at top, #202020 0, #0d0d0d 45%, #050505 100%);
+.screen {
+    min-height: 100vh;
 }
 
-.authBox {
-  width: 100%;
-  max-width: 420px;
-  background: #111;
-  border: 1px solid #292929;
-  border-radius: 20px;
-  padding: 30px;
-  box-shadow: 0 20px 70px rgba(0,0,0,.5);
+/* AUTH */
+
+.auth-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+}
+
+.auth-box {
+    width: min(430px, 100%);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.35);
 }
 
 .logo {
-  font-size: 30px;
-  font-weight: 800;
-  margin-bottom: 8px;
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 6px;
 }
 
 .subtitle {
-  color: #999;
-  margin-bottom: 28px;
+    color: var(--muted);
+    margin-bottom: 25px;
 }
 
 .field {
-  margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 .field label {
-  display: block;
-  color: #aaa;
-  font-size: 13px;
-  margin-bottom: 7px;
+    display: block;
+    margin-bottom: 7px;
+    color: #cbd1d9;
+    font-size: 14px;
 }
 
-.field input {
-  width: 100%;
-  border: 1px solid #303030;
-  background: #181818;
-  color: white;
-  padding: 13px 14px;
-  border-radius: 11px;
-  outline: none;
+.field input,
+.field textarea,
+.search-input {
+    width: 100%;
+    background: #0d1116;
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 10px;
+    padding: 12px;
+    outline: none;
 }
 
-.field input:focus {
-  border-color: #777;
+.field input:focus,
+.field textarea:focus,
+.search-input:focus {
+    border-color: var(--accent);
 }
 
 .primary {
-  width: 100%;
-  border: 0;
-  background: #fff;
-  color: #000;
-  padding: 13px;
-  border-radius: 11px;
-  font-weight: 700;
-  margin-top: 5px;
+    width: 100%;
+    border: 0;
+    border-radius: 10px;
+    padding: 12px;
+    background: var(--accent);
+    color: white;
+    font-weight: 700;
+}
+
+.primary:hover {
+    background: var(--accent2);
 }
 
 .secondary {
-  width: 100%;
-  border: 1px solid #333;
-  background: #181818;
-  color: #fff;
-  padding: 12px;
-  border-radius: 11px;
-  margin-top: 10px;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 9px 12px;
+    border-radius: 9px;
 }
 
-.authSwitch {
-  text-align: center;
-  color: #888;
-  margin-top: 20px;
-  font-size: 14px;
+.danger {
+    background: rgba(255,92,108,.12);
+    border: 1px solid rgba(255,92,108,.3);
+    color: #ff7885;
+    padding: 9px 12px;
+    border-radius: 9px;
 }
 
-.authSwitch button {
-  background: none;
-  border: 0;
-  color: white;
-  padding: 0;
-  font-weight: 700;
+.link-button {
+    border: 0;
+    background: none;
+    color: var(--accent);
+    padding: 0;
 }
 
-/* =========================
-   APP
-   ========================= */
+.auth-switch {
+    text-align: center;
+    margin-top: 18px;
+    color: var(--muted);
+}
 
-#appScreen {
-  height: 100vh;
-  display: flex;
-  overflow: hidden;
+.legal-small {
+    margin-top: 18px;
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--muted);
+}
+
+/* CHECKBOXES */
+
+.check {
+    display: flex;
+    gap: 9px;
+    align-items: flex-start;
+    margin: 12px 0;
+    color: #cbd1d9;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.check input {
+    margin-top: 3px;
+    accent-color: var(--accent);
+}
+
+/* APP */
+
+.app {
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
 }
 
 .sidebar {
-  width: 320px;
-  flex-shrink: 0;
-  border-right: 1px solid #242424;
-  background: #0d0d0d;
-  display: flex;
-  flex-direction: column;
+    width: 320px;
+    min-width: 320px;
+    background: var(--panel);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
 }
 
-.sidebarHeader {
-  padding: 18px;
-  border-bottom: 1px solid #222;
+.sidebar-header {
+    padding: 18px;
+    border-bottom: 1px solid var(--border);
 }
 
-.sidebarTop {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+.sidebar-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
 }
 
-.sidebarTitle {
-  font-size: 21px;
-  font-weight: 800;
+.sidebar-title strong {
+    font-size: 20px;
 }
 
-.iconButton {
-  width: 38px;
-  height: 38px;
-  border: 1px solid #303030;
-  border-radius: 10px;
-  background: #171717;
-  color: white;
+.icon-btn {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 35px;
+    height: 35px;
+    border-radius: 9px;
 }
 
-.searchBox {
-  margin-top: 14px;
+.search {
+    padding: 12px;
 }
 
-.searchBox input {
-  width: 100%;
-  background: #171717;
-  color: white;
-  border: 1px solid #292929;
-  border-radius: 10px;
-  padding: 11px 12px;
-  outline: none;
-}
-
-.conversationList {
-  flex: 1;
-  overflow-y: auto;
+.conversation-list {
+    flex: 1;
+    overflow-y: auto;
 }
 
 .conversation {
-  padding: 14px 16px;
-  border-bottom: 1px solid #181818;
-  cursor: pointer;
+    padding: 13px 15px;
+    border-bottom: 1px solid rgba(255,255,255,.035);
+    cursor: pointer;
 }
 
 .conversation:hover {
-  background: #151515;
+    background: var(--panel2);
 }
 
 .conversation.active {
-  background: #202020;
+    background: rgba(108,140,255,.12);
 }
 
-.conversationName {
-  font-weight: 700;
-  margin-bottom: 5px;
+.conversation-name {
+    font-weight: 700;
+    margin-bottom: 4px;
 }
 
-.conversationPreview {
-  color: #777;
-  font-size: 13px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.conversation-preview {
+    color: var(--muted);
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.sidebarBottom {
-  padding: 14px;
-  border-top: 1px solid #222;
+.sidebar-footer {
+    padding: 12px;
+    border-top: 1px solid var(--border);
 }
 
-.profileButton {
-  width: 100%;
-  background: #171717;
-  color: white;
-  border: 1px solid #292929;
-  padding: 12px;
-  border-radius: 10px;
-  text-align: left;
+.profile-button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    border: 0;
+    color: var(--text);
+    text-align: left;
+    padding: 7px;
 }
 
-/* =========================
-   CHAT
-   ========================= */
+/* MAIN */
 
-.chatArea {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  background: #080808;
+.main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
 }
 
-.chatHeader {
-  height: 70px;
-  flex-shrink: 0;
-  border-bottom: 1px solid #242424;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 18px;
+.topbar {
+    height: 65px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 18px;
+    justify-content: space-between;
+    background: var(--panel);
 }
 
-.mobileBack {
-  display: none;
+.chat-title {
+    font-weight: 700;
 }
 
-.chatTitle {
-  font-weight: 800;
-}
-
-.chatStatus {
-  color: #777;
-  font-size: 12px;
-  margin-top: 3px;
+.chat-status {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 3px;
 }
 
 .messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 22px;
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
 }
 
-.emptyChat {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #555;
-  text-align: center;
+.empty {
+    margin: auto;
+    text-align: center;
+    color: var(--muted);
 }
 
-.messageRow {
-  display: flex;
-  margin-bottom: 12px;
+.message {
+    max-width: min(650px, 80%);
+    padding: 9px 12px;
+    border-radius: 13px;
+    background: var(--panel2);
+    align-self: flex-start;
+    position: relative;
 }
 
-.messageRow.mine {
-  justify-content: flex-end;
+.message.mine {
+    align-self: flex-end;
+    background: #27386f;
 }
 
-.messageBubble {
-  max-width: min(75%, 620px);
-  padding: 10px 13px;
-  border-radius: 15px;
-  background: #1b1b1b;
-  border: 1px solid #292929;
+.message-author {
+    font-size: 11px;
+    color: #aab2bf;
+    margin-bottom: 3px;
 }
 
-.messageRow.mine .messageBubble {
-  background: #eee;
-  color: #000;
-  border-color: #eee;
+.message-body {
+    white-space: pre-wrap;
+    word-break: break-word;
 }
 
-.messageAuthor {
-  font-size: 11px;
-  color: #888;
-  margin-bottom: 4px;
+.message-meta {
+    font-size: 10px;
+    color: #9da6b3;
+    margin-top: 4px;
 }
 
-.messageRow.mine .messageAuthor {
-  color: #555;
+.message-actions {
+    display: flex;
+    gap: 4px;
+    margin-top: 6px;
 }
 
-.messageBody {
-  white-space: pre-wrap;
-  word-break: break-word;
-  line-height: 1.4;
-}
-
-.messageMeta {
-  margin-top: 5px;
-  font-size: 10px;
-  opacity: .55;
-}
-
-.messageActions {
-  display: flex;
-  gap: 5px;
-  margin-top: 7px;
-}
-
-.messageActions button {
-  border: 1px solid #333;
-  background: transparent;
-  color: inherit;
-  border-radius: 7px;
-  padding: 3px 7px;
-  font-size: 11px;
+.message-actions button {
+    border: 0;
+    background: rgba(255,255,255,.07);
+    color: #cbd1d9;
+    font-size: 11px;
+    border-radius: 6px;
+    padding: 4px 7px;
 }
 
 .composer {
-  border-top: 1px solid #242424;
-  padding: 12px;
-  display: flex;
-  gap: 9px;
+    border-top: 1px solid var(--border);
+    padding: 12px;
+    display: flex;
+    gap: 8px;
+    background: var(--panel);
 }
 
 .composer textarea {
-  flex: 1;
-  min-height: 44px;
-  max-height: 130px;
-  resize: none;
-  background: #151515;
-  color: white;
-  border: 1px solid #292929;
-  border-radius: 12px;
-  padding: 12px;
-  outline: none;
+    flex: 1;
+    resize: none;
+    min-height: 45px;
+    max-height: 130px;
+    background: #0d1116;
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 10px;
+    padding: 12px;
+    outline: none;
 }
 
-.sendButton {
-  width: 80px;
-  border: 0;
-  background: white;
-  color: black;
-  border-radius: 12px;
-  font-weight: 700;
+.send-btn {
+    width: 70px;
+    border: 0;
+    border-radius: 10px;
+    background: var(--accent);
+    color: white;
+    font-weight: 700;
 }
 
-/* =========================
-   MODAL
-   ========================= */
+/* MODAL */
 
 .modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  z-index: 50;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 50;
 }
 
-.modalBox {
-  width: 100%;
-  max-width: 440px;
-  max-height: 85vh;
-  overflow-y: auto;
-  background: #111;
-  border: 1px solid #303030;
-  border-radius: 18px;
-  padding: 22px;
+.modal-box {
+    width: min(650px, 100%);
+    max-height: 85vh;
+    overflow-y: auto;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 25px;
 }
 
-.modalHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 18px;
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
 }
 
-.modalTitle {
-  font-size: 20px;
-  font-weight: 800;
+.modal-header h2 {
+    margin: 0;
+}
+
+.close {
+    background: transparent;
+    border: 0;
+    color: var(--muted);
+    font-size: 24px;
+}
+
+.legal-content {
+    color: #c9cfd8;
+    line-height: 1.65;
+    font-size: 14px;
+}
+
+.legal-content h3 {
+    color: white;
+    margin-top: 22px;
+}
+
+.legal-content ul {
+    padding-left: 22px;
+}
+
+/* SEARCH RESULTS */
+
+.results {
+    padding: 0 12px 12px;
 }
 
 .result {
-  padding: 12px;
-  border: 1px solid #292929;
-  border-radius: 10px;
-  margin-top: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-}
-
-.resultName {
-  font-weight: 700;
-}
-
-.resultUsername {
-  color: #777;
-  font-size: 12px;
-}
-
-.smallButton {
-  border: 1px solid #333;
-  background: #191919;
-  color: white;
-  padding: 8px 10px;
-  border-radius: 8px;
-}
-
-.dangerButton {
-  border: 1px solid #5a2222;
-  background: #241111;
-  color: #ff9d9d;
-  padding: 9px 12px;
-  border-radius: 9px;
-}
-
-/* =========================
-   TOAST
-   ========================= */
-
-#toast {
-  position: fixed;
-  left: 50%;
-  bottom: 25px;
-  transform: translateX(-50%);
-  background: #eee;
-  color: #000;
-  padding: 11px 16px;
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 700;
-  z-index: 100;
-  display: none;
-}
-
-/* =========================
-   MOBILE
-   ========================= */
-
-@media (max-width: 700px) {
-
-  .sidebar {
-    width: 100%;
-  }
-
-  .chatArea {
-    display: none;
-  }
-
-  #appScreen.chatOpen .sidebar {
-    display: none;
-  }
-
-  #appScreen.chatOpen .chatArea {
+    padding: 11px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-top: 7px;
+    background: var(--panel2);
     display: flex;
-  }
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
 
-  .mobileBack {
-    display: block;
-  }
+.result-name {
+    font-weight: 700;
+}
 
-  .messageBubble {
-    max-width: 85%;
-  }
+.result-username {
+    color: var(--muted);
+    font-size: 12px;
+}
 
-  .authBox {
-    padding: 23px;
-  }
+/* PROFILE */
+
+.profile {
+    text-align: center;
+}
+
+.avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: #28334c;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.profile h2 {
+    margin: 12px 0 4px;
+}
+
+.profile .username {
+    color: var(--muted);
+}
+
+.profile-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* MOBILE */
+
+@media (max-width: 750px) {
+    .sidebar {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .main {
+        display: none;
+    }
+
+    .app.chat-open .sidebar {
+        display: none;
+    }
+
+    .app.chat-open .main {
+        display: flex;
+    }
+
+    .back-mobile {
+        display: block !important;
+    }
+
+    .message {
+        max-width: 88%;
+    }
+}
+
+@media (min-width: 751px) {
+    .back-mobile {
+        display: none !important;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<!-- =========================
-     AUTH SCREEN
-     ========================= -->
+<!-- AUTH SCREEN -->
 
-<div id="authScreen">
+<div id="authScreen" class="screen auth-screen">
+    <div class="auth-box">
 
-  <div class="authBox">
+        <div class="logo">ChatApp</div>
+        <div class="subtitle">Private conversations. Simple connection.</div>
 
-    <div class="logo">ChatApp</div>
-    <div class="subtitle" id="authSubtitle">
-      Sign in to continue.
-    </div>
+        <!-- LOGIN -->
 
-    <form id="loginForm">
+        <div id="loginForm">
 
-      <div class="field">
-        <label>Username or email</label>
-        <input
-          id="loginInput"
-          autocomplete="username"
-          required
-        >
-      </div>
+            <div class="field">
+                <label>Username or Email</label>
+                <input id="loginInput" autocomplete="username">
+            </div>
 
-      <div class="field">
-        <label>Password</label>
-        <input
-          id="loginPassword"
-          type="password"
-          autocomplete="current-password"
-          required
-        >
-      </div>
+            <div class="field">
+                <label>Password</label>
+                <input id="loginPassword" type="password" autocomplete="current-password">
+            </div>
 
-      <button class="primary" type="submit">
-        Log in
-      </button>
+            <button class="primary" onclick="login()">Log In</button>
 
-    </form>
+            <div class="auth-switch">
+                Don't have an account?
+                <button class="link-button" onclick="showRegister()">Create one</button>
+            </div>
 
-    <form id="registerForm" class="hidden">
+            <div class="legal-small">
+                By logging in, you agree to use ChatApp responsibly and according to its Terms of Service and Community Guidelines.
+            </div>
 
-      <div class="field">
-        <label>Username</label>
-        <input
-          id="registerUsername"
-          autocomplete="username"
-          required
-        >
-      </div>
-
-      <div class="field">
-        <label>Email</label>
-        <input
-          id="registerEmail"
-          type="email"
-          autocomplete="email"
-          required
-        >
-      </div>
-
-      <div class="field">
-        <label>Display name</label>
-        <input
-          id="registerDisplayName"
-          autocomplete="name"
-        >
-      </div>
-
-      <div class="field">
-        <label>Password</label>
-        <input
-          id="registerPassword"
-          type="password"
-          autocomplete="new-password"
-          required
-          minlength="6"
-        >
-      </div>
-
-      <button class="primary" type="submit">
-        Create account
-      </button>
-
-    </form>
-
-    <div class="authSwitch">
-      <span id="authSwitchText">Don't have an account?</span>
-      <button id="authSwitchButton" type="button">
-        Register
-      </button>
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- =========================
-     APP SCREEN
-     ========================= -->
-
-<div id="appScreen" class="hidden">
-
-  <aside class="sidebar">
-
-    <div class="sidebarHeader">
-
-      <div class="sidebarTop">
-        <div class="sidebarTitle">Chats</div>
-
-        <button
-          class="iconButton"
-          id="newChatButton"
-          title="New chat"
-        >
-          +
-        </button>
-      </div>
-
-      <div class="searchBox">
-        <input
-          id="userSearch"
-          placeholder="Search users..."
-        >
-      </div>
-
-    </div>
-
-    <div
-      class="conversationList"
-      id="conversationList"
-    ></div>
-
-    <div class="sidebarBottom">
-
-      <button
-        class="profileButton"
-        id="profileButton"
-      >
-        Profile
-      </button>
-
-    </div>
-
-  </aside>
-
-
-  <main class="chatArea">
-
-    <header class="chatHeader">
-
-      <button
-        class="iconButton mobileBack"
-        id="backButton"
-      >
-        ←
-      </button>
-
-      <div>
-        <div
-          class="chatTitle"
-          id="chatTitle"
-        >
-          Select a conversation
         </div>
 
-        <div
-          class="chatStatus"
-          id="chatStatus"
-        >
-          —
+        <!-- REGISTER -->
+
+        <div id="registerForm" class="hidden">
+
+            <div class="field">
+                <label>Username</label>
+                <input id="registerUsername" autocomplete="username">
+            </div>
+
+            <div class="field">
+                <label>Email</label>
+                <input id="registerEmail" type="email" autocomplete="email">
+            </div>
+
+            <div class="field">
+                <label>Display Name</label>
+                <input id="registerDisplayName">
+            </div>
+
+            <div class="field">
+                <label>Password</label>
+                <input id="registerPassword" type="password" autocomplete="new-password">
+            </div>
+
+            <label class="check">
+                <input id="ageCheck" type="checkbox">
+                <span>I confirm that I am <strong>16 years old or older</strong>.</span>
+            </label>
+
+            <label class="check">
+                <input id="termsCheck" type="checkbox">
+                <span>I have read and agree to the <button class="link-button" onclick="openLegal('terms')">Terms of Service</button>.</span>
+            </label>
+
+            <label class="check">
+                <input id="privacyCheck" type="checkbox">
+                <span>I have read the <button class="link-button" onclick="openLegal('privacy')">Privacy Policy</button> and understand how my personal information is processed.</span>
+            </label>
+
+            <label class="check">
+                <input id="consentCheck" type="checkbox">
+                <span>I consent to the processing of my personal information as described in the Privacy Policy.</span>
+            </label>
+
+            <button class="primary" onclick="register()">Create Account</button>
+
+            <div class="auth-switch">
+                Already have an account?
+                <button class="link-button" onclick="showLogin()">Log in</button>
+            </div>
+
         </div>
-      </div>
 
-    </header>
+    </div>
+</div>
 
-    <section
-      class="messages"
-      id="messages"
-    >
 
-      <div class="emptyChat">
-        Select a conversation to start chatting.
-      </div>
+<!-- APP -->
 
-    </section>
+<div id="app" class="app hidden">
 
-    <form
-      class="composer"
-      id="messageForm"
-    >
+    <!-- SIDEBAR -->
 
-      <textarea
-        id="messageInput"
-        placeholder="Write a message..."
-        disabled
-      ></textarea>
+    <aside class="sidebar">
 
-      <button
-        class="sendButton"
-        type="submit"
-        disabled
-        id="sendButton"
-      >
-        Send
-      </button>
+        <div class="sidebar-header">
 
-    </form>
+            <div class="sidebar-title">
+                <strong>ChatApp</strong>
+                <button class="icon-btn" onclick="openSearch()">＋</button>
+            </div>
 
-  </main>
+            <input
+                id="userSearch"
+                class="search-input"
+                placeholder="Search people..."
+                oninput="searchUsers()"
+            >
+
+        </div>
+
+        <div id="searchResults" class="results hidden"></div>
+
+        <div id="conversationList" class="conversation-list"></div>
+
+        <div class="sidebar-footer">
+
+            <button class="profile-button" onclick="openMyProfile()">
+
+                <div id="myAvatar" class="avatar" style="width:40px;height:40px;font-size:15px;">
+                    ?
+                </div>
+
+                <div>
+                    <div id="myName">User</div>
+                    <div id="myUsername" style="font-size:12px;color:var(--muted);">
+                        @user
+                    </div>
+                </div>
+
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CHAT -->
+
+    <main class="main">
+
+        <div class="topbar">
+
+            <div style="display:flex;align-items:center;gap:10px;">
+
+                <button
+                    class="icon-btn back-mobile"
+                    onclick="closeChat()"
+                >
+                    ←
+                </button>
+
+                <div>
+
+                    <div id="chatTitle" class="chat-title">
+                        Select a conversation
+                    </div>
+
+                    <div id="chatStatus" class="chat-status">
+                        -
+                    </div>
+
+                </div>
+
+            </div>
+
+            <button
+                id="chatProfileButton"
+                class="secondary hidden"
+                onclick="openCurrentUserProfile()"
+            >
+                Profile
+            </button>
+
+        </div>
+
+
+        <div id="messages" class="messages">
+
+            <div class="empty">
+                Select a conversation to start chatting.
+            </div>
+
+        </div>
+
+
+        <div id="typingIndicator"
+             style="height:20px;padding:0 15px;font-size:12px;color:var(--muted);">
+        </div>
+
+
+        <div class="composer">
+
+            <textarea
+                id="messageInput"
+                placeholder="Write a message..."
+                oninput="handleTyping()"
+                onkeydown="messageKeydown(event)"
+            ></textarea>
+
+            <button class="send-btn" onclick="sendMessage()">
+                Send
+            </button>
+
+        </div>
+
+    </main>
 
 </div>
 
 
-<!-- =========================
-     MODAL
-     ========================= -->
+<!-- MODAL -->
 
-<div
-  class="modal hidden"
-  id="modal"
->
+<div id="modal" class="modal hidden" onclick="closeModalOutside(event)">
 
-  <div class="modalBox">
+    <div class="modal-box">
 
-    <div class="modalHeader">
+        <div class="modal-header">
 
-      <div
-        class="modalTitle"
-        id="modalTitle"
-      >
-        Modal
-      </div>
+            <h2 id="modalTitle">ChatApp</h2>
 
-      <button
-        class="iconButton"
-        id="modalClose"
-      >
-        ×
-      </button>
+            <button class="close" onclick="closeModal()">
+                ×
+            </button>
+
+        </div>
+
+        <div id="modalContent"></div>
 
     </div>
 
-    <div id="modalContent"></div>
-
-  </div>
-
 </div>
-
-
-<div id="toast"></div>
 
 
 <script>
 
 /* =========================================================
    CONFIG
-   ========================================================= */
+========================================================= */
 
-const API_BASE =
-  "https://chatapp-backend-ol8d.onrender.com";
+const API_BASE = "https://chatapp-backend-ol8d.onrender.com";
 
 
 /* =========================================================
    STATE
-   ========================================================= */
+========================================================= */
 
-const state = {
-  accessToken: localStorage.getItem("chat_access_token") || "",
-  refreshToken: localStorage.getItem("chat_refresh_token") || "",
-  user: null,
-  conversations: [],
-  currentConversation: null,
-  messages: [],
-  polling: null,
-  lastMessageId: null,
-  authMode: "login"
-};
+let accessToken = localStorage.getItem("chatapp_access");
+let refreshToken = localStorage.getItem("chatapp_refresh");
 
+let currentUser = null;
+let conversations = [];
+let currentConversation = null;
+let currentMessages = [];
 
-/* =========================================================
-   DOM
-   ========================================================= */
-
-const $ = id => document.getElementById(id);
-
-const authScreen = $("authScreen");
-const appScreen = $("appScreen");
-
-const loginForm = $("loginForm");
-const registerForm = $("registerForm");
-
-const authSubtitle = $("authSubtitle");
-const authSwitchText = $("authSwitchText");
-const authSwitchButton = $("authSwitchButton");
-
-const conversationList = $("conversationList");
-const messages = $("messages");
-
-const chatTitle = $("chatTitle");
-const chatStatus = $("chatStatus");
-
-const messageForm = $("messageForm");
-const messageInput = $("messageInput");
-const sendButton = $("sendButton");
-
-const modal = $("modal");
-const modalTitle = $("modalTitle");
-const modalContent = $("modalContent");
-
-const toast = $("toast");
+let pollTimer = null;
+let typingTimer = null;
+let searchTimer = null;
 
 
 /* =========================================================
-   HELPERS
-   ========================================================= */
+   BASIC HELPERS
+========================================================= */
 
-function showToast(message) {
-
-  toast.textContent = message;
-  toast.style.display = "block";
-
-  clearTimeout(showToast.timer);
-
-  showToast.timer = setTimeout(() => {
-    toast.style.display = "none";
-  }, 3000);
+function $(id) {
+    return document.getElementById(id);
 }
-
-
-function saveSession(data) {
-
-  state.accessToken = data.access_token;
-  state.refreshToken = data.refresh_token;
-
-  localStorage.setItem(
-    "chat_access_token",
-    state.accessToken
-  );
-
-  localStorage.setItem(
-    "chat_refresh_token",
-    state.refreshToken
-  );
-}
-
-
-function clearSession() {
-
-  state.accessToken = "";
-  state.refreshToken = "";
-  state.user = null;
-
-  localStorage.removeItem("chat_access_token");
-  localStorage.removeItem("chat_refresh_token");
-}
-
-
-function showAuth() {
-
-  authScreen.classList.remove("hidden");
-  appScreen.classList.add("hidden");
-}
-
-
-function showApp() {
-
-  authScreen.classList.add("hidden");
-  appScreen.classList.remove("hidden");
-}
-
 
 function escapeHTML(value) {
+    if (value === null || value === undefined) return "";
 
-  return String(value ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 }
 
+function formatTime(dateString) {
 
-function formatTime(value) {
+    if (!dateString) return "";
 
-  if (!value) return "";
+    const date = new Date(dateString);
 
-  const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "";
 
-  if (Number.isNaN(date.getTime())) {
-    return "";
-  }
-
-  return date.toLocaleTimeString([], {
-    hour: "numeric",
-    minute: "2-digit"
-  });
+    return date.toLocaleString([], {
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit"
+    });
 }
 
+function avatarLetter(user) {
 
-function getConversationName(conversation) {
+    const text =
+        user?.display_name ||
+        user?.username ||
+        "?";
 
-  if (!conversation) {
-    return "Conversation";
-  }
+    return text.charAt(0).toUpperCase();
+}
 
-  if (conversation.title) {
-    return conversation.title;
-  }
+function saveTokens(data) {
 
-  if (conversation.name) {
-    return conversation.name;
-  }
+    accessToken = data.access_token;
+    refreshToken = data.refresh_token;
 
-  if (conversation.type === "direct") {
+    localStorage.setItem("chatapp_access", accessToken);
+    localStorage.setItem("chatapp_refresh", refreshToken);
+}
 
-    if (conversation.other_user) {
-      return (
-        conversation.other_user.display_name ||
-        conversation.other_user.username ||
-        "User"
-      );
-    }
+function clearTokens() {
 
-    if (conversation.user) {
-      return (
-        conversation.user.display_name ||
-        conversation.user.username ||
-        "User"
-      );
-    }
-  }
+    accessToken = null;
+    refreshToken = null;
 
-  return "Conversation";
+    localStorage.removeItem("chatapp_access");
+    localStorage.removeItem("chatapp_refresh");
 }
 
 
 /* =========================================================
    API
-   ========================================================= */
+========================================================= */
 
 async function api(path, options = {}, retry = true) {
 
-  const headers = {
-    "Content-Type": "application/json",
-    ...(options.headers || {})
-  };
+    const headers = {
+        "Content-Type": "application/json",
+        ...(options.headers || {})
+    };
 
-  if (state.accessToken) {
-    headers.Authorization =
-      "Bearer " + state.accessToken;
-  }
+    if (accessToken) {
+        headers.Authorization = "Bearer " + accessToken;
+    }
 
-  let response;
-
-  try {
-
-    response = await fetch(
-      API_BASE.replace(/\/$/, "") + path,
-      {
-        ...options,
-        headers
-      }
-    );
-
-  } catch (error) {
-
-    throw new Error(
-      "Could not connect to the server."
-    );
-  }
-
-
-  if (
-    response.status === 401 &&
-    retry &&
-    state.refreshToken
-  ) {
+    let response;
 
     try {
 
-      const refreshResponse = await fetch(
-        API_BASE + "/api/auth/refresh",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            refresh_token: state.refreshToken
-          })
+        response = await fetch(API_BASE + path, {
+            ...options,
+            headers
+        });
+
+    } catch (error) {
+
+        throw new Error("Cannot connect to the server.");
+    }
+
+
+    if (response.status === 401 && retry && refreshToken) {
+
+        const refreshed = await refreshAccessToken();
+
+        if (refreshed) {
+            return api(path, options, false);
         }
-      );
+    }
 
-      if (refreshResponse.ok) {
 
-        const refreshData =
-          await refreshResponse.json();
+    let data = {};
 
-        saveSession(refreshData);
+    try {
+        data = await response.json();
+    } catch (_) {}
 
-        return api(
-          path,
-          options,
-          false
+
+    if (!response.ok) {
+
+        throw new Error(
+            data.error ||
+            data.message ||
+            "Request failed."
         );
-      }
+    }
+
+    return data;
+}
+
+
+async function refreshAccessToken() {
+
+    if (!refreshToken) return false;
+
+    try {
+
+        const response = await fetch(
+            API_BASE + "/api/auth/refresh",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    refresh_token: refreshToken
+                })
+            }
+        );
+
+        if (!response.ok) {
+
+            clearTokens();
+            return false;
+        }
+
+        const data = await response.json();
+
+        saveTokens(data);
+
+        return true;
+
+    } catch (_) {
+
+        clearTokens();
+        return false;
+    }
+}
+
+
+/* =========================================================
+   AUTH UI
+========================================================= */
+
+function showLogin() {
+
+    $("loginForm").classList.remove("hidden");
+    $("registerForm").classList.add("hidden");
+}
+
+function showRegister() {
+
+    $("loginForm").classList.add("hidden");
+    $("registerForm").classList.remove("hidden");
+}
+
+
+async function login() {
+
+    const loginValue = $("loginInput").value.trim();
+    const password = $("loginPassword").value;
+
+    if (!loginValue || !password) {
+        alert("Enter your login and password.");
+        return;
+    }
+
+    try {
+
+        const data = await api(
+            "/api/auth/login",
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    login: loginValue,
+                    password
+                })
+            },
+            false
+        );
+
+        saveTokens(data);
+
+        await startApp();
+
+    } catch (error) {
+
+        alert(error.message);
+    }
+}
+
+
+async function register() {
+
+    const username = $("registerUsername").value.trim();
+    const email = $("registerEmail").value.trim();
+    const displayName = $("registerDisplayName").value.trim();
+    const password = $("registerPassword").value;
+
+    const ageOK = $("ageCheck").checked;
+    const termsOK = $("termsCheck").checked;
+    const privacyOK = $("privacyCheck").checked;
+    const consentOK = $("consentCheck").checked;
+
+
+    if (!username || !email || !password) {
+
+        alert("Username, email and password are required.");
+        return;
+    }
+
+
+    if (!ageOK) {
+
+        alert("You must confirm that you are 16 or older to use ChatApp.");
+        return;
+    }
+
+
+    if (!termsOK || !privacyOK || !consentOK) {
+
+        alert("You must agree to the Terms, Privacy Policy and consent before creating an account.");
+        return;
+    }
+
+
+    if (password.length < 8) {
+
+        alert("Use a password with at least 8 characters.");
+        return;
+    }
+
+
+    try {
+
+        const data = await api(
+            "/api/auth/register",
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    username,
+                    email,
+                    password,
+                    display_name: displayName || username
+                })
+            },
+            false
+        );
+
+        saveTokens(data);
+
+        await startApp();
+
+    } catch (error) {
+
+        alert(error.message);
+    }
+}
+
+
+/* =========================================================
+   START APP
+========================================================= */
+
+async function startApp() {
+
+    $("authScreen").classList.add("hidden");
+    $("app").classList.remove("hidden");
+
+    try {
+
+        const data = await api("/api/auth/me");
+
+        currentUser = data.user;
+
+        updateMyProfileUI();
+
+        await loadConversations();
+
+        startPolling();
+
+    } catch (error) {
+
+        console.error(error);
+
+        clearTokens();
+
+        $("app").classList.add("hidden");
+        $("authScreen").classList.remove("hidden");
+    }
+}
+
+
+function updateMyProfileUI() {
+
+    if (!currentUser) return;
+
+    $("myName").textContent =
+        currentUser.display_name ||
+        currentUser.username;
+
+    $("myUsername").textContent =
+        "@" + currentUser.username;
+
+    $("myAvatar").textContent =
+        avatarLetter(currentUser);
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+async function logout() {
+
+    try {
+
+        if (refreshToken) {
+
+            await api(
+                "/api/auth/logout",
+                {
+                    method: "POST",
+                    body: JSON.stringify({
+                        refresh_token: refreshToken
+                    })
+                },
+                false
+            );
+        }
 
     } catch (_) {}
 
-    clearSession();
-    showAuth();
 
-    throw new Error("Session expired.");
-  }
+    clearTokens();
 
+    currentUser = null;
+    conversations = [];
+    currentConversation = null;
 
-  let data = null;
+    stopPolling();
 
-  const text = await response.text();
+    $("app").classList.add("hidden");
+    $("authScreen").classList.remove("hidden");
 
-  if (text) {
-
-    try {
-      data = JSON.parse(text);
-    } catch (_) {
-      data = {
-        error: text
-      };
-    }
-  }
-
-
-  if (!response.ok) {
-
-    throw new Error(
-      data?.error ||
-      data?.message ||
-      "Request failed."
-    );
-  }
-
-  return data;
-}
-
-
-/* =========================================================
-   AUTH
-   ========================================================= */
-
-function setAuthMode(mode) {
-
-  state.authMode = mode;
-
-  if (mode === "login") {
-
-    loginForm.classList.remove("hidden");
-    registerForm.classList.add("hidden");
-
-    authSubtitle.textContent =
-      "Sign in to continue.";
-
-    authSwitchText.textContent =
-      "Don't have an account?";
-
-    authSwitchButton.textContent =
-      "Register";
-
-  } else {
-
-    loginForm.classList.add("hidden");
-    registerForm.classList.remove("hidden");
-
-    authSubtitle.textContent =
-      "Create your account.";
-
-    authSwitchText.textContent =
-      "Already have an account?";
-
-    authSwitchButton.textContent =
-      "Log in";
-  }
-}
-
-
-authSwitchButton.addEventListener(
-  "click",
-  () => {
-
-    setAuthMode(
-      state.authMode === "login"
-        ? "register"
-        : "login"
-    );
-
-  }
-);
-
-
-loginForm.addEventListener(
-  "submit",
-  async event => {
-
-    event.preventDefault();
-
-    const login =
-      $("loginInput").value.trim();
-
-    const password =
-      $("loginPassword").value;
-
-    if (!login || !password) {
-      showToast("Fill in both fields.");
-      return;
-    }
-
-    try {
-
-      const data = await api(
-        "/api/auth/login",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            login,
-            password
-          })
-        },
-        false
-      );
-
-      saveSession(data);
-
-      state.user = data.user;
-
-      showApp();
-
-      await loadConversations();
-
-      startPolling();
-
-      showToast("Logged in.");
-
-    } catch (error) {
-
-      showToast(error.message);
-    }
-
-  }
-);
-
-
-registerForm.addEventListener(
-  "submit",
-  async event => {
-
-    event.preventDefault();
-
-    const username =
-      $("registerUsername").value.trim();
-
-    const email =
-      $("registerEmail").value.trim();
-
-    const display_name =
-      $("registerDisplayName").value.trim();
-
-    const password =
-      $("registerPassword").value;
-
-    if (!username || !email || !password) {
-      showToast("Fill in the required fields.");
-      return;
-    }
-
-    try {
-
-      const data = await api(
-        "/api/auth/register",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            username,
-            email,
-            password,
-            display_name
-          })
-        },
-        false
-      );
-
-      saveSession(data);
-
-      state.user = data.user;
-
-      showApp();
-
-      await loadConversations();
-
-      startPolling();
-
-      showToast("Account created.");
-
-    } catch (error) {
-
-      showToast(error.message);
-    }
-
-  }
-);
-
-
-/* =========================================================
-   CURRENT USER
-   ========================================================= */
-
-async function loadCurrentUser() {
-
-  const data = await api(
-    "/api/auth/me"
-  );
-
-  state.user = data.user;
+    showLogin();
 }
 
 
 /* =========================================================
    CONVERSATIONS
-   ========================================================= */
+========================================================= */
 
 async function loadConversations() {
 
-  const data =
-    await api("/api/conversations");
+    try {
 
-  state.conversations =
-    Array.isArray(data?.conversations)
-      ? data.conversations
-      : [];
+        const data =
+            await api("/api/conversations");
 
-  renderConversations();
+        conversations =
+            data.conversations ||
+            [];
+
+        renderConversations();
+
+    } catch (error) {
+
+        console.error(error);
+    }
 }
 
 
 function renderConversations() {
 
-  if (!state.conversations.length) {
+    const container =
+        $("conversationList");
 
-    conversationList.innerHTML = `
-      <div style="
-        padding:25px;
-        color:#666;
-        text-align:center;
-      ">
-        No conversations yet.
-      </div>
-    `;
-
-    return;
-  }
+    container.innerHTML = "";
 
 
-  conversationList.innerHTML =
-    state.conversations
-      .map(conversation => {
+    if (!conversations.length) {
 
-        const id = conversation.id;
-
-        const active =
-          state.currentConversation?.id === id;
-
-        const name =
-          getConversationName(conversation);
-
-        const preview =
-          conversation.last_message?.body ||
-          conversation.last_message ||
-          "No messages yet.";
-
-        return `
-          <div
-            class="conversation ${active ? "active" : ""}"
-            data-id="${escapeHTML(id)}"
-          >
-
-            <div class="conversationName">
-              ${escapeHTML(name)}
+        container.innerHTML = `
+            <div class="empty" style="padding:25px;">
+                No conversations yet.
+                <br><br>
+                Search for someone to start chatting.
             </div>
-
-            <div class="conversationPreview">
-              ${escapeHTML(preview)}
-            </div>
-
-          </div>
         `;
 
-      })
-      .join("");
+        return;
+    }
 
 
-  document
-    .querySelectorAll(".conversation")
-    .forEach(element => {
+    conversations.forEach(conversation => {
 
-      element.addEventListener(
-        "click",
-        () => {
+        const div =
+            document.createElement("div");
 
-          const id =
-            element.dataset.id;
+        div.className =
+            "conversation" +
+            (
+                currentConversation &&
+                currentConversation.id === conversation.id
+                    ? " active"
+                    : ""
+            );
 
-          openConversation(id);
-        }
-      );
 
+        const title =
+            conversation.title ||
+            conversation.name ||
+            conversation.display_name ||
+            conversation.username ||
+            (
+                conversation.type === "group"
+                    ? "Group"
+                    : "Conversation"
+            );
+
+
+        div.innerHTML = `
+            <div class="conversation-name">
+                ${escapeHTML(title)}
+            </div>
+
+            <div class="conversation-preview">
+                ${escapeHTML(
+                    conversation.last_message?.body ||
+                    conversation.last_message ||
+                    "No messages yet"
+                )}
+            </div>
+        `;
+
+
+        div.onclick = () => {
+            openConversation(conversation.id);
+        };
+
+
+        container.appendChild(div);
     });
 }
 
 
 /* =========================================================
    OPEN CONVERSATION
-   ========================================================= */
+========================================================= */
 
 async function openConversation(id) {
 
-  const conversation =
-    state.conversations.find(
-      item => String(item.id) === String(id)
-    );
+    try {
 
-  if (!conversation) return;
+        const data =
+            await api("/api/conversations/" + id);
 
-  state.currentConversation =
-    conversation;
+        currentConversation =
+            data.conversation ||
+            data;
 
-  state.lastMessageId = null;
 
-  appScreen.classList.add("chatOpen");
+        $("app").classList.add("chat-open");
 
-  chatTitle.textContent =
-    getConversationName(conversation);
+        renderConversations();
 
-  chatStatus.textContent =
-    conversation.type === "group"
-      ? "Group"
-      : "Direct message";
+        updateChatHeader();
 
-  messageInput.disabled = false;
-  sendButton.disabled = false;
+        await loadMessages();
 
-  renderConversations();
+        await markRead();
 
-  await loadMessages();
+        $("messageInput").focus();
 
-  try {
+    } catch (error) {
 
-    await api(
-      `/api/conversations/${id}/read`,
-      {
-        method: "POST"
-      }
-    );
+        alert(error.message);
+    }
+}
 
-  } catch (_) {}
+
+function closeChat() {
+
+    $("app").classList.remove("chat-open");
+
+    currentConversation = null;
+
+    $("chatTitle").textContent =
+        "Select a conversation";
+
+    $("chatStatus").textContent =
+        "-";
+
+    $("chatProfileButton").classList.add("hidden");
+
+    $("messages").innerHTML = `
+        <div class="empty">
+            Select a conversation to start chatting.
+        </div>
+    `;
+
+    renderConversations();
+}
+
+
+function updateChatHeader() {
+
+    if (!currentConversation) return;
+
+
+    let title =
+        currentConversation.title ||
+        currentConversation.name ||
+        currentConversation.display_name;
+
+
+    if (!title && currentConversation.type === "direct") {
+
+        const other =
+            getOtherUser(currentConversation);
+
+        if (other) {
+
+            title =
+                other.display_name ||
+                other.username;
+        }
+    }
+
+
+    $("chatTitle").textContent =
+        title ||
+        "Conversation";
+
+
+    $("chatStatus").textContent =
+        currentConversation.type === "group"
+            ? "Group conversation"
+            : "Direct message";
+
+
+    if (currentConversation.type === "direct") {
+
+        $("chatProfileButton").classList.remove("hidden");
+
+    } else {
+
+        $("chatProfileButton").classList.add("hidden");
+    }
+}
+
+
+function getOtherUser(conversation) {
+
+    if (!conversation) return null;
+
+    if (conversation.other_user) {
+        return conversation.other_user;
+    }
+
+    if (conversation.user) {
+        return conversation.user;
+    }
+
+    if (
+        conversation.members &&
+        currentUser
+    ) {
+
+        return conversation.members.find(
+            member =>
+                String(member.id) !==
+                String(currentUser.id)
+        );
+    }
+
+    return null;
 }
 
 
 /* =========================================================
    MESSAGES
-   ========================================================= */
+========================================================= */
 
 async function loadMessages() {
 
-  if (!state.currentConversation) {
-    return;
-  }
+    if (!currentConversation) return;
 
-  const id =
-    state.currentConversation.id;
+    try {
 
-  try {
+        const data =
+            await api(
+                "/api/conversations/" +
+                currentConversation.id +
+                "/messages?limit=100"
+            );
 
-    const data =
-      await api(
-        `/api/conversations/${id}/messages?limit=100`
-      );
+        currentMessages =
+            data.messages ||
+            [];
 
-    state.messages =
-      Array.isArray(data?.messages)
-        ? data.messages
-        : [];
+        renderMessages();
 
-    renderMessages();
+    } catch (error) {
 
-  } catch (error) {
-
-    showToast(error.message);
-  }
-}
-
-
-function getMessageUserId(message) {
-
-  return (
-    message.user_id ||
-    message.sender_id ||
-    message.author_id ||
-    message.user?.id ||
-    null
-  );
-}
-
-
-function isMine(message) {
-
-  return String(
-    getMessageUserId(message)
-  ) === String(
-    state.user?.id
-  );
+        console.error(error);
+    }
 }
 
 
 function renderMessages() {
 
-  if (!state.messages.length) {
+    const container =
+        $("messages");
 
-    messages.innerHTML = `
-      <div class="emptyChat">
-        No messages yet.<br>
-        Send the first message.
-      </div>
-    `;
-
-    return;
-  }
+    container.innerHTML = "";
 
 
-  messages.innerHTML =
-    state.messages
-      .map(message => {
+    if (!currentMessages.length) {
 
-        const mine =
-          isMine(message);
-
-        const body =
-          message.body || "";
-
-        const author =
-          message.sender?.display_name ||
-          message.sender?.username ||
-          message.user?.display_name ||
-          message.user?.username ||
-          (mine ? "You" : "User");
-
-        const time =
-          formatTime(
-            message.created_at ||
-            message.createdAt
-          );
-
-        const id =
-          message.id;
-
-        return `
-          <div
-            class="messageRow ${mine ? "mine" : ""}"
-          >
-
-            <div class="messageBubble">
-
-              ${
-                !mine
-                  ? `
-                    <div class="messageAuthor">
-                      ${escapeHTML(author)}
-                    </div>
-                  `
-                  : ""
-              }
-
-              <div class="messageBody">
-                ${escapeHTML(body)}
-              </div>
-
-              <div class="messageMeta">
-                ${escapeHTML(time)}
-              </div>
-
-              ${
-                mine
-                  ? `
-                    <div class="messageActions">
-
-                      <button
-                        data-edit="${escapeHTML(id)}"
-                      >
-                        Edit
-                      </button>
-
-                      <button
-                        data-delete="${escapeHTML(id)}"
-                      >
-                        Delete
-                      </button>
-
-                    </div>
-                  `
-                  : ""
-              }
-
+        container.innerHTML = `
+            <div class="empty">
+                No messages yet.
+                <br>
+                Say something.
             </div>
-
-          </div>
         `;
 
-      })
-      .join("");
+        return;
+    }
 
 
-  messages
-    .querySelectorAll("[data-edit]")
-    .forEach(button => {
+    currentMessages.forEach(message => {
 
-      button.addEventListener(
-        "click",
-        () => editMessage(
-          button.dataset.edit
-        )
-      );
+        const mine =
+            String(message.user_id) ===
+            String(currentUser?.id);
 
+
+        const div =
+            document.createElement("div");
+
+        div.className =
+            "message" +
+            (mine ? " mine" : "");
+
+
+        const author =
+            message.user?.display_name ||
+            message.user?.username ||
+            message.username ||
+            (
+                mine
+                    ? "You"
+                    : "User"
+            );
+
+
+        let actions = "";
+
+
+        if (mine) {
+
+            actions = `
+                <div class="message-actions">
+
+                    <button onclick="editMessage('${message.id}')">
+                        Edit
+                    </button>
+
+                    <button onclick="deleteMessage('${message.id}')">
+                        Delete
+                    </button>
+
+                </div>
+            `;
+        }
+
+
+        div.innerHTML = `
+
+            <div class="message-author">
+                ${escapeHTML(author)}
+            </div>
+
+            <div class="message-body">
+                ${escapeHTML(message.body || "")}
+            </div>
+
+            <div class="message-meta">
+                ${formatTime(message.created_at)}
+                ${message.edited_at ? " · edited" : ""}
+            </div>
+
+            ${actions}
+
+        `;
+
+
+        container.appendChild(div);
     });
 
 
-  messages
-    .querySelectorAll("[data-delete]")
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        () => deleteMessage(
-          button.dataset.delete
-        )
-      );
-
-    });
-
-
-  messages.scrollTop =
-    messages.scrollHeight;
+    container.scrollTop =
+        container.scrollHeight;
 }
 
 
-/* =========================================================
-   SEND MESSAGE
-   ========================================================= */
+async function sendMessage() {
 
-messageForm.addEventListener(
-  "submit",
-  async event => {
+    if (!currentConversation) {
 
-    event.preventDefault();
-
-    if (!state.currentConversation) {
-      return;
+        alert("Open a conversation first.");
+        return;
     }
 
+
+    const input =
+        $("messageInput");
+
     const body =
-      messageInput.value.trim();
+        input.value.trim();
+
 
     if (!body) return;
 
-    const conversationId =
-      state.currentConversation.id;
 
-    sendButton.disabled = true;
+    input.value = "";
+
 
     try {
 
-      await api(
-        `/api/conversations/${conversationId}/messages`,
-        {
-          method: "POST",
-          body: JSON.stringify({
-            body
-          })
-        }
-      );
+        await api(
+            "/api/conversations/" +
+            currentConversation.id +
+            "/messages",
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    body
+                })
+            }
+        );
 
-      messageInput.value = "";
 
-      await loadMessages();
+        await loadMessages();
 
-      await loadConversations();
+        await markRead();
+
+        await loadConversations();
 
     } catch (error) {
 
-      showToast(error.message);
+        alert(error.message);
 
-    } finally {
-
-      sendButton.disabled = false;
-
-      messageInput.focus();
+        input.value = body;
     }
-
-  }
-);
+}
 
 
-/* =========================================================
-   EDIT MESSAGE
-   ========================================================= */
+function messageKeydown(event) {
+
+    if (
+        event.key === "Enter" &&
+        !event.shiftKey
+    ) {
+
+        event.preventDefault();
+
+        sendMessage();
+    }
+}
+
 
 async function editMessage(id) {
 
-  const message =
-    state.messages.find(
-      item => String(item.id) === String(id)
-    );
+    const message =
+        currentMessages.find(
+            item => String(item.id) === String(id)
+        );
 
-  if (!message) return;
+    if (!message) return;
 
-  const newBody =
-    prompt(
-      "Edit message:",
-      message.body || ""
-    );
 
-  if (
-    newBody === null ||
-    !newBody.trim()
-  ) {
-    return;
-  }
+    const body =
+        prompt(
+            "Edit message:",
+            message.body
+        );
 
-  try {
 
-    await api(
-      `/api/messages/${id}`,
-      {
-        method: "PUT",
-        body: JSON.stringify({
-          body: newBody.trim()
-        })
-      }
-    );
+    if (
+        body === null ||
+        !body.trim()
+    ) return;
 
-    await loadMessages();
 
-  } catch (error) {
+    try {
 
-    showToast(error.message);
-  }
+        await api(
+            "/api/messages/" + id,
+            {
+                method: "PUT",
+                body: JSON.stringify({
+                    body: body.trim()
+                })
+            }
+        );
+
+        await loadMessages();
+
+    } catch (error) {
+
+        alert(error.message);
+    }
 }
 
-
-/* =========================================================
-   DELETE MESSAGE
-   ========================================================= */
 
 async function deleteMessage(id) {
 
-  if (
-    !confirm(
-      "Delete this message?"
-    )
-  ) {
-    return;
-  }
+    if (!confirm("Delete this message?")) {
+        return;
+    }
 
-  try {
 
-    await api(
-      `/api/messages/${id}`,
-      {
-        method: "DELETE"
-      }
-    );
+    try {
 
-    await loadMessages();
+        await api(
+            "/api/messages/" + id,
+            {
+                method: "DELETE"
+            }
+        );
 
-  } catch (error) {
+        await loadMessages();
 
-    showToast(error.message);
-  }
+    } catch (error) {
+
+        alert(error.message);
+    }
 }
 
 
 /* =========================================================
-   NEW CHAT
-   ========================================================= */
+   READ STATUS
+========================================================= */
 
-$("newChatButton").addEventListener(
-  "click",
-  () => {
+async function markRead() {
 
-    openNewChatModal();
+    if (!currentConversation) return;
 
-  }
-);
+    try {
 
+        await api(
+            "/api/conversations/" +
+            currentConversation.id +
+            "/read",
+            {
+                method: "POST"
+            }
+        );
 
-function openNewChatModal() {
-
-  modalTitle.textContent =
-    "New conversation";
-
-  modalContent.innerHTML = `
-
-    <div class="field">
-
-      <label>
-        Search username
-      </label>
-
-      <input
-        id="newChatSearch"
-        placeholder="Enter username..."
-      >
-
-    </div>
-
-    <div id="searchResults"></div>
-
-  `;
-
-  openModal();
-
-  $("newChatSearch")
-    .addEventListener(
-      "input",
-      searchUsers
-    );
-
-}
-
-
-let searchTimer = null;
-
-
-function searchUsers() {
-
-  clearTimeout(searchTimer);
-
-  const query =
-    $("newChatSearch").value.trim();
-
-  const results =
-    $("searchResults");
-
-  if (!query) {
-
-    results.innerHTML = "";
-
-    return;
-  }
-
-  searchTimer =
-    setTimeout(
-      async () => {
-
-        try {
-
-          const data =
-            await api(
-              `/api/users/search?q=${encodeURIComponent(query)}`
-            );
-
-          const users =
-            Array.isArray(data?.users)
-              ? data.users
-              : [];
-
-          if (!users.length) {
-
-            results.innerHTML = `
-              <div style="color:#777;padding:15px 0">
-                No users found.
-              </div>
-            `;
-
-            return;
-          }
-
-          results.innerHTML =
-            users
-              .map(user => `
-
-                <div class="result">
-
-                  <div>
-
-                    <div class="resultName">
-                      ${escapeHTML(
-                        user.display_name ||
-                        user.username
-                      )}
-                    </div>
-
-                    <div class="resultUsername">
-                      @${escapeHTML(
-                        user.username
-                      )}
-                    </div>
-
-                  </div>
-
-                  <button
-                    class="smallButton"
-                    data-user-id="${escapeHTML(user.id)}"
-                  >
-                    Chat
-                  </button>
-
-                </div>
-
-              `)
-              .join("");
-
-
-          results
-            .querySelectorAll(
-              "[data-user-id]"
-            )
-            .forEach(button => {
-
-              button.addEventListener(
-                "click",
-                () =>
-                  createDirectChat(
-                    button.dataset.userId
-                  )
-              );
-
-            });
-
-        } catch (error) {
-
-          results.innerHTML = `
-            <div style="color:#ff7777">
-              ${escapeHTML(error.message)}
-            </div>
-          `;
-
-        }
-
-      },
-      350
-    );
-}
-
-
-async function createDirectChat(userId) {
-
-  try {
-
-    const data =
-      await api(
-        "/api/conversations",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            type: "direct",
-            user_id: userId
-          })
-        }
-      );
-
-    closeModal();
-
-    await loadConversations();
-
-    const conversation =
-      data?.conversation;
-
-    if (conversation?.id) {
-
-      await openConversation(
-        conversation.id
-      );
-
-      return;
-    }
-
-    if (data?.id) {
-
-      await openConversation(
-        data.id
-      );
-
-    }
-
-  } catch (error) {
-
-    showToast(error.message);
-  }
+    } catch (_) {}
 }
 
 
 /* =========================================================
-   PROFILE
-   ========================================================= */
+   TYPING
+========================================================= */
 
-$("profileButton").addEventListener(
-  "click",
-  openProfile
-);
+function handleTyping() {
 
-
-async function openProfile() {
-
-  try {
-
-    const data =
-      await api("/api/auth/me");
-
-    state.user =
-      data.user;
-
-    modalTitle.textContent =
-      "Profile";
-
-    modalContent.innerHTML = `
-
-      <div class="field">
-
-        <label>
-          Username
-        </label>
-
-        <input
-          value="${escapeHTML(
-            state.user.username || ""
-          )}"
-          disabled
-        >
-
-      </div>
-
-      <div class="field">
-
-        <label>
-          Display name
-        </label>
-
-        <input
-          id="profileDisplayName"
-          value="${escapeHTML(
-            state.user.display_name || ""
-          )}"
-        >
-
-      </div>
-
-      <button
-        class="primary"
-        id="saveProfile"
-      >
-        Save profile
-      </button>
-
-      <button
-        class="dangerButton"
-        id="logoutButton"
-        style="width:100%;margin-top:12px"
-      >
-        Log out
-      </button>
-
-    `;
-
-    openModal();
+    if (!currentConversation) return;
 
 
-    $("saveProfile")
-      .addEventListener(
-        "click",
-        saveProfile
-      );
+    clearTimeout(typingTimer);
 
 
-    $("logoutButton")
-      .addEventListener(
-        "click",
-        logout
-      );
+    sendTyping();
 
-  } catch (error) {
 
-    showToast(error.message);
-  }
+    typingTimer =
+        setTimeout(
+            () => {},
+            1500
+        );
 }
 
 
-async function saveProfile() {
+async function sendTyping() {
 
-  const display_name =
-    $("profileDisplayName")
-      .value
-      .trim();
+    if (!currentConversation) return;
 
-  try {
+    try {
 
-    const data =
-      await api(
-        "/api/users/me",
-        {
-          method: "PUT",
-          body: JSON.stringify({
-            display_name
-          })
-        }
-      );
+        await api(
+            "/api/conversations/" +
+            currentConversation.id +
+            "/typing",
+            {
+                method: "POST"
+            }
+        );
 
-    state.user =
-      data.user;
-
-    closeModal();
-
-    showToast("Profile updated.");
-
-  } catch (error) {
-
-    showToast(error.message);
-  }
+    } catch (_) {}
 }
-
-
-/* =========================================================
-   LOGOUT
-   ========================================================= */
-
-async function logout() {
-
-  try {
-
-    if (state.refreshToken) {
-
-      await api(
-        "/api/auth/logout",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            refresh_token:
-              state.refreshToken
-          })
-        },
-        false
-      );
-
-    }
-
-  } catch (_) {}
-
-  stopPolling();
-
-  clearSession();
-
-  state.conversations = [];
-  state.currentConversation = null;
-  state.messages = [];
-
-  closeModal();
-
-  appScreen.classList.remove("chatOpen");
-
-  showAuth();
-
-  showToast("Logged out.");
-}
-
-
-/* =========================================================
-   MODAL
-   ========================================================= */
-
-function openModal() {
-
-  modal.classList.remove("hidden");
-}
-
-
-function closeModal() {
-
-  modal.classList.add("hidden");
-}
-
-
-$("modalClose")
-  .addEventListener(
-    "click",
-    closeModal
-  );
-
-
-modal.addEventListener(
-  "click",
-  event => {
-
-    if (event.target === modal) {
-      closeModal();
-    }
-
-  }
-);
-
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-$("backButton")
-  .addEventListener(
-    "click",
-    () => {
-
-      appScreen.classList.remove(
-        "chatOpen"
-      );
-
-    }
-  );
 
 
 /* =========================================================
    POLLING
-   ========================================================= */
+========================================================= */
 
 function startPolling() {
 
-  stopPolling();
+    stopPolling();
 
-  state.polling =
-    setInterval(
-      async () => {
+    pollTimer =
+        setInterval(
+            async () => {
 
-        if (
-          document.hidden ||
-          !state.currentConversation
-        ) {
-          return;
-        }
+                if (!accessToken) return;
 
-        try {
+                try {
 
-          await loadMessages();
+                    await loadConversations();
 
-        } catch (_) {}
+                    if (currentConversation) {
+                        await loadMessages();
+                    }
 
-      },
-      3000
-    );
+                } catch (_) {}
+
+            },
+            4000
+        );
 }
 
 
 function stopPolling() {
 
-  if (state.polling) {
+    if (pollTimer) {
 
-    clearInterval(
-      state.polling
-    );
+        clearInterval(pollTimer);
 
-    state.polling = null;
-  }
+        pollTimer = null;
+    }
 }
 
 
 /* =========================================================
-   KEYBOARD
-   ========================================================= */
+   USER SEARCH
+========================================================= */
 
-messageInput.addEventListener(
-  "keydown",
-  event => {
+function openSearch() {
 
-    if (
-      event.key === "Enter" &&
-      !event.shiftKey
-    ) {
+    $("userSearch").focus();
+}
 
-      event.preventDefault();
 
-      messageForm.requestSubmit();
+function searchUsers() {
+
+    clearTimeout(searchTimer);
+
+
+    const query =
+        $("userSearch").value.trim();
+
+
+    if (!query) {
+
+        $("searchResults").classList.add("hidden");
+
+        return;
     }
 
-  }
-);
+
+    searchTimer =
+        setTimeout(
+            () => performUserSearch(query),
+            350
+        );
+}
+
+
+async function performUserSearch(query) {
+
+    try {
+
+        const data =
+            await api(
+                "/api/users/search?q=" +
+                encodeURIComponent(query)
+            );
+
+
+        renderSearchResults(
+            data.users || []
+        );
+
+    } catch (error) {
+
+        console.error(error);
+    }
+}
+
+
+function renderSearchResults(users) {
+
+    const container =
+        $("searchResults");
+
+    container.innerHTML = "";
+
+    container.classList.remove("hidden");
+
+
+    if (!users.length) {
+
+        container.innerHTML = `
+            <div style="padding:15px;color:var(--muted);">
+                No users found.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    users.forEach(user => {
+
+        const div =
+            document.createElement("div");
+
+        div.className = "result";
+
+
+        div.innerHTML = `
+
+            <div>
+                <div class="result-name">
+                    ${escapeHTML(
+                        user.display_name ||
+                        user.username
+                    )}
+                </div>
+
+                <div class="result-username">
+                    @${escapeHTML(user.username)}
+                </div>
+            </div>
+
+            <button class="secondary"
+                onclick="openUserProfile('${user.id}')">
+                View
+            </button>
+
+        `;
+
+
+        container.appendChild(div);
+    });
+}
+
+
+/* =========================================================
+   USER PROFILE
+========================================================= */
+
+async function openUserProfile(userId) {
+
+    try {
+
+        const data =
+            await api(
+                "/api/users/" + userId
+            );
+
+
+        const user =
+            data.user ||
+            data;
+
+
+        const friends =
+            await getFriendState(user);
+
+
+        showUserProfile(user, friends);
+
+    } catch (error) {
+
+        alert(error.message);
+    }
+}
+
+
+async function getFriendState(user) {
+
+    try {
+
+        const data =
+            await api("/api/friends");
+
+        const friends =
+            data.friends || [];
+
+
+        const isFriend =
+            friends.some(
+                friend =>
+                    String(friend.id) ===
+                    String(user.id)
+            );
+
+
+        const requests =
+            await api("/api/friends/requests");
+
+
+        const incoming =
+            requests.incoming || [];
+
+        const outgoing =
+            requests.outgoing || [];
+
+
+        const incomingRequest =
+            incoming.find(
+                request =>
+                    String(
+                        request.from_user_id ||
+                        request.user_id ||
+                        request.id
+                    ) === String(user.id)
+            );
+
+
+        const outgoingRequest =
+            outgoing.find(
+                request =>
+                    String(
+                        request.to_user_id ||
+                        request.user_id ||
+                        request.id
+                    ) === String(user.id)
+            );
+
+
+        return {
+            isFriend,
+            incomingRequest,
+            outgoingRequest
+        };
+
+    } catch (_) {
+
+        return {
+            isFriend: false,
+            incomingRequest: null,
+            outgoingRequest: null
+        };
+    }
+}
+
+
+function showUserProfile(user, state) {
+
+    const name =
+        user.display_name ||
+        user.username;
+
+
+    let actionHTML = "";
+
+
+    if (
+        String(user.id) ===
+        String(currentUser.id)
+    ) {
+
+        actionHTML = `
+            <button class="secondary"
+                onclick="openMyProfile()">
+                Edit Profile
+            </button>
+        `;
+
+    } else if (state.isFriend) {
+
+        actionHTML = `
+            <button class="primary"
+                onclick="messageUser('${user.id}')">
+                Message
+            </button>
+
+            <button class="danger"
+                onclick="removeFriend('${user.id}')">
+                Remove Friend
+            </button>
+        `;
+
+    } else if (state.incomingRequest) {
+
+        actionHTML = `
+
+            <button class="primary"
+                onclick="acceptFriendRequest('${getRequestId(state.incomingRequest)}')">
+                Accept Request
+            </button>
+
+            <button class="danger"
+                onclick="declineFriendRequest('${getRequestId(state.incomingRequest)}')">
+                Decline
+            </button>
+
+        `;
+
+    } else if (state.outgoingRequest) {
+
+        actionHTML = `
+            <button class="secondary" disabled>
+                Request Sent
+            </button>
+        `;
+
+    } else {
+
+        actionHTML = `
+            <button class="primary"
+                onclick="sendFriendRequest('${user.username}')">
+                Add Friend
+            </button>
+        `;
+    }
+
+
+    openModal(
+        name,
+        `
+
+        <div class="profile">
+
+            <div class="avatar">
+                ${escapeHTML(avatarLetter(user))}
+            </div>
+
+            <h2>
+                ${escapeHTML(name)}
+            </h2>
+
+            <div class="username">
+                @${escapeHTML(user.username)}
+            </div>
+
+            <div class="profile-actions">
+                ${actionHTML}
+            </div>
+
+        </div>
+
+        `
+    );
+}
+
+
+function getRequestId(request) {
+
+    return (
+        request.id ||
+        request.friendship_id ||
+        request.request_id
+    );
+}
+
+
+/* =========================================================
+   FRIEND SYSTEM
+========================================================= */
+
+async function sendFriendRequest(username) {
+
+    try {
+
+        await api(
+            "/api/friends/request",
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    username
+                })
+            }
+        );
+
+
+        alert("Friend request sent.");
+
+        closeModal();
+
+    } catch (error) {
+
+        alert(error.message);
+    }
+}
+
+
+async function acceptFriendRequest(id) {
+
+    if (!id) {
+
+        alert("Request ID unavailable.");
+        return;
+    }
+
+
+    try {
+
+        await api(
+            "/api/friends/requests/" +
+            id +
+            "/accept",
+            {
+                method: "POST"
+            }
+        );
+
+
+        alert("Friend request accepted.");
+
+        closeModal();
+
+        await loadConversations();
+
+    } catch (error) {
+
+        alert(error.message);
+    }
+}
+
+
+async function declineFriendRequest(id) {
+
+    if (!id) return;
+
+
+    try {
+
+        await api(
+            "/api/friends/" + id,
+            {
+                method: "DELETE"
+            }
+        );
+
+
+        alert("Friend request declined.");
+
+        closeModal();
+
+    } catch (error) {
+
+        alert(error.message);
+    }
+}
+
+
+async function removeFriend(id) {
+
+    if (!confirm("Remove this friend?")) {
+        return;
+    }
+
+
+    try {
+
+        await api(
+            "/api/friends/" + id,
+            {
+                method: "DELETE"
+            }
+        );
+
+
+        alert("Friend removed.");
+
+        closeModal();
+
+    } catch (error) {
+
+        alert(error.message);
+    }
+}
+
+
+/* =========================================================
+   DIRECT MESSAGING
+========================================================= */
+
+async function messageUser(userId) {
+
+    try {
+
+        const data =
+            await api(
+                "/api/conversations",
+                {
+                    method: "POST",
+                    body: JSON.stringify({
+                        type: "direct",
+                        user_id: userId
+                    })
+                }
+            );
+
+
+        const conversation =
+            data.conversation ||
+            data;
+
+
+        closeModal();
+
+        await loadConversations();
+
+        if (conversation.id) {
+
+            await openConversation(
+                conversation.id
+            );
+        }
+
+    } catch (error) {
+
+        alert(error.message);
+    }
+}
+
+
+async function openCurrentUserProfile() {
+
+    if (!currentConversation) return;
+
+
+    const user =
+        getOtherUser(currentConversation);
+
+
+    if (!user?.id) {
+
+        alert("User profile is unavailable.");
+        return;
+    }
+
+
+    await openUserProfile(user.id);
+}
+
+
+/* =========================================================
+   MY PROFILE
+========================================================= */
+
+function openMyProfile() {
+
+    if (!currentUser) return;
+
+
+    openModal(
+        "My Profile",
+        `
+
+        <div class="profile">
+
+            <div class="avatar">
+                ${escapeHTML(
+                    avatarLetter(currentUser)
+                )}
+            </div>
+
+            <h2>
+                ${escapeHTML(
+                    currentUser.display_name ||
+                    currentUser.username
+                )}
+            </h2>
+
+            <div class="username">
+                @${escapeHTML(currentUser.username)}
+            </div>
+
+            <br>
+
+            <div class="field"
+                 style="text-align:left;">
+
+                <label>Display Name</label>
+
+                <input
+                    id="editDisplayName"
+                    value="${escapeHTML(
+                        currentUser.display_name ||
+                        ""
+                    )}"
+                >
+
+            </div>
+
+            <div class="profile-actions">
+
+                <button class="primary"
+                    onclick="saveProfile()">
+                    Save
+                </button>
+
+                <button class="danger"
+                    onclick="logout()">
+                    Log Out
+                </button>
+
+            </div>
+
+        </div>
+
+        `
+    );
+}
+
+
+async function saveProfile() {
+
+    const displayName =
+        $("editDisplayName").value.trim();
+
+
+    try {
+
+        const data =
+            await api(
+                "/api/users/me",
+                {
+                    method: "PUT",
+                    body: JSON.stringify({
+                        display_name:
+                            displayName
+                    })
+                }
+            );
+
+
+        currentUser =
+            data.user ||
+            currentUser;
+
+
+        updateMyProfileUI();
+
+        closeModal();
+
+    } catch (error) {
+
+        alert(error.message);
+    }
+}
+
+
+/* =========================================================
+   LEGAL
+========================================================= */
+
+function openLegal(type) {
+
+    if (type === "privacy") {
+
+        openModal(
+            "Privacy Policy",
+            privacyPolicyHTML()
+        );
+
+        return;
+    }
+
+
+    if (type === "terms") {
+
+        openModal(
+            "Terms of Service",
+            termsHTML()
+        );
+
+        return;
+    }
+
+
+    if (type === "community") {
+
+        openModal(
+            "Community Guidelines",
+            communityHTML()
+        );
+
+        return;
+    }
+
+
+    if (type === "consent") {
+
+        openModal(
+            "Consent",
+            consentHTML()
+        );
+
+        return;
+    }
+}
+
+
+function privacyPolicyHTML() {
+
+    return `
+
+    <div class="legal-content">
+
+        <p>
+            <strong>Last updated:</strong> October 7, 2026
+        </p>
+
+        <p>
+            This Privacy Policy explains how ChatApp collects,
+            uses, stores and protects personal information when
+            you use the service.
+        </p>
+
+        <h3>1. Information We Collect</h3>
+
+        <p>
+            Depending on how you use ChatApp, we may process:
+        </p>
+
+        <ul>
+            <li>Username</li>
+            <li>Email address</li>
+            <li>Display name</li>
+            <li>Account authentication information</li>
+            <li>Messages you send through ChatApp</li>
+            <li>Friendship and conversation information</li>
+            <li>Basic technical information required to operate the service</li>
+        </ul>
+
+        <h3>2. Why We Process Information</h3>
+
+        <p>
+            Information may be processed to create and secure
+            accounts, authenticate users, provide messaging and
+            friendship features, maintain conversations, prevent
+            abuse, troubleshoot technical problems and operate
+            the service.
+        </p>
+
+        <h3>3. Messages</h3>
+
+        <p>
+            Messages are processed so that ChatApp can deliver
+            them to the intended conversation participants and
+            maintain conversation history.
+        </p>
+
+        <h3>4. Data Minimization</h3>
+
+        <p>
+            ChatApp should only collect information reasonably
+            necessary for the features being provided.
+        </p>
+
+        <h3>5. Security</h3>
+
+        <p>
+            Reasonable technical and organizational measures
+            should be used to protect personal information from
+            unauthorized access, alteration, disclosure or loss.
+        </p>
+
+        <h3>6. Retention</h3>
+
+        <p>
+            Personal information should not be kept longer than
+            reasonably necessary for the purpose for which it was
+            collected, subject to legitimate operational,
+            security or legal requirements.
+        </p>
+
+        <h3>7. Your Rights</h3>
+
+        <p>
+            Depending on applicable law, users may have rights
+            concerning access, correction, objection, withdrawal
+            of consent, deletion and other rights relating to
+            their personal information.
+        </p>
+
+        <h3>8. Children and Age Requirement</h3>
+
+        <p>
+            ChatApp is intended for people who are
+            <strong>16 years old or older</strong>.
+            Users must honestly confirm their age during
+            registration.
+        </p>
+
+        <p>
+            This age requirement is a ChatApp product rule and
+            should not be interpreted as a statement that
+            Philippine law universally establishes 16 as the
+            minimum age for every online messaging service.
+        </p>
+
+        <h3>9. Third-Party Infrastructure</h3>
+
+        <p>
+            ChatApp may rely on hosting, database and other
+            infrastructure providers to operate the service.
+            Where applicable, information may be processed by
+            such providers for service operation and security.
+        </p>
+
+        <h3>10. Changes</h3>
+
+        <p>
+            This Privacy Policy may be updated when the service,
+            technology or legal requirements change.
+        </p>
+
+        <h3>11. Contact</h3>
+
+        <p>
+            Privacy questions or requests should be directed to
+            the contact address provided by the ChatApp operator.
+        </p>
+
+        <p>
+            This document is a project privacy policy template
+            and is not a substitute for professional legal advice.
+        </p>
+
+    </div>
+
+    `;
+}
+
+
+function termsHTML() {
+
+    return `
+
+    <div class="legal-content">
+
+        <p>
+            <strong>Last updated:</strong> October 7, 2026
+        </p>
+
+        <h3>1. Eligibility</h3>
+
+        <p>
+            ChatApp is intended for users who are
+            <strong>16 years old or older</strong>.
+            You must provide truthful information when creating
+            an account.
+        </p>
+
+        <h3>2. Account Responsibility</h3>
+
+        <p>
+            You are responsible for maintaining the security of
+            your account and password and for activity performed
+            through your account.
+        </p>
+
+        <h3>3. Prohibited Use</h3>
+
+        <p>
+            You must not use ChatApp to:
+        </p>
+
+        <ul>
+            <li>Impersonate another person</li>
+            <li>Harass, threaten or intentionally abuse other users</li>
+            <li>Share private information without permission</li>
+            <li>Attempt unauthorized access to accounts or systems</li>
+            <li>Send spam or malicious content</li>
+            <li>Use the service for unlawful activity</li>
+            <li>Attempt to disrupt or damage the service</li>
+        </ul>
+
+        <h3>4. User Content</h3>
+
+        <p>
+            You remain responsible for content you send through
+            ChatApp. Do not send information or material that you
+            are not permitted to share.
+        </p>
+
+        <h3>5. Safety</h3>
+
+        <p>
+            Users should not share passwords, authentication
+            tokens, private credentials or sensitive personal
+            information through chats.
+        </p>
+
+        <h3>6. Enforcement</h3>
+
+        <p>
+            Accounts may be restricted, suspended or removed when
+            necessary to protect users, the service or comply with
+            applicable requirements.
+        </p>
+
+        <h3>7. Availability</h3>
+
+        <p>
+            ChatApp may experience outages, maintenance,
+            interruptions or technical failures. Continuous
+            availability is not guaranteed.
+        </p>
+
+        <h3>8. Changes</h3>
+
+        <p>
+            These Terms may change as the service develops.
+            Continued use after applicable changes may be subject
+            to the updated Terms.
+        </p>
+
+        <h3>9. Legal Notice</h3>
+
+        <p>
+            These Terms are a project template and should be
+            reviewed and adapted by a qualified legal professional
+            before public commercial deployment.
+        </p>
+
+    </div>
+
+    `;
+}
+
+
+function communityHTML() {
+
+    return `
+
+    <div class="legal-content">
+
+        <h3>Be respectful</h3>
+
+        <p>
+            Do not use ChatApp to deliberately harass,
+            intimidate or threaten people.
+        </p>
+
+        <h3>Protect privacy</h3>
+
+        <p>
+            Do not publish another person's private information
+            without permission.
+        </p>
+
+        <h3>No impersonation</h3>
+
+        <p>
+            Do not pretend to be another person or intentionally
+            misrepresent your identity.
+        </p>
+
+        <h3>Keep accounts secure</h3>
+
+        <p>
+            Never share passwords, access tokens or authentication
+            information with other people.
+        </p>
+
+        <h3>No abuse of the platform</h3>
+
+        <p>
+            Do not attempt to break, overload, bypass or
+            unauthorizedly access ChatApp or its backend.
+        </p>
+
+        <h3>Report problems</h3>
+
+        <p>
+            If moderation and reporting tools are implemented,
+            use them to report abuse or suspicious activity.
+        </p>
+
+    </div>
+
+    `;
+}
+
+
+function consentHTML() {
+
+    return `
+
+    <div class="legal-content">
+
+        <p>
+            By selecting the consent checkbox during registration,
+            you indicate that you have read the Privacy Policy and
+            consent to the processing of your personal information
+            for the purposes described there.
+        </p>
+
+        <p>
+            Consent should be informed, specific and freely given
+            where consent is the applicable legal basis for the
+            processing.
+        </p>
+
+        <p>
+            ChatApp should maintain an appropriate record of the
+            consent decision, including the version of the policy
+            presented at the time of consent.
+        </p>
+
+        <p>
+            Where applicable law provides a right to withdraw
+            consent, requests should be handled according to the
+            applicable requirements.
+        </p>
+
+    </div>
+
+    `;
+}
+
+
+/* =========================================================
+   MODALS
+========================================================= */
+
+function openModal(title, content) {
+
+    $("modalTitle").textContent =
+        title;
+
+    $("modalContent").innerHTML =
+        content;
+
+    $("modal").classList.remove("hidden");
+}
+
+
+function closeModal() {
+
+    $("modal").classList.add("hidden");
+
+    $("modalContent").innerHTML = "";
+}
+
+
+function closeModalOutside(event) {
+
+    if (
+        event.target === $("modal")
+    ) {
+
+        closeModal();
+    }
+}
+
+
+/* =========================================================
+   LEGAL FOOTER ON AUTH SCREEN
+========================================================= */
+
+const legalFooter = document.createElement("div");
+
+legalFooter.style.cssText = `
+    text-align:center;
+    margin-top:20px;
+    color:#8d96a3;
+    font-size:11px;
+`;
+
+legalFooter.innerHTML = `
+    <button class="link-button"
+        onclick="openLegal('terms')">
+        Terms
+    </button>
+    ·
+    <button class="link-button"
+        onclick="openLegal('privacy')">
+        Privacy
+    </button>
+    ·
+    <button class="link-button"
+        onclick="openLegal('community')">
+        Community
+    </button>
+    ·
+    <button class="link-button"
+        onclick="openLegal('consent')">
+        Consent
+    </button>
+    <br>
+    Age requirement: 16+
+`;
+
+$("authScreen").querySelector(".auth-box")
+    .appendChild(legalFooter);
 
 
 /* =========================================================
    STARTUP
-   ========================================================= */
+========================================================= */
 
-async function boot() {
+(async function init() {
 
-  if (!state.accessToken) {
+    if (accessToken) {
 
-    showAuth();
+        await startApp();
 
-    return;
-  }
+    } else {
 
-  try {
+        showLogin();
+    }
 
-    await loadCurrentUser();
-
-    showApp();
-
-    await loadConversations();
-
-    startPolling();
-
-  } catch (error) {
-
-    clearSession();
-
-    showAuth();
-
-    showToast(
-      "Please log in again."
-    );
-  }
-}
-
-
-setAuthMode("login");
-
-boot();
+})();
 
 </script>
 
