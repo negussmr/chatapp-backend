@@ -3,605 +3,504 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#090b10">
-<title>Chatapp</title>
+<meta name="theme-color" content="#080808">
+<title>ChatApp</title>
 
 <style>
-:root{
-  --bg:#090b10;
-  --panel:#10131a;
-  --panel2:#171b23;
-  --border:#272d38;
-  --text:#f4f5f7;
-  --muted:#8d96a5;
-  --accent:#7257ff;
-  --accent2:#6045e8;
-  --mine:#684fe5;
-  --bubble:#1a1f28;
-  --danger:#ff5968;
+* {
+  box-sizing: border-box;
 }
 
-*{box-sizing:border-box}
-
-html,body{
-  margin:0;
-  height:100%;
-  background:var(--bg);
-  color:var(--text);
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  background: #080808;
+  color: #f5f5f5;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-button,input,textarea{
-  font:inherit;
+button,
+input,
+textarea {
+  font: inherit;
 }
 
-button{
-  border:0;
-  cursor:pointer;
+button {
+  cursor: pointer;
 }
 
-.hidden{
-  display:none!important;
+.hidden {
+  display: none !important;
 }
 
 /* =========================
    AUTH
-========================= */
+   ========================= */
 
-.auth-screen{
-  min-height:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
+#authScreen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background:
+    radial-gradient(circle at top, #202020 0, #0d0d0d 45%, #050505 100%);
 }
 
-.auth-card{
-  width:min(420px,100%);
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:22px;
-  padding:28px;
-  box-shadow:0 20px 70px #0008;
+.authBox {
+  width: 100%;
+  max-width: 420px;
+  background: #111;
+  border: 1px solid #292929;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 20px 70px rgba(0,0,0,.5);
 }
 
-.logo{
-  font-size:30px;
-  font-weight:800;
-  letter-spacing:-1px;
+.logo {
+  font-size: 30px;
+  font-weight: 800;
+  margin-bottom: 8px;
 }
 
-.subtitle{
-  color:var(--muted);
-  margin:5px 0 25px;
+.subtitle {
+  color: #999;
+  margin-bottom: 28px;
 }
 
-.auth-tabs{
-  display:flex;
-  background:#0b0e13;
-  padding:4px;
-  border-radius:12px;
-  margin-bottom:18px;
+.field {
+  margin-bottom: 15px;
 }
 
-.auth-tabs button{
-  flex:1;
-  padding:10px;
-  color:var(--muted);
-  background:transparent;
-  border-radius:9px;
+.field label {
+  display: block;
+  color: #aaa;
+  font-size: 13px;
+  margin-bottom: 7px;
 }
 
-.auth-tabs button.active{
-  background:var(--panel2);
-  color:white;
+.field input {
+  width: 100%;
+  border: 1px solid #303030;
+  background: #181818;
+  color: white;
+  padding: 13px 14px;
+  border-radius: 11px;
+  outline: none;
 }
 
-.field{
-  margin-bottom:14px;
+.field input:focus {
+  border-color: #777;
 }
 
-.field label{
-  display:block;
-  font-size:13px;
-  color:var(--muted);
-  margin-bottom:6px;
+.primary {
+  width: 100%;
+  border: 0;
+  background: #fff;
+  color: #000;
+  padding: 13px;
+  border-radius: 11px;
+  font-weight: 700;
+  margin-top: 5px;
 }
 
-.field input{
-  width:100%;
-  padding:13px;
-  border-radius:12px;
-  border:1px solid var(--border);
-  background:#0b0e13;
-  color:white;
-  outline:none;
+.secondary {
+  width: 100%;
+  border: 1px solid #333;
+  background: #181818;
+  color: #fff;
+  padding: 12px;
+  border-radius: 11px;
+  margin-top: 10px;
 }
 
-.field input:focus{
-  border-color:var(--accent);
+.authSwitch {
+  text-align: center;
+  color: #888;
+  margin-top: 20px;
+  font-size: 14px;
 }
 
-.primary{
-  width:100%;
-  padding:13px;
-  border-radius:12px;
-  background:var(--accent);
-  color:white;
-  font-weight:700;
-}
-
-.primary:hover{
-  background:var(--accent2);
-}
-
-.error{
-  min-height:20px;
-  color:#ff858f;
-  font-size:13px;
-  margin:5px 0;
+.authSwitch button {
+  background: none;
+  border: 0;
+  color: white;
+  padding: 0;
+  font-weight: 700;
 }
 
 /* =========================
    APP
-========================= */
+   ========================= */
 
-#app{
-  height:100%;
+#appScreen {
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
 }
 
-.app{
-  height:100%;
-  display:flex;
-  overflow:hidden;
+.sidebar {
+  width: 320px;
+  flex-shrink: 0;
+  border-right: 1px solid #242424;
+  background: #0d0d0d;
+  display: flex;
+  flex-direction: column;
 }
 
-.sidebar{
-  width:340px;
-  min-width:280px;
-  background:var(--panel);
-  border-right:1px solid var(--border);
-  display:flex;
-  flex-direction:column;
+.sidebarHeader {
+  padding: 18px;
+  border-bottom: 1px solid #222;
 }
 
-.sidebar-top{
-  padding:17px 15px 10px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+.sidebarTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
 }
 
-.sidebar-top h2{
-  margin:0;
-  font-size:21px;
+.sidebarTitle {
+  font-size: 21px;
+  font-weight: 800;
 }
 
-.icon-btn{
-  width:38px;
-  height:38px;
-  border-radius:11px;
-  background:var(--panel2);
-  color:white;
-  font-size:20px;
+.iconButton {
+  width: 38px;
+  height: 38px;
+  border: 1px solid #303030;
+  border-radius: 10px;
+  background: #171717;
+  color: white;
 }
 
-.search{
-  padding:0 12px 10px;
+.searchBox {
+  margin-top: 14px;
 }
 
-.search input{
-  width:100%;
-  padding:11px 13px;
-  border-radius:11px;
-  border:1px solid var(--border);
-  background:#0b0e13;
-  color:white;
-  outline:none;
+.searchBox input {
+  width: 100%;
+  background: #171717;
+  color: white;
+  border: 1px solid #292929;
+  border-radius: 10px;
+  padding: 11px 12px;
+  outline: none;
 }
 
-.nav{
-  display:flex;
-  padding:5px 10px;
-  border-bottom:1px solid var(--border);
+.conversationList {
+  flex: 1;
+  overflow-y: auto;
 }
 
-.nav button{
-  flex:1;
-  padding:10px 5px;
-  background:transparent;
-  color:var(--muted);
-  border-radius:10px;
-  font-size:13px;
+.conversation {
+  padding: 14px 16px;
+  border-bottom: 1px solid #181818;
+  cursor: pointer;
 }
 
-.nav button.active{
-  background:var(--panel2);
-  color:white;
+.conversation:hover {
+  background: #151515;
 }
 
-.list{
-  flex:1;
-  overflow-y:auto;
-  padding:6px;
+.conversation.active {
+  background: #202020;
 }
 
-.row{
-  display:flex;
-  align-items:center;
-  gap:11px;
-  padding:11px 9px;
-  border-radius:13px;
+.conversationName {
+  font-weight: 700;
+  margin-bottom: 5px;
 }
 
-.row:hover,
-.row.selected{
-  background:var(--panel2);
+.conversationPreview {
+  color: #777;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.avatar{
-  width:43px;
-  height:43px;
-  min-width:43px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:linear-gradient(135deg,#755cff,#39a9ff);
-  color:white;
-  font-weight:800;
+.sidebarBottom {
+  padding: 14px;
+  border-top: 1px solid #222;
 }
 
-.row-info{
-  min-width:0;
-  flex:1;
-}
-
-.name{
-  font-weight:700;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.preview{
-  color:var(--muted);
-  font-size:12px;
-  margin-top:2px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.badge{
-  background:var(--accent);
-  border-radius:999px;
-  padding:3px 7px;
-  font-size:11px;
-}
-
-.profile-bar{
-  padding:11px;
-  border-top:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  gap:9px;
-}
-
-.profile-info{
-  min-width:0;
-  flex:1;
-}
-
-.profile-info b{
-  display:block;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-
-.profile-info span{
-  color:var(--muted);
-  font-size:12px;
+.profileButton {
+  width: 100%;
+  background: #171717;
+  color: white;
+  border: 1px solid #292929;
+  padding: 12px;
+  border-radius: 10px;
+  text-align: left;
 }
 
 /* =========================
    CHAT
-========================= */
+   ========================= */
 
-.chat{
-  flex:1;
-  min-width:0;
-  display:flex;
-  flex-direction:column;
-  background:#090b10;
+.chatArea {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: #080808;
 }
 
-.chat-header{
-  height:68px;
-  min-height:68px;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  gap:11px;
-  padding:10px 15px;
+.chatHeader {
+  height: 70px;
+  flex-shrink: 0;
+  border-bottom: 1px solid #242424;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
 }
 
-.back-btn{
-  display:none;
+.mobileBack {
+  display: none;
 }
 
-.chat-title{
-  min-width:0;
+.chatTitle {
+  font-weight: 800;
 }
 
-.chat-title .name{
-  font-size:16px;
+.chatStatus {
+  color: #777;
+  font-size: 12px;
+  margin-top: 3px;
 }
 
-.status{
-  color:var(--muted);
-  font-size:12px;
-  margin-top:2px;
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 22px;
 }
 
-.messages{
-  flex:1;
-  overflow-y:auto;
-  padding:20px 15px;
-  display:flex;
-  flex-direction:column;
-  gap:7px;
+.emptyChat {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  text-align: center;
 }
 
-.empty{
-  margin:auto;
-  text-align:center;
-  color:var(--muted);
+.messageRow {
+  display: flex;
+  margin-bottom: 12px;
 }
 
-.message{
-  max-width:min(75%,620px);
-  display:flex;
-  flex-direction:column;
-  align-self:flex-start;
+.messageRow.mine {
+  justify-content: flex-end;
 }
 
-.message.mine{
-  align-self:flex-end;
-  align-items:flex-end;
+.messageBubble {
+  max-width: min(75%, 620px);
+  padding: 10px 13px;
+  border-radius: 15px;
+  background: #1b1b1b;
+  border: 1px solid #292929;
 }
 
-.bubble{
-  background:var(--bubble);
-  border:1px solid #252b35;
-  border-radius:17px;
-  padding:9px 12px;
-  white-space:pre-wrap;
-  word-break:break-word;
-  line-height:1.4;
+.messageRow.mine .messageBubble {
+  background: #eee;
+  color: #000;
+  border-color: #eee;
 }
 
-.mine .bubble{
-  background:var(--mine);
-  border-color:transparent;
+.messageAuthor {
+  font-size: 11px;
+  color: #888;
+  margin-bottom: 4px;
 }
 
-.message-meta{
-  color:var(--muted);
-  font-size:10px;
-  margin:3px 5px;
+.messageRow.mine .messageAuthor {
+  color: #555;
 }
 
-.reply-preview{
-  border-left:3px solid #b0a4ff;
-  padding:3px 7px;
-  margin-bottom:6px;
-  color:#d3d5db;
-  font-size:11px;
+.messageBody {
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.4;
 }
 
-.message-actions{
-  display:flex;
-  gap:4px;
-  margin-top:3px;
+.messageMeta {
+  margin-top: 5px;
+  font-size: 10px;
+  opacity: .55;
 }
 
-.message-actions button{
-  background:var(--panel2);
-  color:var(--muted);
-  padding:4px 7px;
-  border-radius:8px;
-  font-size:11px;
+.messageActions {
+  display: flex;
+  gap: 5px;
+  margin-top: 7px;
 }
 
-.reactions{
-  display:flex;
-  gap:3px;
-  margin-top:3px;
+.messageActions button {
+  border: 1px solid #333;
+  background: transparent;
+  color: inherit;
+  border-radius: 7px;
+  padding: 3px 7px;
+  font-size: 11px;
 }
 
-.reaction{
-  background:#11151c;
-  border:1px solid #2b313b;
-  border-radius:999px;
-  padding:2px 6px;
-  font-size:11px;
+.composer {
+  border-top: 1px solid #242424;
+  padding: 12px;
+  display: flex;
+  gap: 9px;
 }
 
-.composer-area{
-  position:relative;
-  border-top:1px solid var(--border);
+.composer textarea {
+  flex: 1;
+  min-height: 44px;
+  max-height: 130px;
+  resize: none;
+  background: #151515;
+  color: white;
+  border: 1px solid #292929;
+  border-radius: 12px;
+  padding: 12px;
+  outline: none;
 }
 
-.reply-box{
-  padding:7px 12px 0;
-}
-
-.replying{
-  background:var(--panel2);
-  border:1px solid var(--border);
-  padding:8px 10px;
-  border-radius:10px;
-  font-size:12px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.composer{
-  display:flex;
-  gap:8px;
-  padding:10px 12px;
-  padding-bottom:max(10px,env(safe-area-inset-bottom));
-}
-
-.composer textarea{
-  flex:1;
-  min-height:42px;
-  max-height:140px;
-  resize:none;
-  padding:11px 13px;
-  border-radius:14px;
-  border:1px solid var(--border);
-  background:#11151c;
-  color:white;
-  outline:none;
-}
-
-.send-btn{
-  width:44px;
-  height:42px;
-  border-radius:13px;
-  background:var(--accent);
-  color:white;
-  font-weight:800;
+.sendButton {
+  width: 80px;
+  border: 0;
+  background: white;
+  color: black;
+  border-radius: 12px;
+  font-weight: 700;
 }
 
 /* =========================
-   PANELS
-========================= */
+   MODAL
+   ========================= */
 
-.panel{
-  padding:18px;
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 50;
 }
 
-.panel h3{
-  margin-top:0;
+.modalBox {
+  width: 100%;
+  max-width: 440px;
+  max-height: 85vh;
+  overflow-y: auto;
+  background: #111;
+  border: 1px solid #303030;
+  border-radius: 18px;
+  padding: 22px;
 }
 
-.friend-add{
-  display:flex;
-  gap:7px;
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
 }
 
-.friend-add input{
-  flex:1;
-  min-width:0;
-  padding:11px;
-  border-radius:10px;
-  border:1px solid var(--border);
-  background:#0b0e13;
-  color:white;
+.modalTitle {
+  font-size: 20px;
+  font-weight: 800;
 }
 
-.small-btn{
-  padding:9px 11px;
-  border-radius:10px;
-  background:var(--accent);
-  color:white;
+.result {
+  padding: 12px;
+  border: 1px solid #292929;
+  border-radius: 10px;
+  margin-top: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
 }
 
-.danger{
-  background:#35151a;
-  color:#ff9da6;
+.resultName {
+  font-weight: 700;
 }
 
-hr{
-  border:0;
-  border-top:1px solid var(--border);
-  margin:18px 0;
+.resultUsername {
+  color: #777;
+  font-size: 12px;
+}
+
+.smallButton {
+  border: 1px solid #333;
+  background: #191919;
+  color: white;
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+
+.dangerButton {
+  border: 1px solid #5a2222;
+  background: #241111;
+  color: #ff9d9d;
+  padding: 9px 12px;
+  border-radius: 9px;
 }
 
 /* =========================
-   MODAL / TOAST
-========================= */
+   TOAST
+   ========================= */
 
-.modal{
-  position:fixed;
-  inset:0;
-  background:#0009;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  z-index:20;
-}
-
-.modal-card{
-  width:min(450px,100%);
-  max-height:85vh;
-  overflow:auto;
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:18px;
-}
-
-.modal-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-
-.modal-head h3{
-  margin:0;
-}
-
-.toast{
-  position:fixed;
-  z-index:100;
-  left:50%;
-  bottom:22px;
-  transform:translateX(-50%);
-  background:#242a35;
-  color:white;
-  padding:10px 14px;
-  border-radius:10px;
-  font-size:13px;
-  box-shadow:0 8px 30px #0008;
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: 25px;
+  transform: translateX(-50%);
+  background: #eee;
+  color: #000;
+  padding: 11px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  z-index: 100;
+  display: none;
 }
 
 /* =========================
    MOBILE
-========================= */
+   ========================= */
 
-@media(max-width:720px){
+@media (max-width: 700px) {
 
-  .sidebar{
-    width:100%;
-    min-width:0;
-    border-right:0;
+  .sidebar {
+    width: 100%;
   }
 
-  .chat{
-    display:none;
+  .chatArea {
+    display: none;
   }
 
-  .mobile-chat .sidebar{
-    display:none;
+  #appScreen.chatOpen .sidebar {
+    display: none;
   }
 
-  .mobile-chat .chat{
-    display:flex;
+  #appScreen.chatOpen .chatArea {
+    display: flex;
   }
 
-  .back-btn{
-    display:block;
+  .mobileBack {
+    display: block;
   }
 
-  .message{
-    max-width:85%;
+  .messageBubble {
+    max-width: 85%;
+  }
+
+  .authBox {
+    padding: 23px;
   }
 }
 </style>
@@ -609,243 +508,546 @@ hr{
 
 <body>
 
-<div id="app"></div>
-<div id="toast" class="toast hidden"></div>
+<!-- =========================
+     AUTH SCREEN
+     ========================= -->
+
+<div id="authScreen">
+
+  <div class="authBox">
+
+    <div class="logo">ChatApp</div>
+    <div class="subtitle" id="authSubtitle">
+      Sign in to continue.
+    </div>
+
+    <form id="loginForm">
+
+      <div class="field">
+        <label>Username or email</label>
+        <input
+          id="loginInput"
+          autocomplete="username"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <input
+          id="loginPassword"
+          type="password"
+          autocomplete="current-password"
+          required
+        >
+      </div>
+
+      <button class="primary" type="submit">
+        Log in
+      </button>
+
+    </form>
+
+    <form id="registerForm" class="hidden">
+
+      <div class="field">
+        <label>Username</label>
+        <input
+          id="registerUsername"
+          autocomplete="username"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label>Email</label>
+        <input
+          id="registerEmail"
+          type="email"
+          autocomplete="email"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label>Display name</label>
+        <input
+          id="registerDisplayName"
+          autocomplete="name"
+        >
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <input
+          id="registerPassword"
+          type="password"
+          autocomplete="new-password"
+          required
+          minlength="6"
+        >
+      </div>
+
+      <button class="primary" type="submit">
+        Create account
+      </button>
+
+    </form>
+
+    <div class="authSwitch">
+      <span id="authSwitchText">Don't have an account?</span>
+      <button id="authSwitchButton" type="button">
+        Register
+      </button>
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     APP SCREEN
+     ========================= -->
+
+<div id="appScreen" class="hidden">
+
+  <aside class="sidebar">
+
+    <div class="sidebarHeader">
+
+      <div class="sidebarTop">
+        <div class="sidebarTitle">Chats</div>
+
+        <button
+          class="iconButton"
+          id="newChatButton"
+          title="New chat"
+        >
+          +
+        </button>
+      </div>
+
+      <div class="searchBox">
+        <input
+          id="userSearch"
+          placeholder="Search users..."
+        >
+      </div>
+
+    </div>
+
+    <div
+      class="conversationList"
+      id="conversationList"
+    ></div>
+
+    <div class="sidebarBottom">
+
+      <button
+        class="profileButton"
+        id="profileButton"
+      >
+        Profile
+      </button>
+
+    </div>
+
+  </aside>
+
+
+  <main class="chatArea">
+
+    <header class="chatHeader">
+
+      <button
+        class="iconButton mobileBack"
+        id="backButton"
+      >
+        ←
+      </button>
+
+      <div>
+        <div
+          class="chatTitle"
+          id="chatTitle"
+        >
+          Select a conversation
+        </div>
+
+        <div
+          class="chatStatus"
+          id="chatStatus"
+        >
+          —
+        </div>
+      </div>
+
+    </header>
+
+    <section
+      class="messages"
+      id="messages"
+    >
+
+      <div class="emptyChat">
+        Select a conversation to start chatting.
+      </div>
+
+    </section>
+
+    <form
+      class="composer"
+      id="messageForm"
+    >
+
+      <textarea
+        id="messageInput"
+        placeholder="Write a message..."
+        disabled
+      ></textarea>
+
+      <button
+        class="sendButton"
+        type="submit"
+        disabled
+        id="sendButton"
+      >
+        Send
+      </button>
+
+    </form>
+
+  </main>
+
+</div>
+
+
+<!-- =========================
+     MODAL
+     ========================= -->
+
+<div
+  class="modal hidden"
+  id="modal"
+>
+
+  <div class="modalBox">
+
+    <div class="modalHeader">
+
+      <div
+        class="modalTitle"
+        id="modalTitle"
+      >
+        Modal
+      </div>
+
+      <button
+        class="iconButton"
+        id="modalClose"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <div id="modalContent"></div>
+
+  </div>
+
+</div>
+
+
+<div id="toast"></div>
+
 
 <script>
 
 /* =========================================================
    CONFIG
-========================================================= */
+   ========================================================= */
 
-/*
-  PUT YOUR DEPLOYED BACKEND URL HERE.
+const API_BASE =
+  "https://chatapp-backend-ol8d.onrender.com";
 
-  Example:
-  const API_BASE = "https://chatapp-backend.onrender.com";
 
-  Do NOT put your database password, JWT_SECRET,
-  or AI API key here.
-*/
-
-const API_BASE = "https://chatapp-backend-ol8d.onrender.com";
 /* =========================================================
    STATE
-========================================================= */
+   ========================================================= */
 
 const state = {
-  accessToken: localStorage.getItem("chat_access") || "",
-  refreshToken: localStorage.getItem("chat_refresh") || "",
-
-  user:null,
-
-  conversations:[],
-  unread:{},
-
-  friends:[],
-  requests:{
-    incoming:[],
-    outgoing:[]
-  },
-
-  current:null,
-  messages:[],
-
-  nextBefore:null,
-  oldestLoaded:false,
-  lastMessageId:null,
-
-  replyTo:null,
-
-  currentView:"chats",
-
-  pollTimer:null,
-  typingTimer:null
+  accessToken: localStorage.getItem("chat_access_token") || "",
+  refreshToken: localStorage.getItem("chat_refresh_token") || "",
+  user: null,
+  conversations: [],
+  currentConversation: null,
+  messages: [],
+  polling: null,
+  lastMessageId: null,
+  authMode: "login"
 };
 
 
 /* =========================================================
-   HELPERS
-========================================================= */
+   DOM
+   ========================================================= */
 
 const $ = id => document.getElementById(id);
 
-function escapeHTML(value){
-  return String(value ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-}
+const authScreen = $("authScreen");
+const appScreen = $("appScreen");
 
-function avatarLetter(name){
-  return escapeHTML(
-    (String(name || "?").trim()[0] || "?").toUpperCase()
-  );
-}
+const loginForm = $("loginForm");
+const registerForm = $("registerForm");
 
-function conversationName(conversation){
+const authSubtitle = $("authSubtitle");
+const authSwitchText = $("authSwitchText");
+const authSwitchButton = $("authSwitchButton");
 
-  if(conversation.type === "group"){
-    return conversation.title || "Group";
-  }
+const conversationList = $("conversationList");
+const messages = $("messages");
 
-  return (
-    conversation.other_display_name ||
-    conversation.other_username ||
-    "Unknown"
-  );
-}
+const chatTitle = $("chatTitle");
+const chatStatus = $("chatStatus");
 
-function formatTime(date){
-  return new Date(date).toLocaleTimeString([],{
-    hour:"numeric",
-    minute:"2-digit"
-  });
-}
+const messageForm = $("messageForm");
+const messageInput = $("messageInput");
+const sendButton = $("sendButton");
 
-function showToast(message){
+const modal = $("modal");
+const modalTitle = $("modalTitle");
+const modalContent = $("modalContent");
 
-  const toast = $("toast");
+const toast = $("toast");
+
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+
+function showToast(message) {
 
   toast.textContent = message;
-  toast.classList.remove("hidden");
+  toast.style.display = "block";
 
   clearTimeout(showToast.timer);
 
-  showToast.timer = setTimeout(()=>{
-    toast.classList.add("hidden");
-  },2500);
+  showToast.timer = setTimeout(() => {
+    toast.style.display = "none";
+  }, 3000);
 }
 
-function saveTokens(){
+
+function saveSession(data) {
+
+  state.accessToken = data.access_token;
+  state.refreshToken = data.refresh_token;
 
   localStorage.setItem(
-    "chat_access",
+    "chat_access_token",
     state.accessToken
   );
 
   localStorage.setItem(
-    "chat_refresh",
+    "chat_refresh_token",
     state.refreshToken
   );
 }
 
-function clearSession(){
 
-  state.accessToken="";
-  state.refreshToken="";
-  state.user=null;
+function clearSession() {
 
-  localStorage.removeItem("chat_access");
-  localStorage.removeItem("chat_refresh");
+  state.accessToken = "";
+  state.refreshToken = "";
+  state.user = null;
 
-  clearInterval(state.pollTimer);
+  localStorage.removeItem("chat_access_token");
+  localStorage.removeItem("chat_refresh_token");
+}
+
+
+function showAuth() {
+
+  authScreen.classList.remove("hidden");
+  appScreen.classList.add("hidden");
+}
+
+
+function showApp() {
+
+  authScreen.classList.add("hidden");
+  appScreen.classList.remove("hidden");
+}
+
+
+function escapeHTML(value) {
+
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+
+function formatTime(value) {
+
+  if (!value) return "";
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return "";
+  }
+
+  return date.toLocaleTimeString([], {
+    hour: "numeric",
+    minute: "2-digit"
+  });
+}
+
+
+function getConversationName(conversation) {
+
+  if (!conversation) {
+    return "Conversation";
+  }
+
+  if (conversation.title) {
+    return conversation.title;
+  }
+
+  if (conversation.name) {
+    return conversation.name;
+  }
+
+  if (conversation.type === "direct") {
+
+    if (conversation.other_user) {
+      return (
+        conversation.other_user.display_name ||
+        conversation.other_user.username ||
+        "User"
+      );
+    }
+
+    if (conversation.user) {
+      return (
+        conversation.user.display_name ||
+        conversation.user.username ||
+        "User"
+      );
+    }
+  }
+
+  return "Conversation";
 }
 
 
 /* =========================================================
    API
-========================================================= */
+   ========================================================= */
 
-async function api(path,options={},retry=true){
-
-  if(API_BASE.includes("YOUR-BACKEND-URL")){
-    throw new Error(
-      "Set API_BASE to your deployed backend URL first."
-    );
-  }
+async function api(path, options = {}, retry = true) {
 
   const headers = {
-    "Content-Type":"application/json",
+    "Content-Type": "application/json",
     ...(options.headers || {})
   };
 
-  if(state.accessToken){
+  if (state.accessToken) {
     headers.Authorization =
       "Bearer " + state.accessToken;
   }
 
   let response;
 
-  try{
+  try {
 
     response = await fetch(
-      API_BASE.replace(/\/$/,"") + path,
+      API_BASE.replace(/\/$/, "") + path,
       {
         ...options,
         headers
       }
     );
 
-  }catch(error){
+  } catch (error) {
 
     throw new Error(
-      "Cannot reach the backend. Check the backend URL and CORS."
+      "Could not connect to the server."
     );
   }
 
-  /*
-    Access token expired.
-    Automatically rotate refresh token.
-  */
 
-  if(
+  if (
     response.status === 401 &&
     retry &&
-    state.refreshToken &&
-    !path.startsWith("/api/auth/")
-  ){
+    state.refreshToken
+  ) {
 
-    try{
+    try {
 
       const refreshResponse = await fetch(
-        API_BASE.replace(/\/$/,"") +
-        "/api/auth/refresh",
+        API_BASE + "/api/auth/refresh",
         {
-          method:"POST",
-          headers:{
-            "Content-Type":"application/json"
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
           },
-          body:JSON.stringify({
-            refresh_token:state.refreshToken
+          body: JSON.stringify({
+            refresh_token: state.refreshToken
           })
         }
       );
 
-      if(refreshResponse.ok){
+      if (refreshResponse.ok) {
 
-        const data =
+        const refreshData =
           await refreshResponse.json();
 
-        state.accessToken=data.access_token;
-        state.refreshToken=data.refresh_token;
+        saveSession(refreshData);
 
-        saveTokens();
-
-        return api(path,options,false);
+        return api(
+          path,
+          options,
+          false
+        );
       }
 
-    }catch{}
+    } catch (_) {}
 
     clearSession();
-    renderAuth();
+    showAuth();
 
-    throw new Error("Your session expired.");
+    throw new Error("Session expired.");
   }
 
-  let data={};
 
-  try{
-    data=await response.json();
-  }catch{}
+  let data = null;
 
-  if(!response.ok){
+  const text = await response.text();
+
+  if (text) {
+
+    try {
+      data = JSON.parse(text);
+    } catch (_) {
+      data = {
+        error: text
+      };
+    }
+  }
+
+
+  if (!response.ok) {
 
     throw new Error(
-      data.error ||
-      "Request failed (" + response.status + ")"
+      data?.error ||
+      data?.message ||
+      "Request failed."
     );
   }
 
@@ -855,1075 +1057,891 @@ async function api(path,options={},retry=true){
 
 /* =========================================================
    AUTH
-========================================================= */
+   ========================================================= */
 
-function renderAuth(){
+function setAuthMode(mode) {
 
-  $("app").innerHTML=`
+  state.authMode = mode;
 
-    <div class="auth-screen">
+  if (mode === "login") {
 
-      <div class="auth-card">
+    loginForm.classList.remove("hidden");
+    registerForm.classList.add("hidden");
 
-        <div class="logo">
-          Chatapp
-        </div>
+    authSubtitle.textContent =
+      "Sign in to continue.";
 
-        <div class="subtitle">
-          Simple conversations. Your people.
-        </div>
+    authSwitchText.textContent =
+      "Don't have an account?";
 
-        <div class="auth-tabs">
+    authSwitchButton.textContent =
+      "Register";
 
-          <button id="loginTab" class="active">
-            Log in
-          </button>
+  } else {
 
-          <button id="registerTab">
-            Create account
-          </button>
+    loginForm.classList.add("hidden");
+    registerForm.classList.remove("hidden");
 
-        </div>
+    authSubtitle.textContent =
+      "Create your account.";
 
-        <form id="authForm">
+    authSwitchText.textContent =
+      "Already have an account?";
 
-          <div id="displayField"
-               class="field hidden">
-
-            <label>Display name</label>
-
-            <input
-              id="displayName"
-              maxlength="50"
-            >
-
-          </div>
-
-          <div class="field">
-
-            <label id="loginLabel">
-              Username or email
-            </label>
-
-            <input
-              id="login"
-              autocomplete="username"
-              required
-            >
-
-          </div>
-
-          <div id="emailField"
-               class="field hidden">
-
-            <label>Email</label>
-
-            <input
-              id="email"
-              type="email"
-              autocomplete="email"
-            >
-
-          </div>
-
-          <div class="field">
-
-            <label>Password</label>
-
-            <input
-              id="password"
-              type="password"
-              minlength="8"
-              autocomplete="current-password"
-              required
-            >
-
-          </div>
-
-          <div id="authError"
-               class="error"></div>
-
-          <button
-            class="primary"
-            id="authSubmit"
-            type="submit"
-          >
-            Log in
-          </button>
-
-        </form>
-
-      </div>
-
-    </div>
-  `;
-
-  let registerMode=false;
-
-  function updateAuthMode(){
-
-    $("loginTab")
-      .classList.toggle(
-        "active",
-        !registerMode
-      );
-
-    $("registerTab")
-      .classList.toggle(
-        "active",
-        registerMode
-      );
-
-    $("displayField")
-      .classList.toggle(
-        "hidden",
-        !registerMode
-      );
-
-    $("emailField")
-      .classList.toggle(
-        "hidden",
-        !registerMode
-      );
-
-    $("loginLabel").textContent =
-      registerMode
-      ? "Username"
-      : "Username or email";
-
-    $("authSubmit").textContent =
-      registerMode
-      ? "Create account"
-      : "Log in";
-
-    $("authError").textContent="";
+    authSwitchButton.textContent =
+      "Log in";
   }
+}
 
-  $("loginTab").onclick=()=>{
-    registerMode=false;
-    updateAuthMode();
-  };
 
-  $("registerTab").onclick=()=>{
-    registerMode=true;
-    updateAuthMode();
-  };
+authSwitchButton.addEventListener(
+  "click",
+  () => {
 
-  $("authForm").onsubmit=async event=>{
+    setAuthMode(
+      state.authMode === "login"
+        ? "register"
+        : "login"
+    );
+
+  }
+);
+
+
+loginForm.addEventListener(
+  "submit",
+  async event => {
 
     event.preventDefault();
 
-    $("authError").textContent="";
+    const login =
+      $("loginInput").value.trim();
 
-    try{
+    const password =
+      $("loginPassword").value;
 
-      let body;
+    if (!login || !password) {
+      showToast("Fill in both fields.");
+      return;
+    }
 
-      if(registerMode){
+    try {
 
-        body={
-          username:$("login").value.trim(),
-          email:$("email").value.trim(),
-          password:$("password").value,
-          display_name:
-            $("displayName").value.trim() ||
-            undefined
-        };
-
-      }else{
-
-        body={
-          login:$("login").value.trim(),
-          password:$("password").value
-        };
-      }
-
-      const result=await api(
-        registerMode
-          ? "/api/auth/register"
-          : "/api/auth/login",
+      const data = await api(
+        "/api/auth/login",
         {
-          method:"POST",
-          body:JSON.stringify(body)
+          method: "POST",
+          body: JSON.stringify({
+            login,
+            password
+          })
         },
         false
       );
 
-      state.accessToken=result.access_token;
-      state.refreshToken=result.refresh_token;
-      state.user=result.user;
+      saveSession(data);
 
-      saveTokens();
+      state.user = data.user;
 
-      await boot();
+      showApp();
 
-    }catch(error){
+      await loadConversations();
 
-      $("authError").textContent=
-        error.message;
+      startPolling();
+
+      showToast("Logged in.");
+
+    } catch (error) {
+
+      showToast(error.message);
     }
-  };
+
+  }
+);
+
+
+registerForm.addEventListener(
+  "submit",
+  async event => {
+
+    event.preventDefault();
+
+    const username =
+      $("registerUsername").value.trim();
+
+    const email =
+      $("registerEmail").value.trim();
+
+    const display_name =
+      $("registerDisplayName").value.trim();
+
+    const password =
+      $("registerPassword").value;
+
+    if (!username || !email || !password) {
+      showToast("Fill in the required fields.");
+      return;
+    }
+
+    try {
+
+      const data = await api(
+        "/api/auth/register",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            username,
+            email,
+            password,
+            display_name
+          })
+        },
+        false
+      );
+
+      saveSession(data);
+
+      state.user = data.user;
+
+      showApp();
+
+      await loadConversations();
+
+      startPolling();
+
+      showToast("Account created.");
+
+    } catch (error) {
+
+      showToast(error.message);
+    }
+
+  }
+);
+
+
+/* =========================================================
+   CURRENT USER
+   ========================================================= */
+
+async function loadCurrentUser() {
+
+  const data = await api(
+    "/api/auth/me"
+  );
+
+  state.user = data.user;
 }
 
 
 /* =========================================================
-   LOAD DATA
-========================================================= */
+   CONVERSATIONS
+   ========================================================= */
 
-async function loadConversations(){
+async function loadConversations() {
 
-  const data=
+  const data =
     await api("/api/conversations");
 
-  state.conversations=
-    data.conversations || [];
+  state.conversations =
+    Array.isArray(data?.conversations)
+      ? data.conversations
+      : [];
+
+  renderConversations();
 }
 
-async function loadFriends(){
 
-  const data=
-    await api("/api/friends");
+function renderConversations() {
 
-  state.friends=
-    data.friends || [];
-}
+  if (!state.conversations.length) {
 
-async function loadRequests(){
+    conversationList.innerHTML = `
+      <div style="
+        padding:25px;
+        color:#666;
+        text-align:center;
+      ">
+        No conversations yet.
+      </div>
+    `;
 
-  state.requests=
-    await api("/api/friends/requests");
-}
+    return;
+  }
 
-async function loadUnread(){
 
-  const data=
-    await api("/api/unread");
+  conversationList.innerHTML =
+    state.conversations
+      .map(conversation => {
 
-  state.unread={};
+        const id = conversation.id;
 
-  (data.conversations || [])
-    .forEach(conversation=>{
-      state.unread[
-        conversation.conversation_id
-      ]=conversation.unread;
+        const active =
+          state.currentConversation?.id === id;
+
+        const name =
+          getConversationName(conversation);
+
+        const preview =
+          conversation.last_message?.body ||
+          conversation.last_message ||
+          "No messages yet.";
+
+        return `
+          <div
+            class="conversation ${active ? "active" : ""}"
+            data-id="${escapeHTML(id)}"
+          >
+
+            <div class="conversationName">
+              ${escapeHTML(name)}
+            </div>
+
+            <div class="conversationPreview">
+              ${escapeHTML(preview)}
+            </div>
+
+          </div>
+        `;
+
+      })
+      .join("");
+
+
+  document
+    .querySelectorAll(".conversation")
+    .forEach(element => {
+
+      element.addEventListener(
+        "click",
+        () => {
+
+          const id =
+            element.dataset.id;
+
+          openConversation(id);
+        }
+      );
+
     });
 }
 
 
 /* =========================================================
-   APP
-========================================================= */
+   OPEN CONVERSATION
+   ========================================================= */
 
-async function boot(){
+async function openConversation(id) {
 
-  try{
+  const conversation =
+    state.conversations.find(
+      item => String(item.id) === String(id)
+    );
 
-    if(!state.accessToken){
+  if (!conversation) return;
 
-      renderAuth();
+  state.currentConversation =
+    conversation;
 
-      return;
-    }
+  state.lastMessageId = null;
 
-    const me=
-      await api("/api/auth/me");
+  appScreen.classList.add("chatOpen");
 
-    state.user=me.user;
+  chatTitle.textContent =
+    getConversationName(conversation);
 
-    await Promise.all([
-      loadConversations(),
-      loadFriends(),
-      loadUnread()
-    ]);
+  chatStatus.textContent =
+    conversation.type === "group"
+      ? "Group"
+      : "Direct message";
 
-    renderApp();
+  messageInput.disabled = false;
+  sendButton.disabled = false;
 
-    startPolling();
+  renderConversations();
 
-  }catch(error){
+  await loadMessages();
 
-    clearSession();
+  try {
 
-    renderAuth();
+    await api(
+      `/api/conversations/${id}/read`,
+      {
+        method: "POST"
+      }
+    );
+
+  } catch (_) {}
+}
+
+
+/* =========================================================
+   MESSAGES
+   ========================================================= */
+
+async function loadMessages() {
+
+  if (!state.currentConversation) {
+    return;
+  }
+
+  const id =
+    state.currentConversation.id;
+
+  try {
+
+    const data =
+      await api(
+        `/api/conversations/${id}/messages?limit=100`
+      );
+
+    state.messages =
+      Array.isArray(data?.messages)
+        ? data.messages
+        : [];
+
+    renderMessages();
+
+  } catch (error) {
 
     showToast(error.message);
   }
 }
 
 
-/* =========================================================
-   APP UI
-========================================================= */
+function getMessageUserId(message) {
 
-function renderApp(){
-
-  $("app").innerHTML=`
-
-    <div class="app" id="appShell">
-
-      <aside class="sidebar">
-
-        <div class="sidebar-top">
-
-          <h2>Messages</h2>
-
-          <button
-            class="icon-btn"
-            id="newConversation"
-            title="New conversation"
-          >
-            ＋
-          </button>
-
-        </div>
-
-        <div class="search">
-
-          <input
-            id="searchUsers"
-            placeholder="Search users..."
-          >
-
-        </div>
-
-        <div class="nav">
-
-          <button
-            data-view="chats"
-            class="active"
-          >
-            Chats
-          </button>
-
-          <button
-            data-view="friends"
-          >
-            Friends
-          </button>
-
-          <button
-            data-view="profile"
-          >
-            Profile
-          </button>
-
-        </div>
-
-        <div
-          class="list"
-          id="sideContent"
-        ></div>
-
-        <div class="profile-bar">
-
-          <div class="avatar">
-            ${avatarLetter(
-              state.user.display_name ||
-              state.user.username
-            )}
-          </div>
-
-          <div class="profile-info">
-
-            <b>
-              ${escapeHTML(
-                state.user.display_name ||
-                state.user.username
-              )}
-            </b>
-
-            <span>
-              @${escapeHTML(
-                state.user.username
-              )}
-            </span>
-
-          </div>
-
-          <button
-            class="icon-btn"
-            id="logout"
-            title="Log out"
-          >
-            ↪
-          </button>
-
-        </div>
-
-      </aside>
-
-
-      <main
-        class="chat"
-        id="chatPane"
-      >
-
-        <div class="empty">
-          Select a conversation
-        </div>
-
-      </main>
-
-    </div>
-  `;
-
-  document
-    .querySelectorAll(".nav button")
-    .forEach(button=>{
-
-      button.onclick=()=>{
-
-        state.currentView=
-          button.dataset.view;
-
-        document
-          .querySelectorAll(".nav button")
-          .forEach(x=>
-            x.classList.remove("active")
-          );
-
-        button.classList.add("active");
-
-        renderSidebar();
-      };
-    });
-
-  $("logout").onclick=logout;
-
-  $("newConversation").onclick=
-    showNewConversation;
-
-  $("searchUsers").oninput=event=>{
-
-    const query=
-      event.target.value.trim();
-
-    if(query){
-
-      searchUsers(query);
-
-    }else{
-
-      renderSidebar();
-    }
-  };
-
-  renderSidebar();
+  return (
+    message.user_id ||
+    message.sender_id ||
+    message.author_id ||
+    message.user?.id ||
+    null
+  );
 }
 
 
-function renderSidebar(){
+function isMine(message) {
 
-  const search=
-    $("searchUsers")?.value.trim();
-
-  if(search){
-
-    searchUsers(search);
-
-    return;
-  }
-
-  const content=
-    $("sideContent");
-
-  if(!content)return;
-
-  if(state.currentView==="chats"){
-
-    renderChats(content);
-
-  }else if(state.currentView==="friends"){
-
-    renderFriends(content);
-
-  }else{
-
-    renderProfile(content);
-  }
+  return String(
+    getMessageUserId(message)
+  ) === String(
+    state.user?.id
+  );
 }
 
 
-/* =========================================================
-   CHAT LIST
-========================================================= */
+function renderMessages() {
 
-function renderChats(container){
+  if (!state.messages.length) {
 
-  if(!state.conversations.length){
-
-    container.innerHTML=`
-      <div class="empty" style="padding:40px 15px">
-        No conversations yet.<br>
-        Tap ＋ to start one.
+    messages.innerHTML = `
+      <div class="emptyChat">
+        No messages yet.<br>
+        Send the first message.
       </div>
     `;
 
     return;
   }
 
-  container.innerHTML=
-    state.conversations
-      .map(conversation=>{
 
-        const name=
-          conversationName(conversation);
+  messages.innerHTML =
+    state.messages
+      .map(message => {
 
-        const unread=
-          state.unread[
-            conversation.id
-          ] || 0;
+        const mine =
+          isMine(message);
+
+        const body =
+          message.body || "";
+
+        const author =
+          message.sender?.display_name ||
+          message.sender?.username ||
+          message.user?.display_name ||
+          message.user?.username ||
+          (mine ? "You" : "User");
+
+        const time =
+          formatTime(
+            message.created_at ||
+            message.createdAt
+          );
+
+        const id =
+          message.id;
 
         return `
-
           <div
-            class="row ${
-              state.current?.id ===
-              conversation.id
-              ? "selected"
-              : ""
-            }"
-            data-id="${conversation.id}"
+            class="messageRow ${mine ? "mine" : ""}"
           >
 
-            <div class="avatar">
-              ${avatarLetter(name)}
-            </div>
+            <div class="messageBubble">
 
-            <div class="row-info">
+              ${
+                !mine
+                  ? `
+                    <div class="messageAuthor">
+                      ${escapeHTML(author)}
+                    </div>
+                  `
+                  : ""
+              }
 
-              <div class="name">
-                ${escapeHTML(name)}
+              <div class="messageBody">
+                ${escapeHTML(body)}
               </div>
 
-              <div class="preview">
-
-                ${
-                  conversation.type==="group"
-                  ? "Group"
-                  : "@"+
-                    escapeHTML(
-                      conversation.other_username ||
-                      ""
-                    )
-                }
-
+              <div class="messageMeta">
+                ${escapeHTML(time)}
               </div>
 
-            </div>
+              ${
+                mine
+                  ? `
+                    <div class="messageActions">
 
-            ${
-              unread
-              ? `
-                <span class="badge">
-                  ${unread > 99 ? "99+" : unread}
-                </span>
-              `
-              : ""
-            }
+                      <button
+                        data-edit="${escapeHTML(id)}"
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        data-delete="${escapeHTML(id)}"
+                      >
+                        Delete
+                      </button>
+
+                    </div>
+                  `
+                  : ""
+              }
+
+            </div>
 
           </div>
         `;
+
       })
       .join("");
 
-  container
-    .querySelectorAll(".row")
-    .forEach(row=>{
 
-      row.onclick=()=>{
-        openConversation(row.dataset.id);
-      };
-    });
-}
+  messages
+    .querySelectorAll("[data-edit]")
+    .forEach(button => {
 
-
-/* =========================================================
-   USER SEARCH
-========================================================= */
-
-let searchRequest=0;
-
-async function searchUsers(query){
-
-  const requestId=++searchRequest;
-
-  const content=$("sideContent");
-
-  if(!content)return;
-
-  if(query.length<2){
-
-    content.innerHTML=`
-      <div class="empty" style="padding:30px">
-        Type at least 2 characters.
-      </div>
-    `;
-
-    return;
-  }
-
-  try{
-
-    const data=
-      await api(
-        "/api/users/search?q="+
-        encodeURIComponent(query)
+      button.addEventListener(
+        "click",
+        () => editMessage(
+          button.dataset.edit
+        )
       );
 
-    if(requestId!==searchRequest)return;
+    });
 
-    content.innerHTML=
-      (data.users || [])
-      .map(user=>`
 
-        <div class="row">
+  messages
+    .querySelectorAll("[data-delete]")
+    .forEach(button => {
 
-          <div class="avatar">
-            ${avatarLetter(
-              user.display_name ||
-              user.username
-            )}
-          </div>
+      button.addEventListener(
+        "click",
+        () => deleteMessage(
+          button.dataset.delete
+        )
+      );
 
-          <div class="row-info">
+    });
 
-            <div class="name">
-              ${escapeHTML(
-                user.display_name ||
-                user.username
-              )}
-            </div>
 
-            <div class="preview">
-              @${escapeHTML(user.username)}
-            </div>
-
-          </div>
-
-          <button
-            class="small-btn start-chat"
-            data-id="${user.id}"
-          >
-            Chat
-          </button>
-
-        </div>
-      `)
-      .join("") ||
-
-      `
-        <div class="empty" style="padding:30px">
-          No users found.
-        </div>
-      `;
-
-    content
-      .querySelectorAll(".start-chat")
-      .forEach(button=>{
-
-        button.onclick=()=>{
-          startDirect(button.dataset.id);
-        };
-      });
-
-  }catch(error){
-
-    content.innerHTML=`
-      <div class="error" style="padding:20px">
-        ${escapeHTML(error.message)}
-      </div>
-    `;
-  }
+  messages.scrollTop =
+    messages.scrollHeight;
 }
 
 
 /* =========================================================
-   FRIENDS
-========================================================= */
+   SEND MESSAGE
+   ========================================================= */
 
-function renderFriends(container){
+messageForm.addEventListener(
+  "submit",
+  async event => {
 
-  container.innerHTML=`
+    event.preventDefault();
 
-    <div class="panel">
+    if (!state.currentConversation) {
+      return;
+    }
 
-      <h3>Friends</h3>
+    const body =
+      messageInput.value.trim();
 
-      <div class="friend-add">
+    if (!body) return;
 
-        <input
-          id="friendUsername"
-          placeholder="@username"
-        >
+    const conversationId =
+      state.currentConversation.id;
 
-        <button
-          class="small-btn"
-          id="addFriend"
-        >
-          Add
-        </button>
+    sendButton.disabled = true;
 
-      </div>
-
-      <div
-        id="friendError"
-        class="error"
-      ></div>
-
-      <div id="friendList"></div>
-
-      <hr>
-
-      <button
-        class="small-btn"
-        id="friendRequests"
-        style="width:100%"
-      >
-        Friend requests
-      </button>
-
-    </div>
-  `;
-
-  const list=$("friendList");
-
-  if(!state.friends.length){
-
-    list.innerHTML=`
-      <div class="empty" style="padding:25px">
-        No friends yet.
-      </div>
-    `;
-
-  }else{
-
-    list.innerHTML=
-      state.friends
-        .map(friend=>`
-
-          <div class="row">
-
-            <div class="avatar">
-              ${avatarLetter(
-                friend.display_name ||
-                friend.username
-              )}
-            </div>
-
-            <div class="row-info">
-
-              <div class="name">
-                ${escapeHTML(
-                  friend.display_name ||
-                  friend.username
-                )}
-              </div>
-
-              <div class="preview">
-                @${escapeHTML(
-                  friend.username
-                )}
-              </div>
-
-            </div>
-
-            <button
-              class="small-btn chat-friend"
-              data-id="${friend.id}"
-            >
-              Chat
-            </button>
-
-          </div>
-
-        `)
-        .join("");
-  }
-
-  $("addFriend").onclick=async()=>{
-
-    $("friendError").textContent="";
-
-    try{
-
-      const username=
-        $("friendUsername")
-        .value
-        .trim()
-        .replace(/^@/,"");
+    try {
 
       await api(
-        "/api/friends/request",
+        `/api/conversations/${conversationId}/messages`,
         {
-          method:"POST",
-          body:JSON.stringify({
-            username
+          method: "POST",
+          body: JSON.stringify({
+            body
           })
         }
       );
 
-      $("friendUsername").value="";
+      messageInput.value = "";
 
-      showToast("Friend request sent");
+      await loadMessages();
 
-      await loadFriends();
+      await loadConversations();
 
-      renderFriends(container);
+    } catch (error) {
 
-    }catch(error){
+      showToast(error.message);
 
-      $("friendError").textContent=
-        error.message;
+    } finally {
+
+      sendButton.disabled = false;
+
+      messageInput.focus();
     }
-  };
 
-  container
-    .querySelectorAll(".chat-friend")
-    .forEach(button=>{
+  }
+);
 
-      button.onclick=()=>{
-        startDirect(button.dataset.id);
-      };
-    });
 
-  $("friendRequests").onclick=
-    showRequests;
+/* =========================================================
+   EDIT MESSAGE
+   ========================================================= */
+
+async function editMessage(id) {
+
+  const message =
+    state.messages.find(
+      item => String(item.id) === String(id)
+    );
+
+  if (!message) return;
+
+  const newBody =
+    prompt(
+      "Edit message:",
+      message.body || ""
+    );
+
+  if (
+    newBody === null ||
+    !newBody.trim()
+  ) {
+    return;
+  }
+
+  try {
+
+    await api(
+      `/api/messages/${id}`,
+      {
+        method: "PUT",
+        body: JSON.stringify({
+          body: newBody.trim()
+        })
+      }
+    );
+
+    await loadMessages();
+
+  } catch (error) {
+
+    showToast(error.message);
+  }
 }
 
 
 /* =========================================================
-   FRIEND REQUESTS
-========================================================= */
+   DELETE MESSAGE
+   ========================================================= */
 
-async function showRequests(){
+async function deleteMessage(id) {
 
-  try{
+  if (
+    !confirm(
+      "Delete this message?"
+    )
+  ) {
+    return;
+  }
 
-    await loadRequests();
+  try {
 
-  }catch(error){
+    await api(
+      `/api/messages/${id}`,
+      {
+        method: "DELETE"
+      }
+    );
+
+    await loadMessages();
+
+  } catch (error) {
 
     showToast(error.message);
+  }
+}
+
+
+/* =========================================================
+   NEW CHAT
+   ========================================================= */
+
+$("newChatButton").addEventListener(
+  "click",
+  () => {
+
+    openNewChatModal();
+
+  }
+);
+
+
+function openNewChatModal() {
+
+  modalTitle.textContent =
+    "New conversation";
+
+  modalContent.innerHTML = `
+
+    <div class="field">
+
+      <label>
+        Search username
+      </label>
+
+      <input
+        id="newChatSearch"
+        placeholder="Enter username..."
+      >
+
+    </div>
+
+    <div id="searchResults"></div>
+
+  `;
+
+  openModal();
+
+  $("newChatSearch")
+    .addEventListener(
+      "input",
+      searchUsers
+    );
+
+}
+
+
+let searchTimer = null;
+
+
+function searchUsers() {
+
+  clearTimeout(searchTimer);
+
+  const query =
+    $("newChatSearch").value.trim();
+
+  const results =
+    $("searchResults");
+
+  if (!query) {
+
+    results.innerHTML = "";
 
     return;
   }
 
-  const modal=
-    document.createElement("div");
+  searchTimer =
+    setTimeout(
+      async () => {
 
-  modal.className="modal";
+        try {
 
-  modal.innerHTML=`
+          const data =
+            await api(
+              `/api/users/search?q=${encodeURIComponent(query)}`
+            );
 
-    <div class="modal-card">
+          const users =
+            Array.isArray(data?.users)
+              ? data.users
+              : [];
 
-      <div class="modal-head">
+          if (!users.length) {
 
-        <h3>Friend requests</h3>
+            results.innerHTML = `
+              <div style="color:#777;padding:15px 0">
+                No users found.
+              </div>
+            `;
 
-        <button
-          class="icon-btn close-modal"
-        >
-          ×
-        </button>
+            return;
+          }
 
-      </div>
+          results.innerHTML =
+            users
+              .map(user => `
 
-      <div id="requestsContent"></div>
+                <div class="result">
 
-    </div>
-  `;
+                  <div>
 
-  document.body.appendChild(modal);
+                    <div class="resultName">
+                      ${escapeHTML(
+                        user.display_name ||
+                        user.username
+                      )}
+                    </div>
 
-  modal
-    .querySelector(".close-modal")
-    .onclick=()=>{
-      modal.remove();
-    };
+                    <div class="resultUsername">
+                      @${escapeHTML(
+                        user.username
+                      )}
+                    </div>
 
-  const content=
-    modal.querySelector("#requestsContent");
+                  </div>
 
-  const incoming=
-    state.requests.incoming || [];
+                  <button
+                    class="smallButton"
+                    data-user-id="${escapeHTML(user.id)}"
+                  >
+                    Chat
+                  </button>
 
-  const outgoing=
-    state.requests.outgoing || [];
+                </div>
 
-  let html="";
+              `)
+              .join("");
 
-  if(incoming.length){
 
-    html+=`<h4>Incoming</h4>`;
+          results
+            .querySelectorAll(
+              "[data-user-id]"
+            )
+            .forEach(button => {
 
-    incoming.forEach(request=>{
+              button.addEventListener(
+                "click",
+                () =>
+                  createDirectChat(
+                    button.dataset.userId
+                  )
+              );
 
-      html+=`
+            });
 
-        <div class="row">
+        } catch (error) {
 
-          <div class="avatar">
-            ${avatarLetter(
-              request.display_name ||
-              request.username
-            )}
-          </div>
-
-          <div class="row-info">
-
-            <div class="name">
-              ${escapeHTML(
-                request.display_name ||
-                request.username
-              )}
+          results.innerHTML = `
+            <div style="color:#ff7777">
+              ${escapeHTML(error.message)}
             </div>
+          `;
 
-            <div class="preview">
-              @${escapeHTML(
-                request.username
-              )}
-            </div>
-
-          </div>
-
-          <button
-            class="small-btn accept-request"
-            data-id="${request.id}"
-          >
-            Accept
-          </button>
-
-        </div>
-      `;
-    });
-  }
-
-  if(outgoing.length){
-
-    html+=`<h4>Sent</h4>`;
-
-    outgoing.forEach(request=>{
-
-      html+=`
-
-        <div class="row">
-
-          <div class="row-info">
-
-            <div class="name">
-              @${escapeHTML(
-                request.username
-              )}
-            </div>
-
-            <div class="preview">
-              Pending
-            </div>
-
-          </div>
-
-          <button
-            class="small-btn danger cancel-request"
-            data-id="${request.id}"
-          >
-            Cancel
-          </button>
-
-        </div>
-      `;
-    });
-  }
-
-  content.innerHTML=
-    html ||
-    `
-      <div class="empty" style="padding:30px">
-        No pending requests.
-      </div>
-    `;
-
-  content
-    .querySelectorAll(".accept-request")
-    .forEach(button=>{
-
-      button.onclick=async()=>{
-
-        try{
-
-          await api(
-            "/api/friends/requests/"+
-            button.dataset.id+
-            "/accept",
-            {
-              method:"POST"
-            }
-          );
-
-          showToast("Request accepted");
-
-          await loadFriends();
-
-          modal.remove();
-
-          showRequests();
-
-        }catch(error){
-
-          showToast(error.message);
         }
-      };
-    });
 
-  content
-    .querySelectorAll(".cancel-request")
-    .forEach(button=>{
+      },
+      350
+    );
+}
 
-      button.onclick=async()=>{
 
-        try{
+async function createDirectChat(userId) {
 
-          await api(
-            "/api/friends/"+
-            button.dataset.id,
-            {
-              method:"DELETE"
-            }
-          );
+  try {
 
-          modal.remove();
-
-          showRequests();
-
-        }catch(error){
-
-          showToast(error.message);
+    const data =
+      await api(
+        "/api/conversations",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            type: "direct",
+            user_id: userId
+          })
         }
-      };
-    });
+      );
+
+    closeModal();
+
+    await loadConversations();
+
+    const conversation =
+      data?.conversation;
+
+    if (conversation?.id) {
+
+      await openConversation(
+        conversation.id
+      );
+
+      return;
+    }
+
+    if (data?.id) {
+
+      await openConversation(
+        data.id
+      );
+
+    }
+
+  } catch (error) {
+
+    showToast(error.message);
+  }
 }
 
 
 /* =========================================================
    PROFILE
-========================================================= */
+   ========================================================= */
 
-function renderProfile(container){
+$("profileButton").addEventListener(
+  "click",
+  openProfile
+);
 
-  container.innerHTML=`
 
-    <div class="panel">
+async function openProfile() {
 
-      <h3>Your profile</h3>
+  try {
+
+    const data =
+      await api("/api/auth/me");
+
+    state.user =
+      data.user;
+
+    modalTitle.textContent =
+      "Profile";
+
+    modalContent.innerHTML = `
 
       <div class="field">
 
-        <label>Username</label>
+        <label>
+          Username
+        </label>
 
         <input
-          value="@${escapeHTML(
-            state.user.username
+          value="${escapeHTML(
+            state.user.username || ""
           )}"
           disabled
         >
@@ -1932,11 +1950,12 @@ function renderProfile(container){
 
       <div class="field">
 
-        <label>Display name</label>
+        <label>
+          Display name
+        </label>
 
         <input
           id="profileDisplayName"
-          maxlength="50"
           value="${escapeHTML(
             state.user.display_name || ""
           )}"
@@ -1944,764 +1963,74 @@ function renderProfile(container){
 
       </div>
 
-      <div
-        id="profileError"
-        class="error"
-      ></div>
-
       <button
         class="primary"
         id="saveProfile"
       >
-        Save changes
+        Save profile
       </button>
-
-    </div>
-  `;
-
-  $("saveProfile").onclick=async()=>{
-
-    $("profileError").textContent="";
-
-    try{
-
-      const result=
-        await api(
-          "/api/users/me",
-          {
-            method:"PUT",
-            body:JSON.stringify({
-              display_name:
-                $("profileDisplayName")
-                .value
-            })
-          }
-        );
-
-      state.user={
-        ...state.user,
-        ...result.user
-      };
-
-      showToast("Profile updated");
-
-      renderApp();
-
-    }catch(error){
-
-      $("profileError").textContent=
-        error.message;
-    }
-  };
-}
-
-
-/* =========================================================
-   NEW CONVERSATION
-========================================================= */
-
-function showNewConversation(){
-
-  const modal=
-    document.createElement("div");
-
-  modal.className="modal";
-
-  modal.innerHTML=`
-
-    <div class="modal-card">
-
-      <div class="modal-head">
-
-        <h3>New conversation</h3>
-
-        <button
-          class="icon-btn close-modal"
-        >
-          ×
-        </button>
-
-      </div>
-
-      <p class="subtitle">
-        Start a conversation with a friend.
-      </p>
-
-      <div id="newConversationFriends"></div>
-
-    </div>
-  `;
-
-  document.body.appendChild(modal);
-
-  modal
-    .querySelector(".close-modal")
-    .onclick=()=>{
-      modal.remove();
-    };
-
-  const list=
-    modal.querySelector(
-      "#newConversationFriends"
-    );
-
-  if(!state.friends.length){
-
-    list.innerHTML=`
-      <div class="empty" style="padding:30px">
-        Add friends first.
-      </div>
-    `;
-
-    return;
-  }
-
-  list.innerHTML=
-    state.friends
-      .map(friend=>`
-
-        <div class="row">
-
-          <div class="avatar">
-            ${avatarLetter(
-              friend.display_name ||
-              friend.username
-            )}
-          </div>
-
-          <div class="row-info">
-
-            <div class="name">
-              ${escapeHTML(
-                friend.display_name ||
-                friend.username
-              )}
-            </div>
-
-            <div class="preview">
-              @${escapeHTML(
-                friend.username
-              )}
-            </div>
-
-          </div>
-
-          <button
-            class="small-btn choose-friend"
-            data-id="${friend.id}"
-          >
-            Chat
-          </button>
-
-        </div>
-      `)
-      .join("");
-
-  list
-    .querySelectorAll(".choose-friend")
-    .forEach(button=>{
-
-      button.onclick=async()=>{
-
-        modal.remove();
-
-        await startDirect(
-          button.dataset.id
-        );
-      };
-    });
-}
-
-
-/* =========================================================
-   DIRECT CONVERSATION
-========================================================= */
-
-async function startDirect(userId){
-
-  try{
-
-    const result=
-      await api(
-        "/api/conversations",
-        {
-          method:"POST",
-          body:JSON.stringify({
-            type:"direct",
-            user_id:userId
-          })
-        }
-      );
-
-    await loadConversations();
-
-    renderSidebar();
-
-    await openConversation(
-      result.id
-    );
-
-  }catch(error){
-
-    showToast(error.message);
-  }
-}
-
-
-/* =========================================================
-   OPEN CHAT
-========================================================= */
-
-async function openConversation(id){
-
-  try{
-
-    const data=
-      await api(
-        "/api/conversations/"+id
-      );
-
-    state.current={
-      ...data.conversation,
-      members:data.members,
-      my_role:data.my_role
-    };
-
-    state.messages=[];
-    state.nextBefore=null;
-    state.oldestLoaded=false;
-    state.lastMessageId=null;
-    state.replyTo=null;
-
-    await loadMessages();
-
-    renderChat();
-
-    $("appShell")
-      ?.classList.add("mobile-chat");
-
-    await markRead();
-
-  }catch(error){
-
-    showToast(error.message);
-  }
-}
-
-
-/* =========================================================
-   LOAD MESSAGES
-========================================================= */
-
-async function loadMessages(){
-
-  let path=
-    "/api/conversations/"+
-    state.current.id+
-    "/messages?limit=50";
-
-  if(state.nextBefore){
-
-    path+=
-      "&before="+
-      encodeURIComponent(
-        state.nextBefore
-      );
-  }
-
-  const data=
-    await api(path);
-
-  const incoming=
-    (data.messages || []).reverse();
-
-  state.messages=
-    incoming.concat(state.messages);
-
-  state.nextBefore=
-    data.next_before;
-
-  state.oldestLoaded=
-    state.nextBefore === null;
-
-  if(state.messages.length){
-
-    state.lastMessageId=
-      state.messages[
-        state.messages.length-1
-      ].id;
-  }
-}
-
-
-/* =========================================================
-   CHAT UI
-========================================================= */
-
-function renderChat(){
-
-  const conversation=
-    state.current;
-
-  let title;
-
-  if(conversation.type==="group"){
-
-    title=
-      conversation.title ||
-      "Group";
-
-  }else{
-
-    const other=
-      conversation.members
-        .find(member=>
-          member.id !== state.user.id
-        );
-
-    title=
-      other?.display_name ||
-      other?.username ||
-      "Chat";
-  }
-
-  $("chatPane").innerHTML=`
-
-    <div class="chat-header">
 
       <button
-        class="icon-btn back-btn"
-        id="backChat"
+        class="dangerButton"
+        id="logoutButton"
+        style="width:100%;margin-top:12px"
       >
-        ‹
+        Log out
       </button>
 
-      <div class="avatar">
-        ${avatarLetter(title)}
-      </div>
-
-      <div class="chat-title">
-
-        <div class="name">
-          ${escapeHTML(title)}
-        </div>
-
-        <div
-          class="status"
-          id="chatStatus"
-        >
-          Connecting...
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div
-      class="messages"
-      id="messages"
-    ></div>
-
-
-    <div class="composer-area">
-
-      <div
-        class="reply-box"
-        id="replyBox"
-      ></div>
-
-      <div class="composer">
-
-        <textarea
-          id="messageInput"
-          rows="1"
-          maxlength="4000"
-          placeholder="Message..."
-        ></textarea>
-
-        <button
-          class="send-btn"
-          id="sendMessage"
-        >
-          ↑
-        </button>
-
-      </div>
-
-    </div>
-  `;
-
-  $("backChat").onclick=()=>{
-
-    $("appShell")
-      .classList.remove("mobile-chat");
-
-    state.current=null;
-  };
-
-  $("messageInput").addEventListener(
-    "input",
-    ()=>{
-      const input=$("messageInput");
-
-      input.style.height="auto";
-
-      input.style.height=
-        Math.min(
-          input.scrollHeight,
-          140
-        )+"px";
-
-      sendTyping();
-    }
-  );
-
-  $("messageInput").addEventListener(
-    "keydown",
-    event=>{
-
-      if(
-        event.key==="Enter" &&
-        !event.shiftKey
-      ){
-
-        event.preventDefault();
-
-        sendMessage();
-      }
-    }
-  );
-
-  $("sendMessage").onclick=
-    sendMessage;
-
-  renderMessages(true);
-}
-
-
-/* =========================================================
-   RENDER MESSAGES
-========================================================= */
-
-function renderMessages(scrollToBottom=false){
-
-  const container=
-    $("messages");
-
-  if(!container)return;
-
-  if(!state.messages.length){
-
-    container.innerHTML=`
-      <div class="empty">
-        No messages yet.<br>
-        Say something.
-      </div>
     `;
 
-    return;
-  }
-
-  container.innerHTML=
-    state.messages
-      .map(message=>{
-
-        const mine=
-          message.sender_id ===
-          state.user.id;
-
-        const reactions=
-          message.reactions || {};
-
-        const reactionHTML=
-          Object.entries(reactions)
-            .map(([reaction,count])=>`
-
-              <span class="reaction">
-                ${reactionEmoji(reaction)}
-                ${count}
-              </span>
-
-            `)
-            .join("");
-
-        return `
-
-          <div
-            class="message ${
-              mine ? "mine" : ""
-            }"
-            data-message-id="${message.id}"
-          >
-
-            <div class="bubble">
-
-              ${
-                message.reply_to_id &&
-                message.reply_preview
-
-                ? `
-
-                  <div class="reply-preview">
-
-                    ${escapeHTML(
-                      message.reply_preview
-                    )}
-
-                  </div>
-
-                `
-
-                : ""
-              }
-
-              ${
-                message.deleted
-
-                ? "<i>Message deleted</i>"
-
-                : escapeHTML(
-                    message.body
-                  )
-              }
-
-              ${
-                message.edited_at &&
-                !message.deleted
-
-                ? " <small>(edited)</small>"
-
-                : ""
-              }
-
-            </div>
+    openModal();
 
 
-            <div class="message-meta">
-
-              ${
-                mine
-                ? "You"
-                : escapeHTML(
-                    message.sender_display_name ||
-                    message.sender_username
-                  )
-              }
-
-              ·
-
-              ${formatTime(
-                message.created_at
-              )}
-
-            </div>
+    $("saveProfile")
+      .addEventListener(
+        "click",
+        saveProfile
+      );
 
 
-            ${
-              reactionHTML
+    $("logoutButton")
+      .addEventListener(
+        "click",
+        logout
+      );
 
-              ? `
-                <div class="reactions">
-                  ${reactionHTML}
-                </div>
-              `
+  } catch (error) {
 
-              : ""
-            }
-
-
-            ${
-              !message.deleted
-
-              ? `
-
-                <div class="message-actions">
-
-                  <button
-                    onclick="replyToMessage('${message.id}')"
-                  >
-                    Reply
-                  </button>
-
-                  <button
-                    onclick="reactToMessage('${message.id}','like')"
-                  >
-                    👍
-                  </button>
-
-                  <button
-                    onclick="reactToMessage('${message.id}','love')"
-                  >
-                    ❤️
-                  </button>
-
-                  <button
-                    onclick="reactToMessage('${message.id}','laugh')"
-                  >
-                    😂
-                  </button>
-
-                  ${
-                    mine
-
-                    ? `
-
-                      <button
-                        onclick="editMessage('${message.id}')"
-                      >
-                        Edit
-                      </button>
-
-                      <button
-                        onclick="deleteMessage('${message.id}')"
-                      >
-                        Delete
-                      </button>
-
-                    `
-
-                    : ""
-                  }
-
-                </div>
-
-              `
-
-              : ""
-            }
-
-          </div>
-        `;
-      })
-      .join("");
-
-  if(scrollToBottom){
-
-    container.scrollTop=
-      container.scrollHeight;
+    showToast(error.message);
   }
 }
 
 
-/* =========================================================
-   REPLIES
-========================================================= */
+async function saveProfile() {
 
-window.replyToMessage=function(id){
+  const display_name =
+    $("profileDisplayName")
+      .value
+      .trim();
 
-  const message=
-    state.messages.find(
-      item=>item.id===id
-    );
+  try {
 
-  if(!message)return;
-
-  state.replyTo=message;
-
-  renderReplyBox();
-
-  $("messageInput").focus();
-};
-
-
-function renderReplyBox(){
-
-  const box=$("replyBox");
-
-  if(!box)return;
-
-  if(!state.replyTo){
-
-    box.innerHTML="";
-
-    return;
-  }
-
-  box.innerHTML=`
-
-    <div class="replying">
-
-      <span>
-
-        Replying to
-        <b>
-          ${escapeHTML(
-            state.replyTo.sender_display_name ||
-            state.replyTo.sender_username
-          )}
-        </b>:
-
-        ${escapeHTML(
-          state.replyTo.body || ""
-        )}
-
-      </span>
-
-      <button
-        class="icon-btn"
-        onclick="
-          state.replyTo=null;
-          renderReplyBox();
-        "
-      >
-        ×
-      </button>
-
-    </div>
-  `;
-}
-
-
-/* =========================================================
-   SEND
-========================================================= */
-
-async function sendMessage(){
-
-  const input=
-    $("messageInput");
-
-  const text=
-    input.value.trim();
-
-  if(!text || !state.current)return;
-
-  try{
-
-    const result=
+    const data =
       await api(
-        "/api/conversations/"+
-        state.current.id+
-        "/messages",
+        "/api/users/me",
         {
-          method:"POST",
-          body:JSON.stringify({
-            body:text,
-            reply_to_id:
-              state.replyTo?.id || null
+          method: "PUT",
+          body: JSON.stringify({
+            display_name
           })
         }
       );
 
-    state.messages.push(
-      result.message
-    );
+    state.user =
+      data.user;
 
-    state.lastMessageId=
-      result.message.id;
+    closeModal();
 
-    input.value="";
-    input.style.height="auto";
+    showToast("Profile updated.");
 
-    state.replyTo=null;
-
-    renderReplyBox();
-    renderMessages(true);
-
-    await markRead();
-
-  }catch(error){
+  } catch (error) {
 
     showToast(error.message);
   }
@@ -2709,337 +2038,125 @@ async function sendMessage(){
 
 
 /* =========================================================
-   EDIT
-========================================================= */
+   LOGOUT
+   ========================================================= */
 
-window.editMessage=async function(id){
+async function logout() {
 
-  const message=
-    state.messages.find(
-      item=>item.id===id
-    );
+  try {
 
-  if(!message)return;
-
-  const text=
-    prompt(
-      "Edit message:",
-      message.body || ""
-    );
-
-  if(text===null)return;
-
-  try{
-
-    const result=
-      await api(
-        "/api/messages/"+id,
-        {
-          method:"PUT",
-          body:JSON.stringify({
-            body:text
-          })
-        }
-      );
-
-    const index=
-      state.messages.findIndex(
-        item=>item.id===id
-      );
-
-    if(index!==-1){
-
-      state.messages[index]=
-        result.message;
-    }
-
-    renderMessages(false);
-
-  }catch(error){
-
-    showToast(error.message);
-  }
-};
-
-
-/* =========================================================
-   DELETE
-========================================================= */
-
-window.deleteMessage=async function(id){
-
-  if(!confirm("Delete this message?")){
-    return;
-  }
-
-  try{
-
-    await api(
-      "/api/messages/"+id,
-      {
-        method:"DELETE"
-      }
-    );
-
-    const message=
-      state.messages.find(
-        item=>item.id===id
-      );
-
-    if(message){
-
-      message.deleted=true;
-      message.body=null;
-    }
-
-    renderMessages(false);
-
-  }catch(error){
-
-    showToast(error.message);
-  }
-};
-
-
-/* =========================================================
-   REACTIONS
-========================================================= */
-
-function reactionEmoji(reaction){
-
-  return {
-    like:"👍",
-    love:"❤️",
-    laugh:"😂",
-    wow:"😮",
-    sad:"😢",
-    thanks:"🙏"
-  }[reaction] || reaction;
-}
-
-
-window.reactToMessage=
-  async function(id,reaction){
-
-    try{
+    if (state.refreshToken) {
 
       await api(
-        "/api/messages/"+id+"/react",
+        "/api/auth/logout",
         {
-          method:"POST",
-          body:JSON.stringify({
-            reaction
+          method: "POST",
+          body: JSON.stringify({
+            refresh_token:
+              state.refreshToken
           })
-        }
+        },
+        false
       );
 
-      await refreshMessages();
-
-    }catch(error){
-
-      showToast(error.message);
     }
-  };
 
+  } catch (_) {}
 
-async function refreshMessages(){
+  stopPolling();
 
-  if(!state.current)return;
+  clearSession();
 
-  const data=
-    await api(
-      "/api/conversations/"+
-      state.current.id+
-      "/messages?limit=100"
-    );
+  state.conversations = [];
+  state.currentConversation = null;
+  state.messages = [];
 
-  state.messages=
-    (data.messages || [])
-    .reverse();
+  closeModal();
 
-  state.nextBefore=
-    data.next_before;
+  appScreen.classList.remove("chatOpen");
 
-  state.oldestLoaded=
-    !state.nextBefore;
+  showAuth();
 
-  state.lastMessageId=
-    state.messages.at(-1)?.id ||
-    null;
-
-  renderMessages(false);
+  showToast("Logged out.");
 }
 
 
 /* =========================================================
-   READ RECEIPTS
-========================================================= */
+   MODAL
+   ========================================================= */
 
-async function markRead(){
+function openModal() {
 
-  if(!state.current)return;
-
-  try{
-
-    await api(
-      "/api/conversations/"+
-      state.current.id+
-      "/read",
-      {
-        method:"POST"
-      }
-    );
-
-    state.unread[
-      state.current.id
-    ]=0;
-
-  }catch{}
+  modal.classList.remove("hidden");
 }
 
 
-/* =========================================================
-   TYPING
-========================================================= */
+function closeModal() {
 
-function sendTyping(){
+  modal.classList.add("hidden");
+}
 
-  if(!state.current)return;
 
-  clearTimeout(
-    state.typingTimer
+$("modalClose")
+  .addEventListener(
+    "click",
+    closeModal
   );
 
-  state.typingTimer=
-    setTimeout(()=>{
 
-      api(
-        "/api/conversations/"+
-        state.current.id+
-        "/typing",
-        {
-          method:"POST"
-        }
-      ).catch(()=>{});
+modal.addEventListener(
+  "click",
+  event => {
 
-    },150);
-}
+    if (event.target === modal) {
+      closeModal();
+    }
+
+  }
+);
 
 
 /* =========================================================
-   POLLING / REALTIME
-========================================================= */
+   MOBILE
+   ========================================================= */
 
-function startPolling(){
+$("backButton")
+  .addEventListener(
+    "click",
+    () => {
 
-  clearInterval(
-    state.pollTimer
+      appScreen.classList.remove(
+        "chatOpen"
+      );
+
+    }
   );
 
-  state.pollTimer=
+
+/* =========================================================
+   POLLING
+   ========================================================= */
+
+function startPolling() {
+
+  stopPolling();
+
+  state.polling =
     setInterval(
-      async()=>{
-        try{
+      async () => {
 
-          if(!state.accessToken)return;
-
-          await loadUnread();
-
-          if(state.current){
-
-            let path=
-              "/api/conversations/"+
-              state.current.id+
-              "/poll";
-
-            if(state.lastMessageId){
-
-              path+=
-                "?after="+
-                encodeURIComponent(
-                  state.lastMessageId
-                );
-            }
-
-            const data=
-              await api(path);
-
-            if(
-              data.messages &&
-              data.messages.length
-            ){
-
-              state.messages.push(
-                ...data.messages
-              );
-
-              state.lastMessageId=
-                data.messages[
-                  data.messages.length-1
-                ].id;
-
-              renderMessages(true);
-
-              await markRead();
-            }
-
-            const members=
-              data.members || [];
-
-            const typing=
-              members
-                .filter(member=>member.typing)
-                .map(member=>member.username);
-
-            const online=
-              members
-                .filter(member=>member.online)
-                .map(member=>member.username);
-
-            const status=
-              $("chatStatus");
-
-            if(status){
-
-              if(typing.length){
-
-                status.textContent=
-                  typing.join(", ") +
-                  (
-                    typing.length===1
-                    ? " is typing..."
-                    : " are typing..."
-                  );
-
-              }else if(
-                state.current.type==="group"
-              ){
-
-                status.textContent=
-                  online.length
-                  ? online.length+" online"
-                  : "Offline";
-
-              }else{
-
-                status.textContent=
-                  online.length
-                  ? "Online"
-                  : "Offline";
-              }
-            }
-          }
-
-          renderSidebar();
-
-        }catch(error){
-
-          /*
-            Poll failures are intentionally
-            silent so temporary network issues
-            don't interrupt the chat.
-          */
+        if (
+          document.hidden ||
+          !state.currentConversation
+        ) {
+          return;
         }
+
+        try {
+
+          await loadMessages();
+
+        } catch (_) {}
 
       },
       3000
@@ -3047,49 +2164,80 @@ function startPolling(){
 }
 
 
+function stopPolling() {
+
+  if (state.polling) {
+
+    clearInterval(
+      state.polling
+    );
+
+    state.polling = null;
+  }
+}
+
+
 /* =========================================================
-   LOGOUT
-========================================================= */
+   KEYBOARD
+   ========================================================= */
 
-async function logout(){
+messageInput.addEventListener(
+  "keydown",
+  event => {
 
-  try{
+    if (
+      event.key === "Enter" &&
+      !event.shiftKey
+    ) {
 
-    if(state.refreshToken){
+      event.preventDefault();
 
-      await api(
-        "/api/auth/logout",
-        {
-          method:"POST",
-          body:JSON.stringify({
-            refresh_token:
-              state.refreshToken
-          })
-        },
-        false
-      );
+      messageForm.requestSubmit();
     }
 
-  }catch{}
-
-  clearSession();
-
-  renderAuth();
-}
+  }
+);
 
 
 /* =========================================================
-   START
-========================================================= */
+   STARTUP
+   ========================================================= */
 
-if(state.accessToken){
+async function boot() {
 
-  boot();
+  if (!state.accessToken) {
 
-}else{
+    showAuth();
 
-  renderAuth();
+    return;
+  }
+
+  try {
+
+    await loadCurrentUser();
+
+    showApp();
+
+    await loadConversations();
+
+    startPolling();
+
+  } catch (error) {
+
+    clearSession();
+
+    showAuth();
+
+    showToast(
+      "Please log in again."
+    );
+  }
 }
+
+
+setAuthMode("login");
+
+boot();
 
 </script>
 
