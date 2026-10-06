@@ -1,0 +1,3102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090b10">
+<title>Chatapp</title>
+
+<style>
+:root{
+  --bg:#090b10;
+  --panel:#10131a;
+  --panel2:#171b23;
+  --border:#272d38;
+  --text:#f4f5f7;
+  --muted:#8d96a5;
+  --accent:#7257ff;
+  --accent2:#6045e8;
+  --mine:#684fe5;
+  --bubble:#1a1f28;
+  --danger:#ff5968;
+}
+
+*{box-sizing:border-box}
+
+html,body{
+  margin:0;
+  height:100%;
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+button,input,textarea{
+  font:inherit;
+}
+
+button{
+  border:0;
+  cursor:pointer;
+}
+
+.hidden{
+  display:none!important;
+}
+
+/* =========================
+   AUTH
+========================= */
+
+.auth-screen{
+  min-height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.auth-card{
+  width:min(420px,100%);
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:28px;
+  box-shadow:0 20px 70px #0008;
+}
+
+.logo{
+  font-size:30px;
+  font-weight:800;
+  letter-spacing:-1px;
+}
+
+.subtitle{
+  color:var(--muted);
+  margin:5px 0 25px;
+}
+
+.auth-tabs{
+  display:flex;
+  background:#0b0e13;
+  padding:4px;
+  border-radius:12px;
+  margin-bottom:18px;
+}
+
+.auth-tabs button{
+  flex:1;
+  padding:10px;
+  color:var(--muted);
+  background:transparent;
+  border-radius:9px;
+}
+
+.auth-tabs button.active{
+  background:var(--panel2);
+  color:white;
+}
+
+.field{
+  margin-bottom:14px;
+}
+
+.field label{
+  display:block;
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:6px;
+}
+
+.field input{
+  width:100%;
+  padding:13px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:#0b0e13;
+  color:white;
+  outline:none;
+}
+
+.field input:focus{
+  border-color:var(--accent);
+}
+
+.primary{
+  width:100%;
+  padding:13px;
+  border-radius:12px;
+  background:var(--accent);
+  color:white;
+  font-weight:700;
+}
+
+.primary:hover{
+  background:var(--accent2);
+}
+
+.error{
+  min-height:20px;
+  color:#ff858f;
+  font-size:13px;
+  margin:5px 0;
+}
+
+/* =========================
+   APP
+========================= */
+
+#app{
+  height:100%;
+}
+
+.app{
+  height:100%;
+  display:flex;
+  overflow:hidden;
+}
+
+.sidebar{
+  width:340px;
+  min-width:280px;
+  background:var(--panel);
+  border-right:1px solid var(--border);
+  display:flex;
+  flex-direction:column;
+}
+
+.sidebar-top{
+  padding:17px 15px 10px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.sidebar-top h2{
+  margin:0;
+  font-size:21px;
+}
+
+.icon-btn{
+  width:38px;
+  height:38px;
+  border-radius:11px;
+  background:var(--panel2);
+  color:white;
+  font-size:20px;
+}
+
+.search{
+  padding:0 12px 10px;
+}
+
+.search input{
+  width:100%;
+  padding:11px 13px;
+  border-radius:11px;
+  border:1px solid var(--border);
+  background:#0b0e13;
+  color:white;
+  outline:none;
+}
+
+.nav{
+  display:flex;
+  padding:5px 10px;
+  border-bottom:1px solid var(--border);
+}
+
+.nav button{
+  flex:1;
+  padding:10px 5px;
+  background:transparent;
+  color:var(--muted);
+  border-radius:10px;
+  font-size:13px;
+}
+
+.nav button.active{
+  background:var(--panel2);
+  color:white;
+}
+
+.list{
+  flex:1;
+  overflow-y:auto;
+  padding:6px;
+}
+
+.row{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:11px 9px;
+  border-radius:13px;
+}
+
+.row:hover,
+.row.selected{
+  background:var(--panel2);
+}
+
+.avatar{
+  width:43px;
+  height:43px;
+  min-width:43px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#755cff,#39a9ff);
+  color:white;
+  font-weight:800;
+}
+
+.row-info{
+  min-width:0;
+  flex:1;
+}
+
+.name{
+  font-weight:700;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.preview{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:2px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.badge{
+  background:var(--accent);
+  border-radius:999px;
+  padding:3px 7px;
+  font-size:11px;
+}
+
+.profile-bar{
+  padding:11px;
+  border-top:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.profile-info{
+  min-width:0;
+  flex:1;
+}
+
+.profile-info b{
+  display:block;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.profile-info span{
+  color:var(--muted);
+  font-size:12px;
+}
+
+/* =========================
+   CHAT
+========================= */
+
+.chat{
+  flex:1;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  background:#090b10;
+}
+
+.chat-header{
+  height:68px;
+  min-height:68px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:10px 15px;
+}
+
+.back-btn{
+  display:none;
+}
+
+.chat-title{
+  min-width:0;
+}
+
+.chat-title .name{
+  font-size:16px;
+}
+
+.status{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:2px;
+}
+
+.messages{
+  flex:1;
+  overflow-y:auto;
+  padding:20px 15px;
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.empty{
+  margin:auto;
+  text-align:center;
+  color:var(--muted);
+}
+
+.message{
+  max-width:min(75%,620px);
+  display:flex;
+  flex-direction:column;
+  align-self:flex-start;
+}
+
+.message.mine{
+  align-self:flex-end;
+  align-items:flex-end;
+}
+
+.bubble{
+  background:var(--bubble);
+  border:1px solid #252b35;
+  border-radius:17px;
+  padding:9px 12px;
+  white-space:pre-wrap;
+  word-break:break-word;
+  line-height:1.4;
+}
+
+.mine .bubble{
+  background:var(--mine);
+  border-color:transparent;
+}
+
+.message-meta{
+  color:var(--muted);
+  font-size:10px;
+  margin:3px 5px;
+}
+
+.reply-preview{
+  border-left:3px solid #b0a4ff;
+  padding:3px 7px;
+  margin-bottom:6px;
+  color:#d3d5db;
+  font-size:11px;
+}
+
+.message-actions{
+  display:flex;
+  gap:4px;
+  margin-top:3px;
+}
+
+.message-actions button{
+  background:var(--panel2);
+  color:var(--muted);
+  padding:4px 7px;
+  border-radius:8px;
+  font-size:11px;
+}
+
+.reactions{
+  display:flex;
+  gap:3px;
+  margin-top:3px;
+}
+
+.reaction{
+  background:#11151c;
+  border:1px solid #2b313b;
+  border-radius:999px;
+  padding:2px 6px;
+  font-size:11px;
+}
+
+.composer-area{
+  position:relative;
+  border-top:1px solid var(--border);
+}
+
+.reply-box{
+  padding:7px 12px 0;
+}
+
+.replying{
+  background:var(--panel2);
+  border:1px solid var(--border);
+  padding:8px 10px;
+  border-radius:10px;
+  font-size:12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.composer{
+  display:flex;
+  gap:8px;
+  padding:10px 12px;
+  padding-bottom:max(10px,env(safe-area-inset-bottom));
+}
+
+.composer textarea{
+  flex:1;
+  min-height:42px;
+  max-height:140px;
+  resize:none;
+  padding:11px 13px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:#11151c;
+  color:white;
+  outline:none;
+}
+
+.send-btn{
+  width:44px;
+  height:42px;
+  border-radius:13px;
+  background:var(--accent);
+  color:white;
+  font-weight:800;
+}
+
+/* =========================
+   PANELS
+========================= */
+
+.panel{
+  padding:18px;
+}
+
+.panel h3{
+  margin-top:0;
+}
+
+.friend-add{
+  display:flex;
+  gap:7px;
+}
+
+.friend-add input{
+  flex:1;
+  min-width:0;
+  padding:11px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:#0b0e13;
+  color:white;
+}
+
+.small-btn{
+  padding:9px 11px;
+  border-radius:10px;
+  background:var(--accent);
+  color:white;
+}
+
+.danger{
+  background:#35151a;
+  color:#ff9da6;
+}
+
+hr{
+  border:0;
+  border-top:1px solid var(--border);
+  margin:18px 0;
+}
+
+/* =========================
+   MODAL / TOAST
+========================= */
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:#0009;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:20;
+}
+
+.modal-card{
+  width:min(450px,100%);
+  max-height:85vh;
+  overflow:auto;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:18px;
+}
+
+.modal-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.modal-head h3{
+  margin:0;
+}
+
+.toast{
+  position:fixed;
+  z-index:100;
+  left:50%;
+  bottom:22px;
+  transform:translateX(-50%);
+  background:#242a35;
+  color:white;
+  padding:10px 14px;
+  border-radius:10px;
+  font-size:13px;
+  box-shadow:0 8px 30px #0008;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:720px){
+
+  .sidebar{
+    width:100%;
+    min-width:0;
+    border-right:0;
+  }
+
+  .chat{
+    display:none;
+  }
+
+  .mobile-chat .sidebar{
+    display:none;
+  }
+
+  .mobile-chat .chat{
+    display:flex;
+  }
+
+  .back-btn{
+    display:block;
+  }
+
+  .message{
+    max-width:85%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="app"></div>
+<div id="toast" class="toast hidden"></div>
+
+<script>
+
+/* =========================================================
+   CONFIG
+========================================================= */
+
+/*
+  PUT YOUR DEPLOYED BACKEND URL HERE.
+
+  Example:
+  const API_BASE = "https://chatapp-backend.onrender.com";
+
+  Do NOT put your database password, JWT_SECRET,
+  or AI API key here.
+*/
+
+const API_BASE =
+  localStorage.getItem("chatapp_api") ||
+  "const API_BASE =
+  "https://chatapp-backend-ol8d.onrender.com";
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+const state = {
+  accessToken: localStorage.getItem("chat_access") || "",
+  refreshToken: localStorage.getItem("chat_refresh") || "",
+
+  user:null,
+
+  conversations:[],
+  unread:{},
+
+  friends:[],
+  requests:{
+    incoming:[],
+    outgoing:[]
+  },
+
+  current:null,
+  messages:[],
+
+  nextBefore:null,
+  oldestLoaded:false,
+  lastMessageId:null,
+
+  replyTo:null,
+
+  currentView:"chats",
+
+  pollTimer:null,
+  typingTimer:null
+};
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+const $ = id => document.getElementById(id);
+
+function escapeHTML(value){
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+function avatarLetter(name){
+  return escapeHTML(
+    (String(name || "?").trim()[0] || "?").toUpperCase()
+  );
+}
+
+function conversationName(conversation){
+
+  if(conversation.type === "group"){
+    return conversation.title || "Group";
+  }
+
+  return (
+    conversation.other_display_name ||
+    conversation.other_username ||
+    "Unknown"
+  );
+}
+
+function formatTime(date){
+  return new Date(date).toLocaleTimeString([],{
+    hour:"numeric",
+    minute:"2-digit"
+  });
+}
+
+function showToast(message){
+
+  const toast = $("toast");
+
+  toast.textContent = message;
+  toast.classList.remove("hidden");
+
+  clearTimeout(showToast.timer);
+
+  showToast.timer = setTimeout(()=>{
+    toast.classList.add("hidden");
+  },2500);
+}
+
+function saveTokens(){
+
+  localStorage.setItem(
+    "chat_access",
+    state.accessToken
+  );
+
+  localStorage.setItem(
+    "chat_refresh",
+    state.refreshToken
+  );
+}
+
+function clearSession(){
+
+  state.accessToken="";
+  state.refreshToken="";
+  state.user=null;
+
+  localStorage.removeItem("chat_access");
+  localStorage.removeItem("chat_refresh");
+
+  clearInterval(state.pollTimer);
+}
+
+
+/* =========================================================
+   API
+========================================================= */
+
+async function api(path,options={},retry=true){
+
+  if(API_BASE.includes("YOUR-BACKEND-URL")){
+    throw new Error(
+      "Set API_BASE to your deployed backend URL first."
+    );
+  }
+
+  const headers = {
+    "Content-Type":"application/json",
+    ...(options.headers || {})
+  };
+
+  if(state.accessToken){
+    headers.Authorization =
+      "Bearer " + state.accessToken;
+  }
+
+  let response;
+
+  try{
+
+    response = await fetch(
+      API_BASE.replace(/\/$/,"") + path,
+      {
+        ...options,
+        headers
+      }
+    );
+
+  }catch(error){
+
+    throw new Error(
+      "Cannot reach the backend. Check the backend URL and CORS."
+    );
+  }
+
+  /*
+    Access token expired.
+    Automatically rotate refresh token.
+  */
+
+  if(
+    response.status === 401 &&
+    retry &&
+    state.refreshToken &&
+    !path.startsWith("/api/auth/")
+  ){
+
+    try{
+
+      const refreshResponse = await fetch(
+        API_BASE.replace(/\/$/,"") +
+        "/api/auth/refresh",
+        {
+          method:"POST",
+          headers:{
+            "Content-Type":"application/json"
+          },
+          body:JSON.stringify({
+            refresh_token:state.refreshToken
+          })
+        }
+      );
+
+      if(refreshResponse.ok){
+
+        const data =
+          await refreshResponse.json();
+
+        state.accessToken=data.access_token;
+        state.refreshToken=data.refresh_token;
+
+        saveTokens();
+
+        return api(path,options,false);
+      }
+
+    }catch{}
+
+    clearSession();
+    renderAuth();
+
+    throw new Error("Your session expired.");
+  }
+
+  let data={};
+
+  try{
+    data=await response.json();
+  }catch{}
+
+  if(!response.ok){
+
+    throw new Error(
+      data.error ||
+      "Request failed (" + response.status + ")"
+    );
+  }
+
+  return data;
+}
+
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+function renderAuth(){
+
+  $("app").innerHTML=`
+
+    <div class="auth-screen">
+
+      <div class="auth-card">
+
+        <div class="logo">
+          Chatapp
+        </div>
+
+        <div class="subtitle">
+          Simple conversations. Your people.
+        </div>
+
+        <div class="auth-tabs">
+
+          <button id="loginTab" class="active">
+            Log in
+          </button>
+
+          <button id="registerTab">
+            Create account
+          </button>
+
+        </div>
+
+        <form id="authForm">
+
+          <div id="displayField"
+               class="field hidden">
+
+            <label>Display name</label>
+
+            <input
+              id="displayName"
+              maxlength="50"
+            >
+
+          </div>
+
+          <div class="field">
+
+            <label id="loginLabel">
+              Username or email
+            </label>
+
+            <input
+              id="login"
+              autocomplete="username"
+              required
+            >
+
+          </div>
+
+          <div id="emailField"
+               class="field hidden">
+
+            <label>Email</label>
+
+            <input
+              id="email"
+              type="email"
+              autocomplete="email"
+            >
+
+          </div>
+
+          <div class="field">
+
+            <label>Password</label>
+
+            <input
+              id="password"
+              type="password"
+              minlength="8"
+              autocomplete="current-password"
+              required
+            >
+
+          </div>
+
+          <div id="authError"
+               class="error"></div>
+
+          <button
+            class="primary"
+            id="authSubmit"
+            type="submit"
+          >
+            Log in
+          </button>
+
+        </form>
+
+      </div>
+
+    </div>
+  `;
+
+  let registerMode=false;
+
+  function updateAuthMode(){
+
+    $("loginTab")
+      .classList.toggle(
+        "active",
+        !registerMode
+      );
+
+    $("registerTab")
+      .classList.toggle(
+        "active",
+        registerMode
+      );
+
+    $("displayField")
+      .classList.toggle(
+        "hidden",
+        !registerMode
+      );
+
+    $("emailField")
+      .classList.toggle(
+        "hidden",
+        !registerMode
+      );
+
+    $("loginLabel").textContent =
+      registerMode
+      ? "Username"
+      : "Username or email";
+
+    $("authSubmit").textContent =
+      registerMode
+      ? "Create account"
+      : "Log in";
+
+    $("authError").textContent="";
+  }
+
+  $("loginTab").onclick=()=>{
+    registerMode=false;
+    updateAuthMode();
+  };
+
+  $("registerTab").onclick=()=>{
+    registerMode=true;
+    updateAuthMode();
+  };
+
+  $("authForm").onsubmit=async event=>{
+
+    event.preventDefault();
+
+    $("authError").textContent="";
+
+    try{
+
+      let body;
+
+      if(registerMode){
+
+        body={
+          username:$("login").value.trim(),
+          email:$("email").value.trim(),
+          password:$("password").value,
+          display_name:
+            $("displayName").value.trim() ||
+            undefined
+        };
+
+      }else{
+
+        body={
+          login:$("login").value.trim(),
+          password:$("password").value
+        };
+      }
+
+      const result=await api(
+        registerMode
+          ? "/api/auth/register"
+          : "/api/auth/login",
+        {
+          method:"POST",
+          body:JSON.stringify(body)
+        },
+        false
+      );
+
+      state.accessToken=result.access_token;
+      state.refreshToken=result.refresh_token;
+      state.user=result.user;
+
+      saveTokens();
+
+      await boot();
+
+    }catch(error){
+
+      $("authError").textContent=
+        error.message;
+    }
+  };
+}
+
+
+/* =========================================================
+   LOAD DATA
+========================================================= */
+
+async function loadConversations(){
+
+  const data=
+    await api("/api/conversations");
+
+  state.conversations=
+    data.conversations || [];
+}
+
+async function loadFriends(){
+
+  const data=
+    await api("/api/friends");
+
+  state.friends=
+    data.friends || [];
+}
+
+async function loadRequests(){
+
+  state.requests=
+    await api("/api/friends/requests");
+}
+
+async function loadUnread(){
+
+  const data=
+    await api("/api/unread");
+
+  state.unread={};
+
+  (data.conversations || [])
+    .forEach(conversation=>{
+      state.unread[
+        conversation.conversation_id
+      ]=conversation.unread;
+    });
+}
+
+
+/* =========================================================
+   APP
+========================================================= */
+
+async function boot(){
+
+  try{
+
+    if(!state.accessToken){
+
+      renderAuth();
+
+      return;
+    }
+
+    const me=
+      await api("/api/auth/me");
+
+    state.user=me.user;
+
+    await Promise.all([
+      loadConversations(),
+      loadFriends(),
+      loadUnread()
+    ]);
+
+    renderApp();
+
+    startPolling();
+
+  }catch(error){
+
+    clearSession();
+
+    renderAuth();
+
+    showToast(error.message);
+  }
+}
+
+
+/* =========================================================
+   APP UI
+========================================================= */
+
+function renderApp(){
+
+  $("app").innerHTML=`
+
+    <div class="app" id="appShell">
+
+      <aside class="sidebar">
+
+        <div class="sidebar-top">
+
+          <h2>Messages</h2>
+
+          <button
+            class="icon-btn"
+            id="newConversation"
+            title="New conversation"
+          >
+            ＋
+          </button>
+
+        </div>
+
+        <div class="search">
+
+          <input
+            id="searchUsers"
+            placeholder="Search users..."
+          >
+
+        </div>
+
+        <div class="nav">
+
+          <button
+            data-view="chats"
+            class="active"
+          >
+            Chats
+          </button>
+
+          <button
+            data-view="friends"
+          >
+            Friends
+          </button>
+
+          <button
+            data-view="profile"
+          >
+            Profile
+          </button>
+
+        </div>
+
+        <div
+          class="list"
+          id="sideContent"
+        ></div>
+
+        <div class="profile-bar">
+
+          <div class="avatar">
+            ${avatarLetter(
+              state.user.display_name ||
+              state.user.username
+            )}
+          </div>
+
+          <div class="profile-info">
+
+            <b>
+              ${escapeHTML(
+                state.user.display_name ||
+                state.user.username
+              )}
+            </b>
+
+            <span>
+              @${escapeHTML(
+                state.user.username
+              )}
+            </span>
+
+          </div>
+
+          <button
+            class="icon-btn"
+            id="logout"
+            title="Log out"
+          >
+            ↪
+          </button>
+
+        </div>
+
+      </aside>
+
+
+      <main
+        class="chat"
+        id="chatPane"
+      >
+
+        <div class="empty">
+          Select a conversation
+        </div>
+
+      </main>
+
+    </div>
+  `;
+
+  document
+    .querySelectorAll(".nav button")
+    .forEach(button=>{
+
+      button.onclick=()=>{
+
+        state.currentView=
+          button.dataset.view;
+
+        document
+          .querySelectorAll(".nav button")
+          .forEach(x=>
+            x.classList.remove("active")
+          );
+
+        button.classList.add("active");
+
+        renderSidebar();
+      };
+    });
+
+  $("logout").onclick=logout;
+
+  $("newConversation").onclick=
+    showNewConversation;
+
+  $("searchUsers").oninput=event=>{
+
+    const query=
+      event.target.value.trim();
+
+    if(query){
+
+      searchUsers(query);
+
+    }else{
+
+      renderSidebar();
+    }
+  };
+
+  renderSidebar();
+}
+
+
+function renderSidebar(){
+
+  const search=
+    $("searchUsers")?.value.trim();
+
+  if(search){
+
+    searchUsers(search);
+
+    return;
+  }
+
+  const content=
+    $("sideContent");
+
+  if(!content)return;
+
+  if(state.currentView==="chats"){
+
+    renderChats(content);
+
+  }else if(state.currentView==="friends"){
+
+    renderFriends(content);
+
+  }else{
+
+    renderProfile(content);
+  }
+}
+
+
+/* =========================================================
+   CHAT LIST
+========================================================= */
+
+function renderChats(container){
+
+  if(!state.conversations.length){
+
+    container.innerHTML=`
+      <div class="empty" style="padding:40px 15px">
+        No conversations yet.<br>
+        Tap ＋ to start one.
+      </div>
+    `;
+
+    return;
+  }
+
+  container.innerHTML=
+    state.conversations
+      .map(conversation=>{
+
+        const name=
+          conversationName(conversation);
+
+        const unread=
+          state.unread[
+            conversation.id
+          ] || 0;
+
+        return `
+
+          <div
+            class="row ${
+              state.current?.id ===
+              conversation.id
+              ? "selected"
+              : ""
+            }"
+            data-id="${conversation.id}"
+          >
+
+            <div class="avatar">
+              ${avatarLetter(name)}
+            </div>
+
+            <div class="row-info">
+
+              <div class="name">
+                ${escapeHTML(name)}
+              </div>
+
+              <div class="preview">
+
+                ${
+                  conversation.type==="group"
+                  ? "Group"
+                  : "@"+
+                    escapeHTML(
+                      conversation.other_username ||
+                      ""
+                    )
+                }
+
+              </div>
+
+            </div>
+
+            ${
+              unread
+              ? `
+                <span class="badge">
+                  ${unread > 99 ? "99+" : unread}
+                </span>
+              `
+              : ""
+            }
+
+          </div>
+        `;
+      })
+      .join("");
+
+  container
+    .querySelectorAll(".row")
+    .forEach(row=>{
+
+      row.onclick=()=>{
+        openConversation(row.dataset.id);
+      };
+    });
+}
+
+
+/* =========================================================
+   USER SEARCH
+========================================================= */
+
+let searchRequest=0;
+
+async function searchUsers(query){
+
+  const requestId=++searchRequest;
+
+  const content=$("sideContent");
+
+  if(!content)return;
+
+  if(query.length<2){
+
+    content.innerHTML=`
+      <div class="empty" style="padding:30px">
+        Type at least 2 characters.
+      </div>
+    `;
+
+    return;
+  }
+
+  try{
+
+    const data=
+      await api(
+        "/api/users/search?q="+
+        encodeURIComponent(query)
+      );
+
+    if(requestId!==searchRequest)return;
+
+    content.innerHTML=
+      (data.users || [])
+      .map(user=>`
+
+        <div class="row">
+
+          <div class="avatar">
+            ${avatarLetter(
+              user.display_name ||
+              user.username
+            )}
+          </div>
+
+          <div class="row-info">
+
+            <div class="name">
+              ${escapeHTML(
+                user.display_name ||
+                user.username
+              )}
+            </div>
+
+            <div class="preview">
+              @${escapeHTML(user.username)}
+            </div>
+
+          </div>
+
+          <button
+            class="small-btn start-chat"
+            data-id="${user.id}"
+          >
+            Chat
+          </button>
+
+        </div>
+      `)
+      .join("") ||
+
+      `
+        <div class="empty" style="padding:30px">
+          No users found.
+        </div>
+      `;
+
+    content
+      .querySelectorAll(".start-chat")
+      .forEach(button=>{
+
+        button.onclick=()=>{
+          startDirect(button.dataset.id);
+        };
+      });
+
+  }catch(error){
+
+    content.innerHTML=`
+      <div class="error" style="padding:20px">
+        ${escapeHTML(error.message)}
+      </div>
+    `;
+  }
+}
+
+
+/* =========================================================
+   FRIENDS
+========================================================= */
+
+function renderFriends(container){
+
+  container.innerHTML=`
+
+    <div class="panel">
+
+      <h3>Friends</h3>
+
+      <div class="friend-add">
+
+        <input
+          id="friendUsername"
+          placeholder="@username"
+        >
+
+        <button
+          class="small-btn"
+          id="addFriend"
+        >
+          Add
+        </button>
+
+      </div>
+
+      <div
+        id="friendError"
+        class="error"
+      ></div>
+
+      <div id="friendList"></div>
+
+      <hr>
+
+      <button
+        class="small-btn"
+        id="friendRequests"
+        style="width:100%"
+      >
+        Friend requests
+      </button>
+
+    </div>
+  `;
+
+  const list=$("friendList");
+
+  if(!state.friends.length){
+
+    list.innerHTML=`
+      <div class="empty" style="padding:25px">
+        No friends yet.
+      </div>
+    `;
+
+  }else{
+
+    list.innerHTML=
+      state.friends
+        .map(friend=>`
+
+          <div class="row">
+
+            <div class="avatar">
+              ${avatarLetter(
+                friend.display_name ||
+                friend.username
+              )}
+            </div>
+
+            <div class="row-info">
+
+              <div class="name">
+                ${escapeHTML(
+                  friend.display_name ||
+                  friend.username
+                )}
+              </div>
+
+              <div class="preview">
+                @${escapeHTML(
+                  friend.username
+                )}
+              </div>
+
+            </div>
+
+            <button
+              class="small-btn chat-friend"
+              data-id="${friend.id}"
+            >
+              Chat
+            </button>
+
+          </div>
+
+        `)
+        .join("");
+  }
+
+  $("addFriend").onclick=async()=>{
+
+    $("friendError").textContent="";
+
+    try{
+
+      const username=
+        $("friendUsername")
+        .value
+        .trim()
+        .replace(/^@/,"");
+
+      await api(
+        "/api/friends/request",
+        {
+          method:"POST",
+          body:JSON.stringify({
+            username
+          })
+        }
+      );
+
+      $("friendUsername").value="";
+
+      showToast("Friend request sent");
+
+      await loadFriends();
+
+      renderFriends(container);
+
+    }catch(error){
+
+      $("friendError").textContent=
+        error.message;
+    }
+  };
+
+  container
+    .querySelectorAll(".chat-friend")
+    .forEach(button=>{
+
+      button.onclick=()=>{
+        startDirect(button.dataset.id);
+      };
+    });
+
+  $("friendRequests").onclick=
+    showRequests;
+}
+
+
+/* =========================================================
+   FRIEND REQUESTS
+========================================================= */
+
+async function showRequests(){
+
+  try{
+
+    await loadRequests();
+
+  }catch(error){
+
+    showToast(error.message);
+
+    return;
+  }
+
+  const modal=
+    document.createElement("div");
+
+  modal.className="modal";
+
+  modal.innerHTML=`
+
+    <div class="modal-card">
+
+      <div class="modal-head">
+
+        <h3>Friend requests</h3>
+
+        <button
+          class="icon-btn close-modal"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div id="requestsContent"></div>
+
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  modal
+    .querySelector(".close-modal")
+    .onclick=()=>{
+      modal.remove();
+    };
+
+  const content=
+    modal.querySelector("#requestsContent");
+
+  const incoming=
+    state.requests.incoming || [];
+
+  const outgoing=
+    state.requests.outgoing || [];
+
+  let html="";
+
+  if(incoming.length){
+
+    html+=`<h4>Incoming</h4>`;
+
+    incoming.forEach(request=>{
+
+      html+=`
+
+        <div class="row">
+
+          <div class="avatar">
+            ${avatarLetter(
+              request.display_name ||
+              request.username
+            )}
+          </div>
+
+          <div class="row-info">
+
+            <div class="name">
+              ${escapeHTML(
+                request.display_name ||
+                request.username
+              )}
+            </div>
+
+            <div class="preview">
+              @${escapeHTML(
+                request.username
+              )}
+            </div>
+
+          </div>
+
+          <button
+            class="small-btn accept-request"
+            data-id="${request.id}"
+          >
+            Accept
+          </button>
+
+        </div>
+      `;
+    });
+  }
+
+  if(outgoing.length){
+
+    html+=`<h4>Sent</h4>`;
+
+    outgoing.forEach(request=>{
+
+      html+=`
+
+        <div class="row">
+
+          <div class="row-info">
+
+            <div class="name">
+              @${escapeHTML(
+                request.username
+              )}
+            </div>
+
+            <div class="preview">
+              Pending
+            </div>
+
+          </div>
+
+          <button
+            class="small-btn danger cancel-request"
+            data-id="${request.id}"
+          >
+            Cancel
+          </button>
+
+        </div>
+      `;
+    });
+  }
+
+  content.innerHTML=
+    html ||
+    `
+      <div class="empty" style="padding:30px">
+        No pending requests.
+      </div>
+    `;
+
+  content
+    .querySelectorAll(".accept-request")
+    .forEach(button=>{
+
+      button.onclick=async()=>{
+
+        try{
+
+          await api(
+            "/api/friends/requests/"+
+            button.dataset.id+
+            "/accept",
+            {
+              method:"POST"
+            }
+          );
+
+          showToast("Request accepted");
+
+          await loadFriends();
+
+          modal.remove();
+
+          showRequests();
+
+        }catch(error){
+
+          showToast(error.message);
+        }
+      };
+    });
+
+  content
+    .querySelectorAll(".cancel-request")
+    .forEach(button=>{
+
+      button.onclick=async()=>{
+
+        try{
+
+          await api(
+            "/api/friends/"+
+            button.dataset.id,
+            {
+              method:"DELETE"
+            }
+          );
+
+          modal.remove();
+
+          showRequests();
+
+        }catch(error){
+
+          showToast(error.message);
+        }
+      };
+    });
+}
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+function renderProfile(container){
+
+  container.innerHTML=`
+
+    <div class="panel">
+
+      <h3>Your profile</h3>
+
+      <div class="field">
+
+        <label>Username</label>
+
+        <input
+          value="@${escapeHTML(
+            state.user.username
+          )}"
+          disabled
+        >
+
+      </div>
+
+      <div class="field">
+
+        <label>Display name</label>
+
+        <input
+          id="profileDisplayName"
+          maxlength="50"
+          value="${escapeHTML(
+            state.user.display_name || ""
+          )}"
+        >
+
+      </div>
+
+      <div
+        id="profileError"
+        class="error"
+      ></div>
+
+      <button
+        class="primary"
+        id="saveProfile"
+      >
+        Save changes
+      </button>
+
+    </div>
+  `;
+
+  $("saveProfile").onclick=async()=>{
+
+    $("profileError").textContent="";
+
+    try{
+
+      const result=
+        await api(
+          "/api/users/me",
+          {
+            method:"PUT",
+            body:JSON.stringify({
+              display_name:
+                $("profileDisplayName")
+                .value
+            })
+          }
+        );
+
+      state.user={
+        ...state.user,
+        ...result.user
+      };
+
+      showToast("Profile updated");
+
+      renderApp();
+
+    }catch(error){
+
+      $("profileError").textContent=
+        error.message;
+    }
+  };
+}
+
+
+/* =========================================================
+   NEW CONVERSATION
+========================================================= */
+
+function showNewConversation(){
+
+  const modal=
+    document.createElement("div");
+
+  modal.className="modal";
+
+  modal.innerHTML=`
+
+    <div class="modal-card">
+
+      <div class="modal-head">
+
+        <h3>New conversation</h3>
+
+        <button
+          class="icon-btn close-modal"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <p class="subtitle">
+        Start a conversation with a friend.
+      </p>
+
+      <div id="newConversationFriends"></div>
+
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  modal
+    .querySelector(".close-modal")
+    .onclick=()=>{
+      modal.remove();
+    };
+
+  const list=
+    modal.querySelector(
+      "#newConversationFriends"
+    );
+
+  if(!state.friends.length){
+
+    list.innerHTML=`
+      <div class="empty" style="padding:30px">
+        Add friends first.
+      </div>
+    `;
+
+    return;
+  }
+
+  list.innerHTML=
+    state.friends
+      .map(friend=>`
+
+        <div class="row">
+
+          <div class="avatar">
+            ${avatarLetter(
+              friend.display_name ||
+              friend.username
+            )}
+          </div>
+
+          <div class="row-info">
+
+            <div class="name">
+              ${escapeHTML(
+                friend.display_name ||
+                friend.username
+              )}
+            </div>
+
+            <div class="preview">
+              @${escapeHTML(
+                friend.username
+              )}
+            </div>
+
+          </div>
+
+          <button
+            class="small-btn choose-friend"
+            data-id="${friend.id}"
+          >
+            Chat
+          </button>
+
+        </div>
+      `)
+      .join("");
+
+  list
+    .querySelectorAll(".choose-friend")
+    .forEach(button=>{
+
+      button.onclick=async()=>{
+
+        modal.remove();
+
+        await startDirect(
+          button.dataset.id
+        );
+      };
+    });
+}
+
+
+/* =========================================================
+   DIRECT CONVERSATION
+========================================================= */
+
+async function startDirect(userId){
+
+  try{
+
+    const result=
+      await api(
+        "/api/conversations",
+        {
+          method:"POST",
+          body:JSON.stringify({
+            type:"direct",
+            user_id:userId
+          })
+        }
+      );
+
+    await loadConversations();
+
+    renderSidebar();
+
+    await openConversation(
+      result.id
+    );
+
+  }catch(error){
+
+    showToast(error.message);
+  }
+}
+
+
+/* =========================================================
+   OPEN CHAT
+========================================================= */
+
+async function openConversation(id){
+
+  try{
+
+    const data=
+      await api(
+        "/api/conversations/"+id
+      );
+
+    state.current={
+      ...data.conversation,
+      members:data.members,
+      my_role:data.my_role
+    };
+
+    state.messages=[];
+    state.nextBefore=null;
+    state.oldestLoaded=false;
+    state.lastMessageId=null;
+    state.replyTo=null;
+
+    await loadMessages();
+
+    renderChat();
+
+    $("appShell")
+      ?.classList.add("mobile-chat");
+
+    await markRead();
+
+  }catch(error){
+
+    showToast(error.message);
+  }
+}
+
+
+/* =========================================================
+   LOAD MESSAGES
+========================================================= */
+
+async function loadMessages(){
+
+  let path=
+    "/api/conversations/"+
+    state.current.id+
+    "/messages?limit=50";
+
+  if(state.nextBefore){
+
+    path+=
+      "&before="+
+      encodeURIComponent(
+        state.nextBefore
+      );
+  }
+
+  const data=
+    await api(path);
+
+  const incoming=
+    (data.messages || []).reverse();
+
+  state.messages=
+    incoming.concat(state.messages);
+
+  state.nextBefore=
+    data.next_before;
+
+  state.oldestLoaded=
+    state.nextBefore === null;
+
+  if(state.messages.length){
+
+    state.lastMessageId=
+      state.messages[
+        state.messages.length-1
+      ].id;
+  }
+}
+
+
+/* =========================================================
+   CHAT UI
+========================================================= */
+
+function renderChat(){
+
+  const conversation=
+    state.current;
+
+  let title;
+
+  if(conversation.type==="group"){
+
+    title=
+      conversation.title ||
+      "Group";
+
+  }else{
+
+    const other=
+      conversation.members
+        .find(member=>
+          member.id !== state.user.id
+        );
+
+    title=
+      other?.display_name ||
+      other?.username ||
+      "Chat";
+  }
+
+  $("chatPane").innerHTML=`
+
+    <div class="chat-header">
+
+      <button
+        class="icon-btn back-btn"
+        id="backChat"
+      >
+        ‹
+      </button>
+
+      <div class="avatar">
+        ${avatarLetter(title)}
+      </div>
+
+      <div class="chat-title">
+
+        <div class="name">
+          ${escapeHTML(title)}
+        </div>
+
+        <div
+          class="status"
+          id="chatStatus"
+        >
+          Connecting...
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div
+      class="messages"
+      id="messages"
+    ></div>
+
+
+    <div class="composer-area">
+
+      <div
+        class="reply-box"
+        id="replyBox"
+      ></div>
+
+      <div class="composer">
+
+        <textarea
+          id="messageInput"
+          rows="1"
+          maxlength="4000"
+          placeholder="Message..."
+        ></textarea>
+
+        <button
+          class="send-btn"
+          id="sendMessage"
+        >
+          ↑
+        </button>
+
+      </div>
+
+    </div>
+  `;
+
+  $("backChat").onclick=()=>{
+
+    $("appShell")
+      .classList.remove("mobile-chat");
+
+    state.current=null;
+  };
+
+  $("messageInput").addEventListener(
+    "input",
+    ()=>{
+      const input=$("messageInput");
+
+      input.style.height="auto";
+
+      input.style.height=
+        Math.min(
+          input.scrollHeight,
+          140
+        )+"px";
+
+      sendTyping();
+    }
+  );
+
+  $("messageInput").addEventListener(
+    "keydown",
+    event=>{
+
+      if(
+        event.key==="Enter" &&
+        !event.shiftKey
+      ){
+
+        event.preventDefault();
+
+        sendMessage();
+      }
+    }
+  );
+
+  $("sendMessage").onclick=
+    sendMessage;
+
+  renderMessages(true);
+}
+
+
+/* =========================================================
+   RENDER MESSAGES
+========================================================= */
+
+function renderMessages(scrollToBottom=false){
+
+  const container=
+    $("messages");
+
+  if(!container)return;
+
+  if(!state.messages.length){
+
+    container.innerHTML=`
+      <div class="empty">
+        No messages yet.<br>
+        Say something.
+      </div>
+    `;
+
+    return;
+  }
+
+  container.innerHTML=
+    state.messages
+      .map(message=>{
+
+        const mine=
+          message.sender_id ===
+          state.user.id;
+
+        const reactions=
+          message.reactions || {};
+
+        const reactionHTML=
+          Object.entries(reactions)
+            .map(([reaction,count])=>`
+
+              <span class="reaction">
+                ${reactionEmoji(reaction)}
+                ${count}
+              </span>
+
+            `)
+            .join("");
+
+        return `
+
+          <div
+            class="message ${
+              mine ? "mine" : ""
+            }"
+            data-message-id="${message.id}"
+          >
+
+            <div class="bubble">
+
+              ${
+                message.reply_to_id &&
+                message.reply_preview
+
+                ? `
+
+                  <div class="reply-preview">
+
+                    ${escapeHTML(
+                      message.reply_preview
+                    )}
+
+                  </div>
+
+                `
+
+                : ""
+              }
+
+              ${
+                message.deleted
+
+                ? "<i>Message deleted</i>"
+
+                : escapeHTML(
+                    message.body
+                  )
+              }
+
+              ${
+                message.edited_at &&
+                !message.deleted
+
+                ? " <small>(edited)</small>"
+
+                : ""
+              }
+
+            </div>
+
+
+            <div class="message-meta">
+
+              ${
+                mine
+                ? "You"
+                : escapeHTML(
+                    message.sender_display_name ||
+                    message.sender_username
+                  )
+              }
+
+              ·
+
+              ${formatTime(
+                message.created_at
+              )}
+
+            </div>
+
+
+            ${
+              reactionHTML
+
+              ? `
+                <div class="reactions">
+                  ${reactionHTML}
+                </div>
+              `
+
+              : ""
+            }
+
+
+            ${
+              !message.deleted
+
+              ? `
+
+                <div class="message-actions">
+
+                  <button
+                    onclick="replyToMessage('${message.id}')"
+                  >
+                    Reply
+                  </button>
+
+                  <button
+                    onclick="reactToMessage('${message.id}','like')"
+                  >
+                    👍
+                  </button>
+
+                  <button
+                    onclick="reactToMessage('${message.id}','love')"
+                  >
+                    ❤️
+                  </button>
+
+                  <button
+                    onclick="reactToMessage('${message.id}','laugh')"
+                  >
+                    😂
+                  </button>
+
+                  ${
+                    mine
+
+                    ? `
+
+                      <button
+                        onclick="editMessage('${message.id}')"
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        onclick="deleteMessage('${message.id}')"
+                      >
+                        Delete
+                      </button>
+
+                    `
+
+                    : ""
+                  }
+
+                </div>
+
+              `
+
+              : ""
+            }
+
+          </div>
+        `;
+      })
+      .join("");
+
+  if(scrollToBottom){
+
+    container.scrollTop=
+      container.scrollHeight;
+  }
+}
+
+
+/* =========================================================
+   REPLIES
+========================================================= */
+
+window.replyToMessage=function(id){
+
+  const message=
+    state.messages.find(
+      item=>item.id===id
+    );
+
+  if(!message)return;
+
+  state.replyTo=message;
+
+  renderReplyBox();
+
+  $("messageInput").focus();
+};
+
+
+function renderReplyBox(){
+
+  const box=$("replyBox");
+
+  if(!box)return;
+
+  if(!state.replyTo){
+
+    box.innerHTML="";
+
+    return;
+  }
+
+  box.innerHTML=`
+
+    <div class="replying">
+
+      <span>
+
+        Replying to
+        <b>
+          ${escapeHTML(
+            state.replyTo.sender_display_name ||
+            state.replyTo.sender_username
+          )}
+        </b>:
+
+        ${escapeHTML(
+          state.replyTo.body || ""
+        )}
+
+      </span>
+
+      <button
+        class="icon-btn"
+        onclick="
+          state.replyTo=null;
+          renderReplyBox();
+        "
+      >
+        ×
+      </button>
+
+    </div>
+  `;
+}
+
+
+/* =========================================================
+   SEND
+========================================================= */
+
+async function sendMessage(){
+
+  const input=
+    $("messageInput");
+
+  const text=
+    input.value.trim();
+
+  if(!text || !state.current)return;
+
+  try{
+
+    const result=
+      await api(
+        "/api/conversations/"+
+        state.current.id+
+        "/messages",
+        {
+          method:"POST",
+          body:JSON.stringify({
+            body:text,
+            reply_to_id:
+              state.replyTo?.id || null
+          })
+        }
+      );
+
+    state.messages.push(
+      result.message
+    );
+
+    state.lastMessageId=
+      result.message.id;
+
+    input.value="";
+    input.style.height="auto";
+
+    state.replyTo=null;
+
+    renderReplyBox();
+    renderMessages(true);
+
+    await markRead();
+
+  }catch(error){
+
+    showToast(error.message);
+  }
+}
+
+
+/* =========================================================
+   EDIT
+========================================================= */
+
+window.editMessage=async function(id){
+
+  const message=
+    state.messages.find(
+      item=>item.id===id
+    );
+
+  if(!message)return;
+
+  const text=
+    prompt(
+      "Edit message:",
+      message.body || ""
+    );
+
+  if(text===null)return;
+
+  try{
+
+    const result=
+      await api(
+        "/api/messages/"+id,
+        {
+          method:"PUT",
+          body:JSON.stringify({
+            body:text
+          })
+        }
+      );
+
+    const index=
+      state.messages.findIndex(
+        item=>item.id===id
+      );
+
+    if(index!==-1){
+
+      state.messages[index]=
+        result.message;
+    }
+
+    renderMessages(false);
+
+  }catch(error){
+
+    showToast(error.message);
+  }
+};
+
+
+/* =========================================================
+   DELETE
+========================================================= */
+
+window.deleteMessage=async function(id){
+
+  if(!confirm("Delete this message?")){
+    return;
+  }
+
+  try{
+
+    await api(
+      "/api/messages/"+id,
+      {
+        method:"DELETE"
+      }
+    );
+
+    const message=
+      state.messages.find(
+        item=>item.id===id
+      );
+
+    if(message){
+
+      message.deleted=true;
+      message.body=null;
+    }
+
+    renderMessages(false);
+
+  }catch(error){
+
+    showToast(error.message);
+  }
+};
+
+
+/* =========================================================
+   REACTIONS
+========================================================= */
+
+function reactionEmoji(reaction){
+
+  return {
+    like:"👍",
+    love:"❤️",
+    laugh:"😂",
+    wow:"😮",
+    sad:"😢",
+    thanks:"🙏"
+  }[reaction] || reaction;
+}
+
+
+window.reactToMessage=
+  async function(id,reaction){
+
+    try{
+
+      await api(
+        "/api/messages/"+id+"/react",
+        {
+          method:"POST",
+          body:JSON.stringify({
+            reaction
+          })
+        }
+      );
+
+      await refreshMessages();
+
+    }catch(error){
+
+      showToast(error.message);
+    }
+  };
+
+
+async function refreshMessages(){
+
+  if(!state.current)return;
+
+  const data=
+    await api(
+      "/api/conversations/"+
+      state.current.id+
+      "/messages?limit=100"
+    );
+
+  state.messages=
+    (data.messages || [])
+    .reverse();
+
+  state.nextBefore=
+    data.next_before;
+
+  state.oldestLoaded=
+    !state.nextBefore;
+
+  state.lastMessageId=
+    state.messages.at(-1)?.id ||
+    null;
+
+  renderMessages(false);
+}
+
+
+/* =========================================================
+   READ RECEIPTS
+========================================================= */
+
+async function markRead(){
+
+  if(!state.current)return;
+
+  try{
+
+    await api(
+      "/api/conversations/"+
+      state.current.id+
+      "/read",
+      {
+        method:"POST"
+      }
+    );
+
+    state.unread[
+      state.current.id
+    ]=0;
+
+  }catch{}
+}
+
+
+/* =========================================================
+   TYPING
+========================================================= */
+
+function sendTyping(){
+
+  if(!state.current)return;
+
+  clearTimeout(
+    state.typingTimer
+  );
+
+  state.typingTimer=
+    setTimeout(()=>{
+
+      api(
+        "/api/conversations/"+
+        state.current.id+
+        "/typing",
+        {
+          method:"POST"
+        }
+      ).catch(()=>{});
+
+    },150);
+}
+
+
+/* =========================================================
+   POLLING / REALTIME
+========================================================= */
+
+function startPolling(){
+
+  clearInterval(
+    state.pollTimer
+  );
+
+  state.pollTimer=
+    setInterval(
+      async()=>{
+        try{
+
+          if(!state.accessToken)return;
+
+          await loadUnread();
+
+          if(state.current){
+
+            let path=
+              "/api/conversations/"+
+              state.current.id+
+              "/poll";
+
+            if(state.lastMessageId){
+
+              path+=
+                "?after="+
+                encodeURIComponent(
+                  state.lastMessageId
+                );
+            }
+
+            const data=
+              await api(path);
+
+            if(
+              data.messages &&
+              data.messages.length
+            ){
+
+              state.messages.push(
+                ...data.messages
+              );
+
+              state.lastMessageId=
+                data.messages[
+                  data.messages.length-1
+                ].id;
+
+              renderMessages(true);
+
+              await markRead();
+            }
+
+            const members=
+              data.members || [];
+
+            const typing=
+              members
+                .filter(member=>member.typing)
+                .map(member=>member.username);
+
+            const online=
+              members
+                .filter(member=>member.online)
+                .map(member=>member.username);
+
+            const status=
+              $("chatStatus");
+
+            if(status){
+
+              if(typing.length){
+
+                status.textContent=
+                  typing.join(", ") +
+                  (
+                    typing.length===1
+                    ? " is typing..."
+                    : " are typing..."
+                  );
+
+              }else if(
+                state.current.type==="group"
+              ){
+
+                status.textContent=
+                  online.length
+                  ? online.length+" online"
+                  : "Offline";
+
+              }else{
+
+                status.textContent=
+                  online.length
+                  ? "Online"
+                  : "Offline";
+              }
+            }
+          }
+
+          renderSidebar();
+
+        }catch(error){
+
+          /*
+            Poll failures are intentionally
+            silent so temporary network issues
+            don't interrupt the chat.
+          */
+        }
+
+      },
+      3000
+    );
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+async function logout(){
+
+  try{
+
+    if(state.refreshToken){
+
+      await api(
+        "/api/auth/logout",
+        {
+          method:"POST",
+          body:JSON.stringify({
+            refresh_token:
+              state.refreshToken
+          })
+        },
+        false
+      );
+    }
+
+  }catch{}
+
+  clearSession();
+
+  renderAuth();
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+if(state.accessToken){
+
+  boot();
+
+}else{
+
+  renderAuth();
+}
+
+</script>
+
+</body>
+</html>
