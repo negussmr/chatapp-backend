@@ -14,6 +14,8 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/users', require('./routes/users'));
 app.use('/api/friends', require('./routes/friends'));
 app.use('/api/conversations', require('./routes/conversations'));
+app.use('/api/messages', require('./routes/messages').messageActions);
+app.use('/api/conversations/:id/messages', require('./routes/messages').conversationMessages);
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Not found' });
