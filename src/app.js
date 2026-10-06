@@ -18,6 +18,8 @@ app.use('/api/messages', require('./routes/messages').messageActions);
 app.use('/api/messages', require('./routes/reactions'));
 app.use('/api/conversations/:id/messages', require('./routes/messages').conversationMessages);
 app.use('/api/conversations/:id', require('./routes/reads'));
+app.use('/api/conversations/:id', require('./routes/realtime').conversationRealtime);
+app.use('/api/unread', require('./routes/realtime').unread);
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Not found' });

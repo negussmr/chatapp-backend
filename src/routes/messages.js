@@ -138,4 +138,4 @@ messageActions.delete('/:id', async (req, res, next) => {
   }
 });
 
-module.exports = { conversationMessages, messageActions };
+module.exports = { conversationMessages, messageActions, SELECT_MESSAGE };
