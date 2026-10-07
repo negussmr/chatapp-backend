@@ -2,785 +2,876 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ChatApp</title>
 
 <style>
-* {
-    box-sizing: border-box;
+*{box-sizing:border-box}
+:root{
+  --bg:#0b0e12;
+  --panel:#11161c;
+  --panel2:#181e25;
+  --border:#29313a;
+  --text:#f4f6f8;
+  --muted:#8f9aa6;
+  --accent:#6687ff;
+  --danger:#ef6262;
+  --mine:#506fd0;
 }
 
-:root {
-    --bg: #0b0d10;
-    --panel: #12161b;
-    --panel2: #181d23;
-    --border: #252c34;
-    --text: #f2f4f7;
-    --muted: #8d96a3;
-    --accent: #6c8cff;
-    --accent2: #4f6fe8;
-    --danger: #ff5c6c;
-    --success: #4fd18b;
+body{
+  margin:0;
+  height:100vh;
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
 }
 
-body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: Arial, Helvetica, sans-serif;
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+
+.hidden{display:none!important}
+
+button{
+  border:0;
 }
 
-button,
-input,
-textarea {
-    font: inherit;
+.primary{
+  background:var(--accent);
+  color:white;
+  padding:11px 15px;
+  border-radius:10px;
+  font-weight:700;
 }
 
-button {
-    cursor: pointer;
+.secondary{
+  background:var(--panel2);
+  color:var(--text);
+  border:1px solid var(--border);
+  padding:9px 13px;
+  border-radius:10px;
 }
 
-.hidden {
-    display: none !important;
+.danger{
+  background:#472326;
+  color:#ffb3b3;
+  padding:9px 13px;
+  border-radius:10px;
 }
 
-.screen {
-    min-height: 100vh;
+.ghost{
+  background:transparent;
+  color:var(--muted);
+  padding:5px 7px;
+  border-radius:7px;
+}
+
+.ghost:hover{
+  background:var(--panel2);
+  color:white;
 }
 
 /* AUTH */
 
-.auth-screen {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 25px;
+#authScreen{
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  padding:20px;
 }
 
-.auth-box {
-    width: min(430px, 100%);
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 30px;
-    box-shadow: 0 20px 60px rgba(0,0,0,.35);
+.auth-card{
+  width:min(430px,100%);
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:27px;
 }
 
-.logo {
-    font-size: 28px;
-    font-weight: 800;
-    margin-bottom: 6px;
+.logo{
+  font-size:28px;
+  font-weight:800;
 }
 
-.subtitle {
-    color: var(--muted);
-    margin-bottom: 25px;
+.subtitle{
+  color:var(--muted);
+  margin:5px 0 22px;
 }
 
-.field {
-    margin-bottom: 15px;
+.tabs{
+  display:flex;
+  background:#0b0e12;
+  padding:4px;
+  border-radius:10px;
+  margin-bottom:18px;
 }
 
-.field label {
-    display: block;
-    margin-bottom: 7px;
-    color: #cbd1d9;
-    font-size: 14px;
+.tabs button{
+  flex:1;
+  padding:9px;
+  background:transparent;
+  color:var(--muted);
+  border-radius:8px;
+}
+
+.tabs button.active{
+  background:var(--panel2);
+  color:white;
+}
+
+.field{
+  margin:12px 0;
+}
+
+.field label{
+  display:block;
+  color:var(--muted);
+  font-size:13px;
+  margin-bottom:5px;
 }
 
 .field input,
-.field textarea,
-.search-input {
-    width: 100%;
-    background: #0d1116;
-    border: 1px solid var(--border);
-    color: var(--text);
-    border-radius: 10px;
-    padding: 12px;
-    outline: none;
+.field textarea{
+  width:100%;
+  background:#0b0e12;
+  border:1px solid var(--border);
+  color:white;
+  padding:11px;
+  border-radius:10px;
+  outline:none;
 }
 
 .field input:focus,
-.field textarea:focus,
-.search-input:focus {
-    border-color: var(--accent);
+.field textarea:focus{
+  border-color:var(--accent);
 }
 
-.primary {
-    width: 100%;
-    border: 0;
-    border-radius: 10px;
-    padding: 12px;
-    background: var(--accent);
-    color: white;
-    font-weight: 700;
+.check{
+  display:flex;
+  gap:8px;
+  font-size:12px;
+  color:var(--muted);
+  margin:9px 0;
 }
 
-.primary:hover {
-    background: var(--accent2);
+.check input{
+  margin-top:3px;
 }
 
-.secondary {
-    background: var(--panel2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 9px 12px;
-    border-radius: 9px;
+.legal{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:12px;
 }
 
-.danger {
-    background: rgba(255,92,108,.12);
-    border: 1px solid rgba(255,92,108,.3);
-    color: #ff7885;
-    padding: 9px 12px;
-    border-radius: 9px;
+.legal a{
+  color:var(--accent);
+  cursor:pointer;
 }
 
-.link-button {
-    border: 0;
-    background: none;
-    color: var(--accent);
-    padding: 0;
-}
-
-.auth-switch {
-    text-align: center;
-    margin-top: 18px;
-    color: var(--muted);
-}
-
-.legal-small {
-    margin-top: 18px;
-    font-size: 11px;
-    line-height: 1.5;
-    color: var(--muted);
-}
-
-/* CHECKBOXES */
-
-.check {
-    display: flex;
-    gap: 9px;
-    align-items: flex-start;
-    margin: 12px 0;
-    color: #cbd1d9;
-    font-size: 13px;
-    line-height: 1.4;
-}
-
-.check input {
-    margin-top: 3px;
-    accent-color: var(--accent);
+#error{
+  color:#ff8e8e;
+  font-size:13px;
+  min-height:18px;
+  margin-top:8px;
 }
 
 /* APP */
 
-.app {
-    height: 100vh;
-    display: flex;
-    overflow: hidden;
+#app{
+  height:100vh;
+  display:grid;
+  grid-template-columns:320px 1fr;
+  overflow:hidden;
 }
 
-.sidebar {
-    width: 320px;
-    min-width: 320px;
-    background: var(--panel);
-    border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
+.sidebar{
+  background:var(--panel);
+  border-right:1px solid var(--border);
+  display:flex;
+  flex-direction:column;
+  min-width:0;
 }
 
-.sidebar-header {
-    padding: 18px;
-    border-bottom: 1px solid var(--border);
+.side-header{
+  padding:16px;
+  border-bottom:1px solid var(--border);
 }
 
-.sidebar-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
+.side-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
-.sidebar-title strong {
-    font-size: 20px;
+.side-title strong{
+  font-size:20px;
 }
 
-.icon-btn {
-    background: var(--panel2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    width: 35px;
-    height: 35px;
-    border-radius: 9px;
+.icon{
+  width:38px;
+  height:38px;
+  border-radius:10px;
+  background:var(--panel2);
+  border:1px solid var(--border);
+  color:white;
 }
 
-.search {
-    padding: 12px;
+.search{
+  padding:10px;
+  border-bottom:1px solid var(--border);
 }
 
-.conversation-list {
-    flex: 1;
-    overflow-y: auto;
+.search input{
+  width:100%;
+  background:#0b0e12;
+  color:white;
+  border:1px solid var(--border);
+  padding:10px;
+  border-radius:10px;
+  outline:none;
 }
 
-.conversation {
-    padding: 13px 15px;
-    border-bottom: 1px solid rgba(255,255,255,.035);
-    cursor: pointer;
+.nav{
+  display:flex;
+  gap:5px;
+  padding:8px;
+  border-bottom:1px solid var(--border);
 }
 
-.conversation:hover {
-    background: var(--panel2);
+.nav button{
+  flex:1;
+  background:transparent;
+  color:var(--muted);
+  padding:9px;
+  border-radius:8px;
+  font-size:12px;
 }
 
-.conversation.active {
-    background: rgba(108,140,255,.12);
+.nav button.active{
+  background:var(--panel2);
+  color:white;
 }
 
-.conversation-name {
-    font-weight: 700;
-    margin-bottom: 4px;
+.list{
+  overflow:auto;
+  flex:1;
 }
 
-.conversation-preview {
-    color: var(--muted);
-    font-size: 13px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.conv,
+.user-row{
+  display:flex;
+  gap:10px;
+  padding:12px;
+  border-bottom:1px solid rgba(255,255,255,.03);
 }
 
-.sidebar-footer {
-    padding: 12px;
-    border-top: 1px solid var(--border);
+.conv{
+  cursor:pointer;
 }
 
-.profile-button {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: transparent;
-    border: 0;
-    color: var(--text);
-    text-align: left;
-    padding: 7px;
+.conv:hover,
+.conv.active{
+  background:var(--panel2);
 }
 
-/* MAIN */
-
-.main {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
+.avatar{
+  width:42px;
+  height:42px;
+  min-width:42px;
+  border-radius:50%;
+  background:#293346;
+  display:grid;
+  place-items:center;
+  font-weight:800;
 }
 
-.topbar {
-    height: 65px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    padding: 0 18px;
-    justify-content: space-between;
-    background: var(--panel);
+.conv-info{
+  min-width:0;
+  flex:1;
 }
 
-.chat-title {
-    font-weight: 700;
+.conv-top{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
 }
 
-.chat-status {
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 3px;
+.conv-name{
+  font-weight:700;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
 }
 
-.messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 9px;
+.time{
+  font-size:10px;
+  color:var(--muted);
 }
 
-.empty {
-    margin: auto;
-    text-align: center;
-    color: var(--muted);
+.preview{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:3px;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
 }
 
-.message {
-    max-width: min(650px, 80%);
-    padding: 9px 12px;
-    border-radius: 13px;
-    background: var(--panel2);
-    align-self: flex-start;
-    position: relative;
+.badge{
+  display:inline-grid;
+  place-items:center;
+  min-width:19px;
+  height:19px;
+  padding:0 5px;
+  margin-left:5px;
+  background:var(--accent);
+  border-radius:10px;
+  color:white;
+  font-size:10px;
 }
 
-.message.mine {
-    align-self: flex-end;
-    background: #27386f;
+.side-footer{
+  display:flex;
+  gap:7px;
+  padding:10px;
+  border-top:1px solid var(--border);
 }
 
-.message-author {
-    font-size: 11px;
-    color: #aab2bf;
-    margin-bottom: 3px;
+.side-footer button{
+  flex:1;
 }
 
-.message-body {
-    white-space: pre-wrap;
-    word-break: break-word;
+/* CHAT */
+
+.main{
+  min-width:0;
+  min-height:0;
+  background:#0d1116;
 }
 
-.message-meta {
-    font-size: 10px;
-    color: #9da6b3;
-    margin-top: 4px;
+.empty{
+  height:100%;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  color:var(--muted);
+  padding:30px;
 }
 
-.message-actions {
-    display: flex;
-    gap: 4px;
-    margin-top: 6px;
+.chat{
+  height:100%;
+  display:flex;
+  flex-direction:column;
 }
 
-.message-actions button {
-    border: 0;
-    background: rgba(255,255,255,.07);
-    color: #cbd1d9;
-    font-size: 11px;
-    border-radius: 6px;
-    padding: 4px 7px;
+.chat-header{
+  min-height:66px;
+  padding:10px 15px;
+  background:var(--panel);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  gap:10px;
 }
 
-.composer {
-    border-top: 1px solid var(--border);
-    padding: 12px;
-    display: flex;
-    gap: 8px;
-    background: var(--panel);
+.chat-info{
+  flex:1;
+  min-width:0;
 }
 
-.composer textarea {
-    flex: 1;
-    resize: none;
-    min-height: 45px;
-    max-height: 130px;
-    background: #0d1116;
-    border: 1px solid var(--border);
-    color: var(--text);
-    border-radius: 10px;
-    padding: 12px;
-    outline: none;
+.chat-name{
+  font-weight:800;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
 }
 
-.send-btn {
-    width: 70px;
-    border: 0;
-    border-radius: 10px;
-    background: var(--accent);
-    color: white;
-    font-weight: 700;
+.chat-status{
+  color:var(--muted);
+  font-size:11px;
+}
+
+.messages{
+  flex:1;
+  overflow:auto;
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.message-row{
+  max-width:min(720px,85%);
+  display:flex;
+  gap:7px;
+  align-items:flex-end;
+}
+
+.message-row.mine{
+  align-self:flex-end;
+  flex-direction:row-reverse;
+}
+
+.message-avatar{
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  background:#293346;
+  display:grid;
+  place-items:center;
+  font-size:9px;
+  font-weight:800;
+}
+
+.message-wrap{
+  min-width:0;
+}
+
+.sender{
+  color:var(--muted);
+  font-size:10px;
+  margin:0 8px 3px;
+}
+
+.mine .sender{
+  text-align:right;
+}
+
+.bubble{
+  background:#1a2027;
+  border:1px solid var(--border);
+  padding:9px 11px;
+  border-radius:15px;
+  word-break:break-word;
+}
+
+.mine .bubble{
+  background:var(--mine);
+  border-color:transparent;
+}
+
+.deleted{
+  color:var(--muted);
+  font-style:italic;
+}
+
+.reply-preview{
+  border-left:3px solid var(--accent);
+  background:rgba(0,0,0,.18);
+  padding:5px 8px;
+  margin-bottom:6px;
+  border-radius:5px;
+  font-size:11px;
+  color:#dce1e7;
+}
+
+.meta{
+  display:flex;
+  justify-content:flex-end;
+  gap:5px;
+  font-size:9px;
+  color:rgba(255,255,255,.55);
+  margin-top:4px;
+}
+
+.reactions{
+  display:flex;
+  gap:3px;
+  flex-wrap:wrap;
+  margin-top:4px;
+}
+
+.reaction{
+  background:var(--panel2);
+  border:1px solid var(--border);
+  color:white;
+  border-radius:10px;
+  padding:2px 6px;
+  font-size:11px;
+}
+
+.message-actions{
+  display:flex;
+  justify-content:flex-start;
+  margin-top:2px;
+}
+
+.mine .message-actions{
+  justify-content:flex-end;
+}
+
+.composer{
+  background:var(--panel);
+  border-top:1px solid var(--border);
+  padding:10px;
+  display:flex;
+  gap:8px;
+}
+
+.composer textarea{
+  flex:1;
+  resize:none;
+  min-height:42px;
+  max-height:130px;
+  background:#0b0e12;
+  color:white;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:10px;
+  outline:none;
+}
+
+.reply-bar{
+  background:#161c23;
+  border-top:1px solid var(--border);
+  padding:7px 12px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  font-size:12px;
+}
+
+.reply-bar div{
+  flex:1;
+  min-width:0;
+}
+
+.reply-bar small{
+  display:block;
+  color:var(--muted);
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+.typing{
+  height:20px;
+  padding:0 15px;
+  color:var(--muted);
+  font-size:11px;
+}
+
+.load{
+  align-self:center;
 }
 
 /* MODAL */
 
-.modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    z-index: 50;
+.modal-back{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  background:rgba(0,0,0,.7);
+  display:grid;
+  place-items:center;
+  padding:18px;
 }
 
-.modal-box {
-    width: min(650px, 100%);
-    max-height: 85vh;
-    overflow-y: auto;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 25px;
+.modal{
+  width:min(560px,100%);
+  max-height:90vh;
+  overflow:auto;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:17px;
+  padding:20px;
 }
 
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 18px;
+.modal-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
-.modal-header h2 {
-    margin: 0;
+.modal h2{
+  margin:0 0 10px;
 }
 
-.close {
-    background: transparent;
-    border: 0;
-    color: var(--muted);
-    font-size: 24px;
+.modal p,
+.modal li{
+  color:#c4ccd5;
+  font-size:13px;
+  line-height:1.55;
 }
 
-.legal-content {
-    color: #c9cfd8;
-    line-height: 1.65;
-    font-size: 14px;
+.user-row{
+  align-items:center;
 }
 
-.legal-content h3 {
-    color: white;
-    margin-top: 22px;
+.user-row .grow{
+  flex:1;
+  min-width:0;
 }
 
-.legal-content ul {
-    padding-left: 22px;
+.actions{
+  display:flex;
+  gap:5px;
+  flex-wrap:wrap;
 }
 
-/* SEARCH RESULTS */
-
-.results {
-    padding: 0 12px 12px;
+.actions button{
+  font-size:11px;
 }
 
-.result {
-    padding: 11px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    margin-top: 7px;
-    background: var(--panel2);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
+.toast{
+  position:fixed;
+  z-index:300;
+  bottom:18px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#202730;
+  border:1px solid var(--border);
+  padding:10px 14px;
+  border-radius:11px;
+  box-shadow:0 15px 40px rgba(0,0,0,.4);
 }
 
-.result-name {
-    font-weight: 700;
+.mobile-only{
+  display:none;
 }
 
-.result-username {
-    color: var(--muted);
-    font-size: 12px;
-}
+@media(max-width:760px){
 
-/* PROFILE */
+  #app{
+    display:block;
+  }
 
-.profile {
-    text-align: center;
-}
+  .sidebar{
+    position:absolute;
+    inset:0;
+    z-index:10;
+  }
 
-.avatar {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    background: #28334c;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 25px;
-    font-weight: 800;
-}
+  .main{
+    display:none;
+    height:100vh;
+  }
 
-.profile h2 {
-    margin: 12px 0 4px;
-}
+  #app.chat-open .sidebar{
+    display:none;
+  }
 
-.profile .username {
-    color: var(--muted);
-}
+  #app.chat-open .main{
+    display:block;
+  }
 
-.profile-actions {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    flex-wrap: wrap;
-}
+  .mobile-only{
+    display:block;
+  }
 
-/* MOBILE */
-
-@media (max-width: 750px) {
-    .sidebar {
-        width: 100%;
-        min-width: 0;
-    }
-
-    .main {
-        display: none;
-    }
-
-    .app.chat-open .sidebar {
-        display: none;
-    }
-
-    .app.chat-open .main {
-        display: flex;
-    }
-
-    .back-mobile {
-        display: block !important;
-    }
-
-    .message {
-        max-width: 88%;
-    }
-}
-
-@media (min-width: 751px) {
-    .back-mobile {
-        display: none !important;
-    }
+  .message-row{
+    max-width:92%;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- AUTH SCREEN -->
+<!-- AUTH -->
 
-<div id="authScreen" class="screen auth-screen">
-    <div class="auth-box">
+<section id="authScreen">
 
-        <div class="logo">ChatApp</div>
-        <div class="subtitle">Private conversations. Simple connection.</div>
+  <div class="auth-card">
 
-        <!-- LOGIN -->
-
-        <div id="loginForm">
-
-            <div class="field">
-                <label>Username or Email</label>
-                <input id="loginInput" autocomplete="username">
-            </div>
-
-            <div class="field">
-                <label>Password</label>
-                <input id="loginPassword" type="password" autocomplete="current-password">
-            </div>
-
-            <button class="primary" onclick="login()">Log In</button>
-
-            <div class="auth-switch">
-                Don't have an account?
-                <button class="link-button" onclick="showRegister()">Create one</button>
-            </div>
-
-            <div class="legal-small">
-                By logging in, you agree to use ChatApp responsibly and according to its Terms of Service and Community Guidelines.
-            </div>
-
-        </div>
-
-        <!-- REGISTER -->
-
-        <div id="registerForm" class="hidden">
-
-            <div class="field">
-                <label>Username</label>
-                <input id="registerUsername" autocomplete="username">
-            </div>
-
-            <div class="field">
-                <label>Email</label>
-                <input id="registerEmail" type="email" autocomplete="email">
-            </div>
-
-            <div class="field">
-                <label>Display Name</label>
-                <input id="registerDisplayName">
-            </div>
-
-            <div class="field">
-                <label>Password</label>
-                <input id="registerPassword" type="password" autocomplete="new-password">
-            </div>
-
-            <label class="check">
-                <input id="ageCheck" type="checkbox">
-                <span>I confirm that I am <strong>16 years old or older</strong>.</span>
-            </label>
-
-            <label class="check">
-                <input id="termsCheck" type="checkbox">
-                <span>I have read and agree to the <button class="link-button" onclick="openLegal('terms')">Terms of Service</button>.</span>
-            </label>
-
-            <label class="check">
-                <input id="privacyCheck" type="checkbox">
-                <span>I have read the <button class="link-button" onclick="openLegal('privacy')">Privacy Policy</button> and understand how my personal information is processed.</span>
-            </label>
-
-            <label class="check">
-                <input id="consentCheck" type="checkbox">
-                <span>I consent to the processing of my personal information as described in the Privacy Policy.</span>
-            </label>
-
-            <button class="primary" onclick="register()">Create Account</button>
-
-            <div class="auth-switch">
-                Already have an account?
-                <button class="link-button" onclick="showLogin()">Log in</button>
-            </div>
-
-        </div>
-
+    <div class="logo">ChatApp</div>
+    <div class="subtitle">
+      Messages. Friends. Groups.
     </div>
-</div>
+
+    <div class="tabs">
+      <button id="loginTab" class="active" onclick="setAuthMode('login')">
+        Login
+      </button>
+
+      <button id="registerTab" onclick="setAuthMode('register')">
+        Register
+      </button>
+    </div>
+
+    <form id="authForm">
+
+      <div id="usernameField" class="field hidden">
+        <label>Username</label>
+        <input id="username" maxlength="20">
+      </div>
+
+      <div class="field">
+        <label id="loginLabel">Username or email</label>
+        <input id="login" required>
+      </div>
+
+      <div id="emailField" class="field hidden">
+        <label>Email</label>
+        <input id="email" type="email">
+      </div>
+
+      <div id="displayField" class="field hidden">
+        <label>Display name</label>
+        <input id="displayName" maxlength="50">
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <input id="password"
+               type="password"
+               minlength="8"
+               maxlength="72"
+               required>
+      </div>
+
+      <div id="registerChecks" class="hidden">
+
+        <label class="check">
+          <input id="ageCheck" type="checkbox">
+          <span>I confirm that I am 16 years old or older.</span>
+        </label>
+
+        <label class="check">
+          <input id="termsCheck" type="checkbox">
+          <span>
+            I agree to the
+            <a onclick="showLegal('terms')">Terms of Service</a>.
+          </span>
+        </label>
+
+        <label class="check">
+          <input id="privacyCheck" type="checkbox">
+          <span>
+            I have read the
+            <a onclick="showLegal('privacy')">Privacy Policy</a>.
+          </span>
+        </label>
+
+        <label class="check">
+          <input id="consentCheck" type="checkbox">
+          <span>
+            I consent to the processing described in the Privacy Policy.
+          </span>
+        </label>
+
+      </div>
+
+      <button id="authButton"
+              class="primary"
+              style="width:100%;margin-top:8px">
+        Login
+      </button>
+
+      <div id="error"></div>
+
+    </form>
+
+    <div class="legal">
+      By using ChatApp you agree to follow the
+      <a onclick="showLegal('community')">
+        Community Guidelines
+      </a>.
+    </div>
+
+  </div>
+
+</section>
 
 
 <!-- APP -->
 
-<div id="app" class="app hidden">
+<div id="app" class="hidden">
 
-    <!-- SIDEBAR -->
+  <aside class="sidebar">
 
-    <aside class="sidebar">
+    <div class="side-header">
 
-        <div class="sidebar-header">
+      <div class="side-title">
 
-            <div class="sidebar-title">
-                <strong>ChatApp</strong>
-                <button class="icon-btn" onclick="openSearch()">＋</button>
-            </div>
+        <strong>ChatApp</strong>
 
-            <input
-                id="userSearch"
-                class="search-input"
-                placeholder="Search people..."
-                oninput="searchUsers()"
-            >
+        <button class="icon"
+                onclick="openMenu()">
+          ⋯
+        </button>
 
-        </div>
-
-        <div id="searchResults" class="results hidden"></div>
-
-        <div id="conversationList" class="conversation-list"></div>
-
-        <div class="sidebar-footer">
-
-            <button class="profile-button" onclick="openMyProfile()">
-
-                <div id="myAvatar" class="avatar" style="width:40px;height:40px;font-size:15px;">
-                    ?
-                </div>
-
-                <div>
-                    <div id="myName">User</div>
-                    <div id="myUsername" style="font-size:12px;color:var(--muted);">
-                        @user
-                    </div>
-                </div>
-
-            </button>
-
-        </div>
-
-    </aside>
-
-
-    <!-- MAIN CHAT -->
-
-    <main class="main">
-
-        <div class="topbar">
-
-            <div style="display:flex;align-items:center;gap:10px;">
-
-                <button
-                    class="icon-btn back-mobile"
-                    onclick="closeChat()"
-                >
-                    ←
-                </button>
-
-                <div>
-
-                    <div id="chatTitle" class="chat-title">
-                        Select a conversation
-                    </div>
-
-                    <div id="chatStatus" class="chat-status">
-                        -
-                    </div>
-
-                </div>
-
-            </div>
-
-            <button
-                id="chatProfileButton"
-                class="secondary hidden"
-                onclick="openCurrentUserProfile()"
-            >
-                Profile
-            </button>
-
-        </div>
-
-
-        <div id="messages" class="messages">
-
-            <div class="empty">
-                Select a conversation to start chatting.
-            </div>
-
-        </div>
-
-
-        <div id="typingIndicator"
-             style="height:20px;padding:0 15px;font-size:12px;color:var(--muted);">
-        </div>
-
-
-        <div class="composer">
-
-            <textarea
-                id="messageInput"
-                placeholder="Write a message..."
-                oninput="handleTyping()"
-                onkeydown="messageKeydown(event)"
-            ></textarea>
-
-            <button class="send-btn" onclick="sendMessage()">
-                Send
-            </button>
-
-        </div>
-
-    </main>
-
-</div>
-
-
-<!-- MODAL -->
-
-<div id="modal" class="modal hidden" onclick="closeModalOutside(event)">
-
-    <div class="modal-box">
-
-        <div class="modal-header">
-
-            <h2 id="modalTitle">ChatApp</h2>
-
-            <button class="close" onclick="closeModal()">
-                ×
-            </button>
-
-        </div>
-
-        <div id="modalContent"></div>
+      </div>
 
     </div>
 
+
+    <div class="search">
+
+      <input id="globalSearch"
+             placeholder="Search users..."
+             oninput="debouncedSearch()">
+
+    </div>
+
+
+    <div class="nav">
+
+      <button data-tab="chats"
+              class="active"
+              onclick="setSideTab('chats')">
+        Chats
+      </button>
+
+      <button data-tab="friends"
+              onclick="setSideTab('friends')">
+        Friends
+      </button>
+
+      <button data-tab="requests"
+              onclick="setSideTab('requests')">
+        Requests
+      </button>
+
+    </div>
+
+
+    <div id="sideList" class="list"></div>
+
+
+    <div class="side-footer">
+
+      <button class="secondary"
+              onclick="openProfile()">
+        Profile
+      </button>
+
+      <button class="secondary"
+              onclick="logout()">
+        Logout
+      </button>
+
+    </div>
+
+  </aside>
+
+
+  <main class="main">
+
+    <div id="emptyState" class="empty">
+
+      <div>
+        <h2>Select a conversation</h2>
+        <p>
+          Choose a chat or add a friend.
+        </p>
+      </div>
+
+    </div>
+
+
+    <div id="chatView"
+         class="chat hidden">
+    </div>
+
+  </main>
+
 </div>
+
+
+<div id="overlay"></div>
+<div id="toast" class="toast hidden"></div>
 
 
 <script>
@@ -789,395 +880,568 @@ button {
    CONFIG
 ========================================================= */
 
-const API_BASE = "https://chatapp-backend-ol8d.onrender.com";
+const API_BASE =
+  "https://chatapp-backend-ol8d.onrender.com";
 
 
 /* =========================================================
    STATE
 ========================================================= */
 
-let accessToken = localStorage.getItem("chatapp_access");
-let refreshToken = localStorage.getItem("chatapp_refresh");
+const state = {
 
-let currentUser = null;
-let conversations = [];
-let currentConversation = null;
-let currentMessages = [];
+  mode:"login",
 
-let pollTimer = null;
-let typingTimer = null;
-let searchTimer = null;
+  user:null,
+  access:null,
+  refresh:null,
+
+  conversations:[],
+  unread:{},
+
+  friends:[],
+  requests:{
+    incoming:[],
+    outgoing:[]
+  },
+
+  activeId:null,
+  activeMeta:null,
+
+  messages:[],
+  members:[],
+  nextBefore:null,
+  lastMessageId:null,
+
+  replyTo:null,
+  editingId:null,
+
+  sideTab:"chats",
+
+  pollTimer:null,
+  searchTimer:null,
+  typingTimer:null
+
+};
 
 
 /* =========================================================
-   BASIC HELPERS
+   HELPERS
 ========================================================= */
 
-function $(id) {
-    return document.getElementById(id);
+const $ = id =>
+  document.getElementById(id);
+
+
+function escapeHTML(value){
+
+  return String(value ?? "")
+    .replace(/[&<>"']/g,char=>({
+
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#039;"
+
+    }[char]));
+
 }
 
-function escapeHTML(value) {
-    if (value === null || value === undefined) return "";
 
-    return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+function initials(name){
+
+  const parts =
+    String(name || "?")
+      .trim()
+      .split(/\s+/)
+      .slice(0,2);
+
+  return parts
+    .map(x=>x[0])
+    .join("")
+    .toUpperCase() || "?";
+
 }
 
-function formatTime(dateString) {
 
-    if (!dateString) return "";
+function timeFormat(value){
 
-    const date = new Date(dateString);
+  if(!value)
+    return "";
 
-    if (Number.isNaN(date.getTime())) return "";
+  const d = new Date(value);
+  const now = new Date();
 
-    return date.toLocaleString([], {
-        month: "short",
-        day: "numeric",
-        hour: "numeric",
-        minute: "2-digit"
+  if(d.toDateString() === now.toDateString()){
+
+    return d.toLocaleTimeString([],{
+      hour:"numeric",
+      minute:"2-digit"
     });
-}
 
-function avatarLetter(user) {
+  }
 
-    const text =
-        user?.display_name ||
-        user?.username ||
-        "?";
+  return d.toLocaleDateString([],{
+    month:"short",
+    day:"numeric"
+  });
 
-    return text.charAt(0).toUpperCase();
-}
-
-function saveTokens(data) {
-
-    accessToken = data.access_token;
-    refreshToken = data.refresh_token;
-
-    localStorage.setItem("chatapp_access", accessToken);
-    localStorage.setItem("chatapp_refresh", refreshToken);
-}
-
-function clearTokens() {
-
-    accessToken = null;
-    refreshToken = null;
-
-    localStorage.removeItem("chatapp_access");
-    localStorage.removeItem("chatapp_refresh");
 }
 
 
-/* =========================================================
-   API
-========================================================= */
+function fullTime(value){
 
-async function api(path, options = {}, retry = true) {
+  if(!value)
+    return "";
 
-    const headers = {
-        "Content-Type": "application/json",
-        ...(options.headers || {})
+  return new Date(value)
+    .toLocaleString([],{
+      month:"short",
+      day:"numeric",
+      hour:"numeric",
+      minute:"2-digit"
+    });
+
+}
+
+
+function toast(message){
+
+  const el=$("toast");
+
+  el.textContent=message;
+  el.classList.remove("hidden");
+
+  clearTimeout(toast.timer);
+
+  toast.timer=setTimeout(()=>{
+    el.classList.add("hidden");
+  },2800);
+
+}
+
+
+async function parseResponse(response){
+
+  const text=await response.text();
+
+  try{
+    return text ? JSON.parse(text) : {};
+  }
+  catch{
+    return {
+      error:text || "Invalid server response"
     };
+  }
 
-    if (accessToken) {
-        headers.Authorization = "Bearer " + accessToken;
-    }
-
-    let response;
-
-    try {
-
-        response = await fetch(API_BASE + path, {
-            ...options,
-            headers
-        });
-
-    } catch (error) {
-
-        throw new Error("Cannot connect to the server.");
-    }
-
-
-    if (response.status === 401 && retry && refreshToken) {
-
-        const refreshed = await refreshAccessToken();
-
-        if (refreshed) {
-            return api(path, options, false);
-        }
-    }
-
-
-    let data = {};
-
-    try {
-        data = await response.json();
-    } catch (_) {}
-
-
-    if (!response.ok) {
-
-        throw new Error(
-            data.error ||
-            data.message ||
-            "Request failed."
-        );
-    }
-
-    return data;
-}
-
-
-async function refreshAccessToken() {
-
-    if (!refreshToken) return false;
-
-    try {
-
-        const response = await fetch(
-            API_BASE + "/api/auth/refresh",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    refresh_token: refreshToken
-                })
-            }
-        );
-
-        if (!response.ok) {
-
-            clearTokens();
-            return false;
-        }
-
-        const data = await response.json();
-
-        saveTokens(data);
-
-        return true;
-
-    } catch (_) {
-
-        clearTokens();
-        return false;
-    }
 }
 
 
 /* =========================================================
-   AUTH UI
+   AUTH
 ========================================================= */
 
-function showLogin() {
+function setAuthMode(mode){
 
-    $("loginForm").classList.remove("hidden");
-    $("registerForm").classList.add("hidden");
-}
+  state.mode=mode;
 
-function showRegister() {
+  const register =
+    mode === "register";
 
-    $("loginForm").classList.add("hidden");
-    $("registerForm").classList.remove("hidden");
-}
+  $("loginTab")
+    .classList.toggle("active",!register);
 
+  $("registerTab")
+    .classList.toggle("active",register);
 
-async function login() {
+  $("usernameField")
+    .classList.toggle("hidden",!register);
 
-    const loginValue = $("loginInput").value.trim();
-    const password = $("loginPassword").value;
+  $("emailField")
+    .classList.toggle("hidden",!register);
 
-    if (!loginValue || !password) {
-        alert("Enter your login and password.");
-        return;
-    }
+  $("displayField")
+    .classList.toggle("hidden",!register);
 
-    try {
+  $("registerChecks")
+    .classList.toggle("hidden",!register);
 
-        const data = await api(
-            "/api/auth/login",
-            {
-                method: "POST",
-                body: JSON.stringify({
-                    login: loginValue,
-                    password
-                })
-            },
-            false
-        );
+  $("loginLabel").textContent =
+    register
+      ? "Login username"
+      : "Username or email";
 
-        saveTokens(data);
+  $("authButton").textContent =
+    register
+      ? "Create account"
+      : "Login";
 
-        await startApp();
+  $("error").textContent="";
 
-    } catch (error) {
-
-        alert(error.message);
-    }
 }
 
 
-async function register() {
+$("authForm").addEventListener(
+  "submit",
+  async event=>{
 
-    const username = $("registerUsername").value.trim();
-    const email = $("registerEmail").value.trim();
-    const displayName = $("registerDisplayName").value.trim();
-    const password = $("registerPassword").value;
+    event.preventDefault();
 
-    const ageOK = $("ageCheck").checked;
-    const termsOK = $("termsCheck").checked;
-    const privacyOK = $("privacyCheck").checked;
-    const consentOK = $("consentCheck").checked;
+    $("error").textContent="";
 
+    try{
 
-    if (!username || !email || !password) {
+      if(state.mode==="register"){
 
-        alert("Username, email and password are required.");
-        return;
-    }
+        if(!$("ageCheck").checked)
+          throw new Error(
+            "You must confirm that you are 16 or older."
+          );
 
+        if(
+          !$("termsCheck").checked ||
+          !$("privacyCheck").checked ||
+          !$("consentCheck").checked
+        ){
 
-    if (!ageOK) {
+          throw new Error(
+            "Please accept the required Terms, Privacy Policy, and consent."
+          );
 
-        alert("You must confirm that you are 16 or older to use ChatApp.");
-        return;
-    }
-
-
-    if (!termsOK || !privacyOK || !consentOK) {
-
-        alert("You must agree to the Terms, Privacy Policy and consent before creating an account.");
-        return;
-    }
-
-
-    if (password.length < 8) {
-
-        alert("Use a password with at least 8 characters.");
-        return;
-    }
-
-
-    try {
-
-        const data = await api(
-            "/api/auth/register",
-            {
-                method: "POST",
-                body: JSON.stringify({
-                    username,
-                    email,
-                    password,
-                    display_name: displayName || username
-                })
-            },
-            false
-        );
-
-        saveTokens(data);
-
-        await startApp();
-
-    } catch (error) {
-
-        alert(error.message);
-    }
-}
-
-
-/* =========================================================
-   START APP
-========================================================= */
-
-async function startApp() {
-
-    $("authScreen").classList.add("hidden");
-    $("app").classList.remove("hidden");
-
-    try {
-
-        const data = await api("/api/auth/me");
-
-        currentUser = data.user;
-
-        updateMyProfileUI();
-
-        await loadConversations();
-
-        startPolling();
-
-    } catch (error) {
-
-        console.error(error);
-
-        clearTokens();
-
-        $("app").classList.add("hidden");
-        $("authScreen").classList.remove("hidden");
-    }
-}
-
-
-function updateMyProfileUI() {
-
-    if (!currentUser) return;
-
-    $("myName").textContent =
-        currentUser.display_name ||
-        currentUser.username;
-
-    $("myUsername").textContent =
-        "@" + currentUser.username;
-
-    $("myAvatar").textContent =
-        avatarLetter(currentUser);
-}
-
-
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-async function logout() {
-
-    try {
-
-        if (refreshToken) {
-
-            await api(
-                "/api/auth/logout",
-                {
-                    method: "POST",
-                    body: JSON.stringify({
-                        refresh_token: refreshToken
-                    })
-                },
-                false
-            );
         }
 
-    } catch (_) {}
+
+        await authRequest(
+          "/api/auth/register",
+          {
+            username:$("username").value.trim(),
+            email:$("email").value.trim(),
+            password:$("password").value,
+            display_name:
+              $("displayName").value.trim() || undefined
+          }
+        );
+
+      }
+
+      else{
+
+        await authRequest(
+          "/api/auth/login",
+          {
+            login:$("login").value.trim(),
+            password:$("password").value
+          }
+        );
+
+      }
 
 
-    clearTokens();
+      await bootApp();
 
-    currentUser = null;
-    conversations = [];
-    currentConversation = null;
+    }
 
-    stopPolling();
+    catch(error){
 
-    $("app").classList.add("hidden");
-    $("authScreen").classList.remove("hidden");
+      $("error").textContent =
+        error.message;
 
-    showLogin();
+    }
+
+  }
+);
+
+
+async function authRequest(path,body){
+
+  const response =
+    await fetch(
+      API_BASE + path,
+      {
+        method:"POST",
+
+        headers:{
+          "Content-Type":
+            "application/json"
+        },
+
+        body:JSON.stringify(body)
+      }
+    );
+
+
+  const data =
+    await parseResponse(response);
+
+
+  if(!response.ok)
+    throw new Error(
+      data.error || "Request failed"
+    );
+
+
+  state.user=data.user;
+  state.access=data.access_token;
+  state.refresh=data.refresh_token;
+
+  saveSession();
+
+}
+
+
+function saveSession(){
+
+  localStorage.setItem(
+    "chatapp_session",
+
+    JSON.stringify({
+
+      user:state.user,
+      access:state.access,
+      refresh:state.refresh
+
+    })
+  );
+
+}
+
+
+function loadSession(){
+
+  try{
+
+    const session =
+      JSON.parse(
+        localStorage.getItem(
+          "chatapp_session"
+        ) || "null"
+      );
+
+    if(!session)
+      return false;
+
+    state.user=session.user;
+    state.access=session.access;
+    state.refresh=session.refresh;
+
+    return true;
+
+  }
+
+  catch{
+
+    return false;
+
+  }
+
+}
+
+
+function clearSession(){
+
+  localStorage.removeItem(
+    "chatapp_session"
+  );
+
+  state.user=null;
+  state.access=null;
+  state.refresh=null;
+
+}
+
+
+async function api(path,options={},retry=true){
+
+  const headers={
+    ...(options.headers || {}),
+    Authorization:
+      "Bearer " + state.access
+  };
+
+
+  if(
+    options.body &&
+    !headers["Content-Type"]
+  ){
+
+    headers["Content-Type"]=
+      "application/json";
+
+  }
+
+
+  let response =
+    await fetch(
+      API_BASE + path,
+      {
+        ...options,
+        headers
+      }
+    );
+
+
+  let data =
+    await parseResponse(response);
+
+
+  if(
+    response.status===401 &&
+    retry &&
+    state.refresh
+  ){
+
+    const refreshResponse =
+      await fetch(
+        API_BASE + "/api/auth/refresh",
+        {
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:JSON.stringify({
+            refresh_token:
+              state.refresh
+          })
+        }
+      );
+
+
+    const refreshData =
+      await parseResponse(
+        refreshResponse
+      );
+
+
+    if(refreshResponse.ok){
+
+      state.access=
+        refreshData.access_token;
+
+      state.refresh=
+        refreshData.refresh_token;
+
+      saveSession();
+
+      return api(
+        path,
+        options,
+        false
+      );
+
+    }
+
+
+    clearSession();
+
+    location.reload();
+
+    throw new Error(
+      "Session expired."
+    );
+
+  }
+
+
+  if(!response.ok){
+
+    throw new Error(
+      data.error ||
+      "Request failed"
+    );
+
+  }
+
+
+  return data;
+
+}
+
+
+/* =========================================================
+   APP BOOT
+========================================================= */
+
+async function bootApp(){
+
+  $("authScreen")
+    .classList.add("hidden");
+
+  $("app")
+    .classList.remove("hidden");
+
+
+  await refreshMe();
+
+  await loadConversations();
+
+  await setSideTab("chats");
+
+
+  clearInterval(state.pollTimer);
+
+  state.pollTimer =
+    setInterval(
+      backgroundPoll,
+      5000
+    );
+
+}
+
+
+async function refreshMe(){
+
+  const data =
+    await api("/api/auth/me");
+
+  state.user=data.user;
+
+  saveSession();
+
+}
+
+
+async function logout(){
+
+  try{
+
+    if(state.refresh){
+
+      await fetch(
+        API_BASE + "/api/auth/logout",
+        {
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:JSON.stringify({
+            refresh_token:
+              state.refresh
+          })
+        }
+      );
+
+    }
+
+  }
+
+  catch{}
+
+
+  clearInterval(
+    state.pollTimer
+  );
+
+  clearSession();
+
+  location.reload();
+
 }
 
 
@@ -1185,715 +1449,744 @@ async function logout() {
    CONVERSATIONS
 ========================================================= */
 
-async function loadConversations() {
+async function loadConversations(){
 
-    try {
+  const [
+    conversationData,
+    unreadData
+  ] = await Promise.all([
 
-        const data =
-            await api("/api/conversations");
+    api("/api/conversations"),
 
-        conversations =
-            data.conversations ||
-            [];
+    api("/api/unread")
 
-        renderConversations();
+  ]);
 
-    } catch (error) {
 
-        console.error(error);
-    }
+  state.unread={};
+
+
+  for(
+    const item of
+    unreadData.conversations || []
+  ){
+
+    state.unread[
+      item.conversation_id
+    ]=item;
+
+  }
+
+
+  state.conversations =
+    (conversationData.conversations || [])
+      .map(conversation=>({
+
+        ...conversation,
+
+        unread:
+          state.unread[
+            conversation.id
+          ]?.unread || 0,
+
+        last_message_at:
+          state.unread[
+            conversation.id
+          ]?.last_message_at || null
+
+      }))
+      .sort(
+        (a,b)=>
+          new Date(
+            b.last_message_at ||
+            b.created_at
+          )
+          -
+          new Date(
+            a.last_message_at ||
+            a.created_at
+          )
+      );
+
+
+  if(state.sideTab==="chats")
+    renderSide();
+
 }
 
 
-function renderConversations() {
+function conversationName(c){
 
-    const container =
-        $("conversationList");
+  if(c.type==="group")
+    return c.title || "Group";
 
-    container.innerHTML = "";
+  return (
+    c.other_display_name ||
+    c.other_username ||
+    "Direct chat"
+  );
 
-
-    if (!conversations.length) {
-
-        container.innerHTML = `
-            <div class="empty" style="padding:25px;">
-                No conversations yet.
-                <br><br>
-                Search for someone to start chatting.
-            </div>
-        `;
-
-        return;
-    }
+}
 
 
-    conversations.forEach(conversation => {
+function conversationSubtitle(c){
 
-        const div =
-            document.createElement("div");
+  if(c.type==="group")
+    return "Group";
 
-        div.className =
-            "conversation" +
-            (
-                currentConversation &&
-                currentConversation.id === conversation.id
-                    ? " active"
-                    : ""
-            );
+  return "@"+(
+    c.other_username || ""
+  );
 
-
-        const title =
-            conversation.title ||
-            conversation.name ||
-            conversation.display_name ||
-            conversation.username ||
-            (
-                conversation.type === "group"
-                    ? "Group"
-                    : "Conversation"
-            );
-
-
-        div.innerHTML = `
-            <div class="conversation-name">
-                ${escapeHTML(title)}
-            </div>
-
-            <div class="conversation-preview">
-                ${escapeHTML(
-                    conversation.last_message?.body ||
-                    conversation.last_message ||
-                    "No messages yet"
-                )}
-            </div>
-        `;
-
-
-        div.onclick = () => {
-            openConversation(conversation.id);
-        };
-
-
-        container.appendChild(div);
-    });
 }
 
 
 /* =========================================================
-   OPEN CONVERSATION
+   SIDEBAR
 ========================================================= */
 
-async function openConversation(id) {
+async function setSideTab(tab){
 
-    try {
-
-        const data =
-            await api("/api/conversations/" + id);
-
-        currentConversation =
-            data.conversation ||
-            data;
+  state.sideTab=tab;
 
 
-        $("app").classList.add("chat-open");
+  document
+    .querySelectorAll(".nav button")
+    .forEach(button=>{
 
-        renderConversations();
+      button.classList.toggle(
+        "active",
+        button.dataset.tab===tab
+      );
 
-        updateChatHeader();
+    });
 
-        await loadMessages();
 
-        await markRead();
+  if(tab==="chats")
+    await loadConversations();
 
-        $("messageInput").focus();
+  if(tab==="friends")
+    await loadFriends();
 
-    } catch (error) {
+  if(tab==="requests")
+    await loadRequests();
 
-        alert(error.message);
-    }
+
+  renderSide();
+
 }
 
 
-function closeChat() {
+function renderSide(){
 
-    $("app").classList.remove("chat-open");
+  if(state.sideTab==="chats")
+    renderChats();
 
-    currentConversation = null;
+  else if(state.sideTab==="friends")
+    renderFriends();
 
-    $("chatTitle").textContent =
-        "Select a conversation";
+  else
+    renderRequests();
 
-    $("chatStatus").textContent =
-        "-";
+}
 
-    $("chatProfileButton").classList.add("hidden");
 
-    $("messages").innerHTML = `
-        <div class="empty">
-            Select a conversation to start chatting.
+function renderChats(){
+
+  const box=$("sideList");
+
+  if(!state.conversations.length){
+
+    box.innerHTML=`
+      <div class="empty">
+        <div>
+          <p>No conversations yet.</p>
+          <small>Add a friend to start chatting.</small>
         </div>
+      </div>
     `;
 
-    renderConversations();
+    return;
+
+  }
+
+
+  box.innerHTML =
+    state.conversations
+      .map(c=>{
+
+        const active=
+          c.id===state.activeId;
+
+        return `
+
+        <div
+          class="conv ${active?"active":""}"
+          onclick="openConversation('${c.id}')"
+        >
+
+          <div class="avatar">
+            ${escapeHTML(
+              initials(conversationName(c))
+            )}
+          </div>
+
+          <div class="conv-info">
+
+            <div class="conv-top">
+
+              <span class="conv-name">
+
+                ${escapeHTML(
+                  conversationName(c)
+                )}
+
+                ${
+                  c.unread
+                    ? `<span class="badge">
+                        ${c.unread>99?"99+":c.unread}
+                       </span>`
+                    : ""
+                }
+
+              </span>
+
+              <span class="time">
+                ${timeFormat(
+                  c.last_message_at ||
+                  c.created_at
+                )}
+              </span>
+
+            </div>
+
+            <div class="preview">
+              ${escapeHTML(
+                c.last_message_at
+                  ? "Recent activity"
+                  : conversationSubtitle(c)
+              )}
+            </div>
+
+          </div>
+
+        </div>
+
+        `;
+
+      })
+      .join("");
+
 }
 
 
-function updateChatHeader() {
+/* =========================================================
+   FRIENDS
+========================================================= */
 
-    if (!currentConversation) return;
+async function loadFriends(){
+
+  const data =
+    await api("/api/friends");
+
+  state.friends =
+    data.friends || [];
+
+}
 
 
-    let title =
-        currentConversation.title ||
-        currentConversation.name ||
-        currentConversation.display_name;
+async function loadRequests(){
+
+  const data =
+    await api("/api/friends/requests");
+
+  state.requests=data;
+
+}
 
 
-    if (!title && currentConversation.type === "direct") {
+function renderFriends(){
 
-        const other =
-            getOtherUser(currentConversation);
+  const box=$("sideList");
 
-        if (other) {
+  box.innerHTML=`
 
-            title =
-                other.display_name ||
-                other.username;
+    <div style="padding:10px">
+
+      <button
+        class="primary"
+        style="width:100%"
+        onclick="openCreateGroup()"
+      >
+        + New group
+      </button>
+
+    </div>
+
+  `;
+
+
+  if(!state.friends.length){
+
+    box.innerHTML+=`
+      <div class="empty">
+        <div>
+          <p>No friends yet.</p>
+          <small>Search for users above.</small>
+        </div>
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  box.innerHTML +=
+    state.friends
+      .map(friend=>`
+
+      <div class="user-row">
+
+        <div class="avatar">
+          ${escapeHTML(
+            initials(
+              friend.display_name ||
+              friend.username
+            )
+          )}
+        </div>
+
+        <div class="grow">
+
+          <b>
+            ${escapeHTML(
+              friend.display_name ||
+              friend.username
+            )}
+          </b>
+
+          <div class="time">
+            @${escapeHTML(
+              friend.username
+            )}
+          </div>
+
+        </div>
+
+        <div class="actions">
+
+          <button
+            class="secondary"
+            onclick="startDirect('${friend.id}')"
+          >
+            Message
+          </button>
+
+          <button
+            class="ghost"
+            onclick="openUser('${friend.id}')"
+          >
+            View
+          </button>
+
+        </div>
+
+      </div>
+
+      `)
+      .join("");
+
+}
+
+
+function renderRequests(){
+
+  const box=$("sideList");
+
+  const incoming =
+    state.requests.incoming || [];
+
+  const outgoing =
+    state.requests.outgoing || [];
+
+
+  box.innerHTML=`
+    <div style="
+      padding:12px;
+      font-weight:700
+    ">
+      Incoming
+    </div>
+  `;
+
+
+  if(!incoming.length){
+
+    box.innerHTML+=`
+      <div style="
+        padding:0 12px 12px;
+        color:var(--muted);
+        font-size:12px
+      ">
+        No incoming requests.
+      </div>
+    `;
+
+  }
+
+
+  for(const request of incoming){
+
+    box.innerHTML+=`
+
+      <div class="user-row">
+
+        <div class="avatar">
+          ${escapeHTML(
+            initials(
+              request.display_name ||
+              request.username
+            )
+          )}
+        </div>
+
+        <div class="grow">
+
+          <b>
+            ${escapeHTML(
+              request.display_name ||
+              request.username
+            )}
+          </b>
+
+          <div class="time">
+            @${escapeHTML(
+              request.username
+            )}
+          </div>
+
+        </div>
+
+        <div class="actions">
+
+          <button
+            class="primary"
+            onclick="acceptRequest('${request.id}')"
+          >
+            Accept
+          </button>
+
+          <button
+            class="danger"
+            onclick="deleteFriendship('${request.id}')"
+          >
+            Decline
+          </button>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+
+  box.innerHTML+=`
+    <div style="
+      padding:15px 12px 8px;
+      font-weight:700
+    ">
+      Outgoing
+    </div>
+  `;
+
+
+  if(!outgoing.length){
+
+    box.innerHTML+=`
+      <div style="
+        padding:0 12px;
+        color:var(--muted);
+        font-size:12px
+      ">
+        No outgoing requests.
+      </div>
+    `;
+
+  }
+
+
+  for(const request of outgoing){
+
+    box.innerHTML+=`
+
+      <div class="user-row">
+
+        <div class="avatar">
+          ${escapeHTML(
+            initials(
+              request.display_name ||
+              request.username
+            )
+          )}
+        </div>
+
+        <div class="grow">
+
+          <b>
+            ${escapeHTML(
+              request.display_name ||
+              request.username
+            )}
+          </b>
+
+          <div class="time">
+            @${escapeHTML(
+              request.username
+            )}
+          </div>
+
+        </div>
+
+        <button
+          class="danger"
+          onclick="deleteFriendship('${request.id}')"
+        >
+          Cancel
+        </button>
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+function debouncedSearch(){
+
+  clearTimeout(
+    state.searchTimer
+  );
+
+  const query =
+    $("globalSearch")
+      .value
+      .trim();
+
+
+  if(query.length<2){
+
+    renderSide();
+
+    return;
+
+  }
+
+
+  state.searchTimer =
+    setTimeout(
+      ()=>searchUsers(query),
+      300
+    );
+
+}
+
+
+async function searchUsers(query){
+
+  try{
+
+    const data =
+      await api(
+        "/api/users/search?q="+
+        encodeURIComponent(query)
+      );
+
+
+    const users=data.users || [];
+
+    const box=$("sideList");
+
+
+    if(!users.length){
+
+      box.innerHTML=`
+        <div class="empty">
+          <p>No users found.</p>
+        </div>
+      `;
+
+      return;
+
+    }
+
+
+    box.innerHTML =
+      users
+        .map(user=>`
+
+        <div class="user-row">
+
+          <div class="avatar">
+            ${escapeHTML(
+              initials(
+                user.display_name ||
+                user.username
+              )
+            )}
+          </div>
+
+          <div class="grow">
+
+            <b>
+              ${escapeHTML(
+                user.display_name ||
+                user.username
+              )}
+            </b>
+
+            <div class="time">
+              @${escapeHTML(
+                user.username
+              )}
+            </div>
+
+          </div>
+
+          <button
+            class="secondary"
+            onclick="openUser('${user.id}')"
+          >
+            View
+          </button>
+
+        </div>
+
+        `)
+        .join("");
+
+  }
+
+  catch(error){
+
+    $("sideList").innerHTML=`
+      <div class="empty">
+        <p>${escapeHTML(error.message)}</p>
+      </div>
+    `;
+
+  }
+
+}
+
+
+/* =========================================================
+   FRIEND REQUESTS
+========================================================= */
+
+async function sendFriend(username){
+
+  try{
+
+    const data =
+      await api(
+        "/api/friends/request",
+        {
+          method:"POST",
+
+          body:JSON.stringify({
+            username
+          })
         }
-    }
+      );
 
 
-    $("chatTitle").textContent =
-        title ||
-        "Conversation";
+    toast(
+      data.status==="accepted"
+        ? "You are now friends."
+        : "Friend request sent."
+    );
 
 
-    $("chatStatus").textContent =
-        currentConversation.type === "group"
-            ? "Group conversation"
-            : "Direct message";
+    await loadRequests();
 
+  }
 
-    if (currentConversation.type === "direct") {
+  catch(error){
 
-        $("chatProfileButton").classList.remove("hidden");
+    toast(error.message);
 
-    } else {
+  }
 
-        $("chatProfileButton").classList.add("hidden");
-    }
 }
 
 
-function getOtherUser(conversation) {
+async function acceptRequest(id){
 
-    if (!conversation) return null;
+  try{
 
-    if (conversation.other_user) {
-        return conversation.other_user;
-    }
+    await api(
+      "/api/friends/requests/"+id+"/accept",
+      {
+        method:"POST"
+      }
+    );
 
-    if (conversation.user) {
-        return conversation.user;
-    }
 
-    if (
-        conversation.members &&
-        currentUser
-    ) {
+    toast("Friend request accepted.");
 
-        return conversation.members.find(
-            member =>
-                String(member.id) !==
-                String(currentUser.id)
-        );
-    }
+    await loadFriends();
+    await loadConversations();
 
-    return null;
+    setSideTab("friends");
+
+  }
+
+  catch(error){
+
+    toast(error.message);
+
+  }
+
 }
 
 
-/* =========================================================
-   MESSAGES
-========================================================= */
+async function deleteFriendship(id){
 
-async function loadMessages() {
+  try{
 
-    if (!currentConversation) return;
+    await api(
+      "/api/friends/"+id,
+      {
+        method:"DELETE"
+      }
+    );
 
-    try {
 
-        const data =
-            await api(
-                "/api/conversations/" +
-                currentConversation.id +
-                "/messages?limit=100"
-            );
+    toast("Done.");
 
-        currentMessages =
-            data.messages ||
-            [];
+    await loadFriends();
+    await loadRequests();
+    await loadConversations();
 
-        renderMessages();
+    renderSide();
 
-    } catch (error) {
+  }
 
-        console.error(error);
-    }
-}
+  catch(error){
 
+    toast(error.message);
 
-function renderMessages() {
+  }
 
-    const container =
-        $("messages");
-
-    container.innerHTML = "";
-
-
-    if (!currentMessages.length) {
-
-        container.innerHTML = `
-            <div class="empty">
-                No messages yet.
-                <br>
-                Say something.
-            </div>
-        `;
-
-        return;
-    }
-
-
-    currentMessages.forEach(message => {
-
-        const mine =
-            String(message.user_id) ===
-            String(currentUser?.id);
-
-
-        const div =
-            document.createElement("div");
-
-        div.className =
-            "message" +
-            (mine ? " mine" : "");
-
-
-        const author =
-            message.user?.display_name ||
-            message.user?.username ||
-            message.username ||
-            (
-                mine
-                    ? "You"
-                    : "User"
-            );
-
-
-        let actions = "";
-
-
-        if (mine) {
-
-            actions = `
-                <div class="message-actions">
-
-                    <button onclick="editMessage('${message.id}')">
-                        Edit
-                    </button>
-
-                    <button onclick="deleteMessage('${message.id}')">
-                        Delete
-                    </button>
-
-                </div>
-            `;
-        }
-
-
-        div.innerHTML = `
-
-            <div class="message-author">
-                ${escapeHTML(author)}
-            </div>
-
-            <div class="message-body">
-                ${escapeHTML(message.body || "")}
-            </div>
-
-            <div class="message-meta">
-                ${formatTime(message.created_at)}
-                ${message.edited_at ? " · edited" : ""}
-            </div>
-
-            ${actions}
-
-        `;
-
-
-        container.appendChild(div);
-    });
-
-
-    container.scrollTop =
-        container.scrollHeight;
-}
-
-
-async function sendMessage() {
-
-    if (!currentConversation) {
-
-        alert("Open a conversation first.");
-        return;
-    }
-
-
-    const input =
-        $("messageInput");
-
-    const body =
-        input.value.trim();
-
-
-    if (!body) return;
-
-
-    input.value = "";
-
-
-    try {
-
-        await api(
-            "/api/conversations/" +
-            currentConversation.id +
-            "/messages",
-            {
-                method: "POST",
-                body: JSON.stringify({
-                    body
-                })
-            }
-        );
-
-
-        await loadMessages();
-
-        await markRead();
-
-        await loadConversations();
-
-    } catch (error) {
-
-        alert(error.message);
-
-        input.value = body;
-    }
-}
-
-
-function messageKeydown(event) {
-
-    if (
-        event.key === "Enter" &&
-        !event.shiftKey
-    ) {
-
-        event.preventDefault();
-
-        sendMessage();
-    }
-}
-
-
-async function editMessage(id) {
-
-    const message =
-        currentMessages.find(
-            item => String(item.id) === String(id)
-        );
-
-    if (!message) return;
-
-
-    const body =
-        prompt(
-            "Edit message:",
-            message.body
-        );
-
-
-    if (
-        body === null ||
-        !body.trim()
-    ) return;
-
-
-    try {
-
-        await api(
-            "/api/messages/" + id,
-            {
-                method: "PUT",
-                body: JSON.stringify({
-                    body: body.trim()
-                })
-            }
-        );
-
-        await loadMessages();
-
-    } catch (error) {
-
-        alert(error.message);
-    }
-}
-
-
-async function deleteMessage(id) {
-
-    if (!confirm("Delete this message?")) {
-        return;
-    }
-
-
-    try {
-
-        await api(
-            "/api/messages/" + id,
-            {
-                method: "DELETE"
-            }
-        );
-
-        await loadMessages();
-
-    } catch (error) {
-
-        alert(error.message);
-    }
-}
-
-
-/* =========================================================
-   READ STATUS
-========================================================= */
-
-async function markRead() {
-
-    if (!currentConversation) return;
-
-    try {
-
-        await api(
-            "/api/conversations/" +
-            currentConversation.id +
-            "/read",
-            {
-                method: "POST"
-            }
-        );
-
-    } catch (_) {}
-}
-
-
-/* =========================================================
-   TYPING
-========================================================= */
-
-function handleTyping() {
-
-    if (!currentConversation) return;
-
-
-    clearTimeout(typingTimer);
-
-
-    sendTyping();
-
-
-    typingTimer =
-        setTimeout(
-            () => {},
-            1500
-        );
-}
-
-
-async function sendTyping() {
-
-    if (!currentConversation) return;
-
-    try {
-
-        await api(
-            "/api/conversations/" +
-            currentConversation.id +
-            "/typing",
-            {
-                method: "POST"
-            }
-        );
-
-    } catch (_) {}
-}
-
-
-/* =========================================================
-   POLLING
-========================================================= */
-
-function startPolling() {
-
-    stopPolling();
-
-    pollTimer =
-        setInterval(
-            async () => {
-
-                if (!accessToken) return;
-
-                try {
-
-                    await loadConversations();
-
-                    if (currentConversation) {
-                        await loadMessages();
-                    }
-
-                } catch (_) {}
-
-            },
-            4000
-        );
-}
-
-
-function stopPolling() {
-
-    if (pollTimer) {
-
-        clearInterval(pollTimer);
-
-        pollTimer = null;
-    }
-}
-
-
-/* =========================================================
-   USER SEARCH
-========================================================= */
-
-function openSearch() {
-
-    $("userSearch").focus();
-}
-
-
-function searchUsers() {
-
-    clearTimeout(searchTimer);
-
-
-    const query =
-        $("userSearch").value.trim();
-
-
-    if (!query) {
-
-        $("searchResults").classList.add("hidden");
-
-        return;
-    }
-
-
-    searchTimer =
-        setTimeout(
-            () => performUserSearch(query),
-            350
-        );
-}
-
-
-async function performUserSearch(query) {
-
-    try {
-
-        const data =
-            await api(
-                "/api/users/search?q=" +
-                encodeURIComponent(query)
-            );
-
-
-        renderSearchResults(
-            data.users || []
-        );
-
-    } catch (error) {
-
-        console.error(error);
-    }
-}
-
-
-function renderSearchResults(users) {
-
-    const container =
-        $("searchResults");
-
-    container.innerHTML = "";
-
-    container.classList.remove("hidden");
-
-
-    if (!users.length) {
-
-        container.innerHTML = `
-            <div style="padding:15px;color:var(--muted);">
-                No users found.
-            </div>
-        `;
-
-        return;
-    }
-
-
-    users.forEach(user => {
-
-        const div =
-            document.createElement("div");
-
-        div.className = "result";
-
-
-        div.innerHTML = `
-
-            <div>
-                <div class="result-name">
-                    ${escapeHTML(
-                        user.display_name ||
-                        user.username
-                    )}
-                </div>
-
-                <div class="result-username">
-                    @${escapeHTML(user.username)}
-                </div>
-            </div>
-
-            <button class="secondary"
-                onclick="openUserProfile('${user.id}')">
-                View
-            </button>
-
-        `;
-
-
-        container.appendChild(div);
-    });
 }
 
 
@@ -1901,499 +2194,1904 @@ function renderSearchResults(users) {
    USER PROFILE
 ========================================================= */
 
-async function openUserProfile(userId) {
+async function openUser(id){
 
-    try {
+  try{
 
-        const data =
-            await api(
-                "/api/users/" + userId
-            );
+    const data =
+      await api(
+        "/api/users/"+id
+      );
 
-
-        const user =
-            data.user ||
-            data;
+    const user=data.user;
 
 
-        const friends =
-            await getFriendState(user);
+    const [
+      friends,
+      requests
+    ] = await Promise.all([
+
+      api("/api/friends"),
+
+      api("/api/friends/requests")
+
+    ]);
 
 
-        showUserProfile(user, friends);
+    const friend =
+      (friends.friends || [])
+        .find(x=>x.id===id);
 
-    } catch (error) {
 
-        alert(error.message);
+    const incoming =
+      (requests.incoming || [])
+        .find(x=>x.user_id===id);
+
+
+    const outgoing =
+      (requests.outgoing || [])
+        .find(x=>x.user_id===id);
+
+
+    let action="";
+
+
+    if(friend){
+
+      action=`
+
+        <button
+          class="primary"
+          onclick="
+            startDirect('${id}');
+            closeModal()
+          "
+        >
+          Message
+        </button>
+
+        <button
+          class="danger"
+          onclick="
+            deleteFriendship('${friend.friendship_id}');
+            closeModal()
+          "
+        >
+          Remove friend
+        </button>
+
+      `;
+
     }
+
+    else if(incoming){
+
+      action=`
+
+        <button
+          class="primary"
+          onclick="
+            acceptRequest('${incoming.id}');
+            closeModal()
+          "
+        >
+          Accept request
+        </button>
+
+        <button
+          class="danger"
+          onclick="
+            deleteFriendship('${incoming.id}');
+            closeModal()
+          "
+        >
+          Decline
+        </button>
+
+      `;
+
+    }
+
+    else if(outgoing){
+
+      action=`
+
+        <button
+          class="danger"
+          onclick="
+            deleteFriendship('${outgoing.id}');
+            closeModal()
+          "
+        >
+          Cancel request
+        </button>
+
+      `;
+
+    }
+
+    else{
+
+      action=`
+
+        <button
+          class="primary"
+          onclick="
+            sendFriend('${escapeHTML(
+              user.username
+            )}');
+            closeModal()
+          "
+        >
+          + Add friend
+        </button>
+
+      `;
+
+    }
+
+
+    showModal(
+      "User profile",
+
+      `
+
+      <div style="text-align:center">
+
+        <div style="
+          width:72px;
+          height:72px;
+          border-radius:50%;
+          background:#293346;
+          display:grid;
+          place-items:center;
+          margin:10px auto;
+          font-size:25px;
+          font-weight:800
+        ">
+          ${escapeHTML(
+            initials(
+              user.display_name ||
+              user.username
+            )
+          )}
+        </div>
+
+        <h2>
+          ${escapeHTML(
+            user.display_name ||
+            user.username
+          )}
+        </h2>
+
+        <div style="color:var(--muted)">
+          @${escapeHTML(user.username)}
+        </div>
+
+      </div>
+
+      <div
+        class="actions"
+        style="
+          justify-content:center;
+          margin-top:20px
+        "
+      >
+        ${action}
+      </div>
+
+      `
+
+    );
+
+  }
+
+  catch(error){
+
+    toast(error.message);
+
+  }
+
 }
 
 
-async function getFriendState(user) {
+/* =========================================================
+   DIRECT MESSAGE
+========================================================= */
 
-    try {
+async function startDirect(userId){
 
-        const data =
-            await api("/api/friends");
+  try{
 
-        const friends =
-            data.friends || [];
+    const data =
+      await api(
+        "/api/conversations",
+        {
+          method:"POST",
 
-
-        const isFriend =
-            friends.some(
-                friend =>
-                    String(friend.id) ===
-                    String(user.id)
-            );
-
-
-        const requests =
-            await api("/api/friends/requests");
-
-
-        const incoming =
-            requests.incoming || [];
-
-        const outgoing =
-            requests.outgoing || [];
+          body:JSON.stringify({
+            type:"direct",
+            user_id:userId
+          })
+        }
+      );
 
 
-        const incomingRequest =
-            incoming.find(
-                request =>
-                    String(
-                        request.from_user_id ||
-                        request.user_id ||
-                        request.id
-                    ) === String(user.id)
-            );
+    await loadConversations();
 
+    await openConversation(
+      data.id
+    );
 
-        const outgoingRequest =
-            outgoing.find(
-                request =>
-                    String(
-                        request.to_user_id ||
-                        request.user_id ||
-                        request.id
-                    ) === String(user.id)
-            );
+  }
 
+  catch(error){
 
-        return {
-            isFriend,
-            incomingRequest,
-            outgoingRequest
-        };
+    toast(error.message);
 
-    } catch (_) {
+  }
 
-        return {
-            isFriend: false,
-            incomingRequest: null,
-            outgoingRequest: null
-        };
-    }
 }
 
 
-function showUserProfile(user, state) {
+/* =========================================================
+   OPEN CHAT
+========================================================= */
 
-    const name =
-        user.display_name ||
-        user.username;
+async function openConversation(id){
 
+  try{
 
-    let actionHTML = "";
-
-
-    if (
-        String(user.id) ===
-        String(currentUser.id)
-    ) {
-
-        actionHTML = `
-            <button class="secondary"
-                onclick="openMyProfile()">
-                Edit Profile
-            </button>
-        `;
-
-    } else if (state.isFriend) {
-
-        actionHTML = `
-            <button class="primary"
-                onclick="messageUser('${user.id}')">
-                Message
-            </button>
-
-            <button class="danger"
-                onclick="removeFriend('${user.id}')">
-                Remove Friend
-            </button>
-        `;
-
-    } else if (state.incomingRequest) {
-
-        actionHTML = `
-
-            <button class="primary"
-                onclick="acceptFriendRequest('${getRequestId(state.incomingRequest)}')">
-                Accept Request
-            </button>
-
-            <button class="danger"
-                onclick="declineFriendRequest('${getRequestId(state.incomingRequest)}')">
-                Decline
-            </button>
-
-        `;
-
-    } else if (state.outgoingRequest) {
-
-        actionHTML = `
-            <button class="secondary" disabled>
-                Request Sent
-            </button>
-        `;
-
-    } else {
-
-        actionHTML = `
-            <button class="primary"
-                onclick="sendFriendRequest('${user.username}')">
-                Add Friend
-            </button>
-        `;
-    }
+    const conversation =
+      await api(
+        "/api/conversations/"+id
+      );
 
 
-    openModal(
-        name,
-        `
+    state.activeId=id;
 
-        <div class="profile">
+    state.activeMeta=
+      conversation.conversation;
 
-            <div class="avatar">
-                ${escapeHTML(avatarLetter(user))}
-            </div>
+    state.members=
+      conversation.members || [];
 
-            <h2>
-                ${escapeHTML(name)}
-            </h2>
+    state.replyTo=null;
+    state.editingId=null;
 
-            <div class="username">
-                @${escapeHTML(user.username)}
-            </div>
 
-            <div class="profile-actions">
-                ${actionHTML}
-            </div>
+    $("app")
+      .classList.add("chat-open");
+
+
+    await loadMessages(id);
+
+    renderChat();
+
+    await markRead();
+
+    renderSide();
+
+    startActivePolling();
+
+  }
+
+  catch(error){
+
+    toast(error.message);
+
+  }
+
+}
+
+
+/* =========================================================
+   MESSAGES
+========================================================= */
+
+async function loadMessages(id){
+
+  const data =
+    await api(
+      "/api/conversations/"+id+
+      "/messages?limit=50"
+    );
+
+
+  state.messages =
+    (data.messages || [])
+      .reverse();
+
+
+  state.nextBefore=
+    data.next_before;
+
+
+  state.lastMessageId=
+    state.messages.at(-1)?.id || null;
+
+}
+
+
+async function loadOlder(){
+
+  if(
+    !state.nextBefore ||
+    !state.activeId
+  )
+    return;
+
+
+  try{
+
+    const box=$("messages");
+
+    const oldHeight=
+      box.scrollHeight;
+
+
+    const data =
+      await api(
+        "/api/conversations/"+
+        state.activeId+
+        "/messages?limit=50&before="+
+        encodeURIComponent(
+          state.nextBefore
+        )
+      );
+
+
+    const older =
+      (data.messages || [])
+        .reverse();
+
+
+    state.messages=[
+      ...older,
+      ...state.messages
+    ];
+
+
+    state.nextBefore=
+      data.next_before;
+
+
+    renderMessages(false);
+
+
+    box.scrollTop =
+      box.scrollHeight -
+      oldHeight;
+
+  }
+
+  catch(error){
+
+    toast(error.message);
+
+  }
+
+}
+
+
+/* =========================================================
+   CHAT UI
+========================================================= */
+
+function renderChat(){
+
+  const c=state.activeMeta;
+
+  $("emptyState")
+    .classList.add("hidden");
+
+  $("chatView")
+    .classList.remove("hidden");
+
+
+  const name=
+    conversationName(c);
+
+
+  $("chatView").innerHTML=`
+
+    <div class="chat-header">
+
+      <button
+        class="icon mobile-only"
+        onclick="closeMobileChat()"
+      >
+        ‹
+      </button>
+
+      <div class="avatar">
+        ${escapeHTML(
+          initials(name)
+        )}
+      </div>
+
+      <div class="chat-info">
+
+        <div class="chat-name">
+          ${escapeHTML(name)}
+        </div>
+
+        <div id="chatStatus"
+             class="chat-status">
+          ${c.type==="group"
+            ? state.members.length+" members"
+            : ""}
+        </div>
+
+      </div>
+
+      <button
+        class="icon"
+        onclick="openConversationInfo()"
+      >
+        ⓘ
+      </button>
+
+    </div>
+
+
+    <div
+      id="messages"
+      class="messages"
+    ></div>
+
+
+    <div
+      id="typing"
+      class="typing"
+    ></div>
+
+
+    <div
+      id="replyBar"
+      class="reply-bar hidden"
+    ></div>
+
+
+    <form
+      class="composer"
+      onsubmit="sendMessage(event)"
+    >
+
+      <textarea
+        id="composerInput"
+        maxlength="4000"
+        placeholder="Write a message..."
+        rows="1"
+        oninput="handleTyping()"
+      ></textarea>
+
+      <button
+        class="primary"
+        type="submit"
+      >
+        Send
+      </button>
+
+    </form>
+
+  `;
+
+
+  renderMessages(true);
+
+}
+
+
+function renderMessages(scrollBottom){
+
+  const box=$("messages");
+
+  if(!box)
+    return;
+
+
+  let html="";
+
+
+  if(state.nextBefore){
+
+    html+=`
+
+      <button
+        class="secondary load"
+        onclick="loadOlder()"
+      >
+        Load older messages
+      </button>
+
+    `;
+
+  }
+
+
+  html +=
+    state.messages
+      .map(renderMessage)
+      .join("");
+
+
+  box.innerHTML=html;
+
+
+  if(scrollBottom)
+    box.scrollTop=
+      box.scrollHeight;
+
+}
+
+
+function renderMessage(message){
+
+  const mine =
+    message.sender_id===
+    state.user.id;
+
+
+  const sender =
+    message.sender_display_name ||
+    message.sender_username ||
+    "Unknown";
+
+
+  const reactionIcons={
+    like:"👍",
+    love:"❤️",
+    laugh:"😂",
+    wow:"😮",
+    sad:"😢",
+    thanks:"🙏"
+  };
+
+
+  const reactions =
+    Object.entries(
+      message.reactions || {}
+    )
+    .filter(([,count])=>count>0)
+    .map(
+      ([reaction,count])=>`
+
+        <button
+          class="reaction"
+          onclick="
+            reactMessage(
+              '${message.id}',
+              '${reaction}'
+            )
+          "
+        >
+          ${reactionIcons[reaction]}
+          ${count}
+        </button>
+
+      `
+    )
+    .join("");
+
+
+  const read =
+    mine &&
+    state.members.some(
+      member=>
+        member.user_id!==state.user.id &&
+        member.last_read_at &&
+        new Date(
+          member.last_read_at
+        ) >=
+        new Date(
+          message.created_at
+        )
+    )
+      ? "✓✓"
+      : mine
+        ? "✓"
+        : "";
+
+
+  return `
+
+    <div
+      class="message-row
+      ${mine?"mine":""}"
+    >
+
+      <div class="message-avatar">
+        ${escapeHTML(
+          initials(sender)
+        )}
+      </div>
+
+
+      <div class="message-wrap">
+
+        <div class="sender">
+          ${escapeHTML(sender)}
+        </div>
+
+
+        <div class="bubble">
+
+          ${
+            message.reply_to_id
+              ? `
+
+                <div
+                  class="reply-preview"
+                >
+                  ${escapeHTML(
+                    message.reply_preview ||
+                    "Reply"
+                  )}
+                </div>
+
+              `
+              : ""
+          }
+
+
+          <div
+            class="${
+              message.deleted
+                ? "deleted"
+                : ""
+            }"
+          >
+            ${
+              message.deleted
+                ? "Message deleted"
+                : escapeHTML(
+                    message.body
+                  )
+            }
+          </div>
+
+
+          <div class="meta">
+
+            <span>
+              ${fullTime(
+                message.created_at
+              )}
+            </span>
+
+            ${
+              message.edited_at &&
+              !message.deleted
+                ? "<span>edited</span>"
+                : ""
+            }
+
+            <span>${read}</span>
+
+          </div>
 
         </div>
 
-        `
-    );
-}
 
-
-function getRequestId(request) {
-
-    return (
-        request.id ||
-        request.friendship_id ||
-        request.request_id
-    );
-}
-
-
-/* =========================================================
-   FRIEND SYSTEM
-========================================================= */
-
-async function sendFriendRequest(username) {
-
-    try {
-
-        await api(
-            "/api/friends/request",
-            {
-                method: "POST",
-                body: JSON.stringify({
-                    username
-                })
-            }
-        );
-
-
-        alert("Friend request sent.");
-
-        closeModal();
-
-    } catch (error) {
-
-        alert(error.message);
-    }
-}
-
-
-async function acceptFriendRequest(id) {
-
-    if (!id) {
-
-        alert("Request ID unavailable.");
-        return;
-    }
-
-
-    try {
-
-        await api(
-            "/api/friends/requests/" +
-            id +
-            "/accept",
-            {
-                method: "POST"
-            }
-        );
-
-
-        alert("Friend request accepted.");
-
-        closeModal();
-
-        await loadConversations();
-
-    } catch (error) {
-
-        alert(error.message);
-    }
-}
-
-
-async function declineFriendRequest(id) {
-
-    if (!id) return;
-
-
-    try {
-
-        await api(
-            "/api/friends/" + id,
-            {
-                method: "DELETE"
-            }
-        );
-
-
-        alert("Friend request declined.");
-
-        closeModal();
-
-    } catch (error) {
-
-        alert(error.message);
-    }
-}
-
-
-async function removeFriend(id) {
-
-    if (!confirm("Remove this friend?")) {
-        return;
-    }
-
-
-    try {
-
-        await api(
-            "/api/friends/" + id,
-            {
-                method: "DELETE"
-            }
-        );
-
-
-        alert("Friend removed.");
-
-        closeModal();
-
-    } catch (error) {
-
-        alert(error.message);
-    }
-}
-
-
-/* =========================================================
-   DIRECT MESSAGING
-========================================================= */
-
-async function messageUser(userId) {
-
-    try {
-
-        const data =
-            await api(
-                "/api/conversations",
-                {
-                    method: "POST",
-                    body: JSON.stringify({
-                        type: "direct",
-                        user_id: userId
-                    })
-                }
-            );
-
-
-        const conversation =
-            data.conversation ||
-            data;
-
-
-        closeModal();
-
-        await loadConversations();
-
-        if (conversation.id) {
-
-            await openConversation(
-                conversation.id
-            );
+        ${
+          reactions
+            ? `
+              <div class="reactions">
+                ${reactions}
+              </div>
+            `
+            : ""
         }
 
-    } catch (error) {
 
-        alert(error.message);
-    }
-}
+        <div class="message-actions">
+
+          ${
+            !message.deleted
+              ? `
+
+                <button
+                  class="ghost"
+                  onclick="
+                    reactMessage(
+                      '${message.id}',
+                      'like'
+                    )
+                  "
+                >👍</button>
+
+                <button
+                  class="ghost"
+                  onclick="
+                    reactMessage(
+                      '${message.id}',
+                      'love'
+                    )
+                  "
+                >❤️</button>
+
+                <button
+                  class="ghost"
+                  onclick="
+                    reactMessage(
+                      '${message.id}',
+                      'laugh'
+                    )
+                  "
+                >😂</button>
+
+                <button
+                  class="ghost"
+                  onclick="
+                    replyMessage(
+                      '${message.id}'
+                    )
+                  "
+                >↩</button>
+
+              `
+              : ""
+          }
 
 
-async function openCurrentUserProfile() {
+          ${
+            mine &&
+            !message.deleted
+              ? `
 
-    if (!currentConversation) return;
+                <button
+                  class="ghost"
+                  onclick="
+                    editMessage(
+                      '${message.id}'
+                    )
+                  "
+                >
+                  Edit
+                </button>
 
+                <button
+                  class="ghost"
+                  onclick="
+                    deleteMessage(
+                      '${message.id}'
+                    )
+                  "
+                >
+                  Delete
+                </button>
 
-    const user =
-        getOtherUser(currentConversation);
+              `
+              : ""
+          }
 
+        </div>
 
-    if (!user?.id) {
+      </div>
 
-        alert("User profile is unavailable.");
-        return;
-    }
+    </div>
 
+  `;
 
-    await openUserProfile(user.id);
 }
 
 
 /* =========================================================
-   MY PROFILE
+   SEND / EDIT / DELETE
 ========================================================= */
 
-function openMyProfile() {
+async function sendMessage(event){
 
-    if (!currentUser) return;
+  event.preventDefault();
 
 
-    openModal(
-        "My Profile",
-        `
+  const input=
+    $("composerInput");
 
-        <div class="profile">
 
-            <div class="avatar">
-                ${escapeHTML(
-                    avatarLetter(currentUser)
-                )}
-            </div>
+  const body=
+    input.value.trim();
 
-            <h2>
-                ${escapeHTML(
-                    currentUser.display_name ||
-                    currentUser.username
-                )}
-            </h2>
 
-            <div class="username">
-                @${escapeHTML(currentUser.username)}
-            </div>
+  if(!body || !state.activeId)
+    return;
 
-            <br>
 
-            <div class="field"
-                 style="text-align:left;">
+  try{
 
-                <label>Display Name</label>
+    if(state.editingId){
 
-                <input
-                    id="editDisplayName"
-                    value="${escapeHTML(
-                        currentUser.display_name ||
-                        ""
-                    )}"
-                >
+      const data =
+        await api(
+          "/api/messages/"+
+          state.editingId,
+          {
+            method:"PUT",
 
-            </div>
+            body:JSON.stringify({
+              body
+            })
+          }
+        );
 
-            <div class="profile-actions">
 
-                <button class="primary"
-                    onclick="saveProfile()">
-                    Save
-                </button>
+      const index=
+        state.messages.findIndex(
+          x=>x.id===state.editingId
+        );
 
-                <button class="danger"
-                    onclick="logout()">
-                    Log Out
-                </button>
 
-            </div>
+      if(index>=0)
+        state.messages[index]=
+          data.message;
 
-        </div>
+    }
 
-        `
-    );
+    else{
+
+      const data =
+        await api(
+          "/api/conversations/"+
+          state.activeId+
+          "/messages",
+          {
+            method:"POST",
+
+            body:JSON.stringify({
+
+              body,
+
+              reply_to_id:
+                state.replyTo?.id ||
+                null
+
+            })
+          }
+        );
+
+
+      state.messages.push(
+        data.message
+      );
+
+
+      state.lastMessageId=
+        data.message.id;
+
+    }
+
+
+    cancelCompose();
+
+    renderMessages(true);
+
+    await markRead();
+
+    await loadConversations();
+
+    renderSide();
+
+  }
+
+  catch(error){
+
+    toast(error.message);
+
+  }
+
 }
 
 
-async function saveProfile() {
+function editMessage(id){
 
-    const displayName =
-        $("editDisplayName").value.trim();
-
-
-    try {
-
-        const data =
-            await api(
-                "/api/users/me",
-                {
-                    method: "PUT",
-                    body: JSON.stringify({
-                        display_name:
-                            displayName
-                    })
-                }
-            );
+  const message=
+    state.messages.find(
+      x=>x.id===id
+    );
 
 
-        currentUser =
-            data.user ||
-            currentUser;
+  if(!message)
+    return;
 
 
-        updateMyProfileUI();
+  state.editingId=id;
+  state.replyTo=null;
 
-        closeModal();
 
-    } catch (error) {
+  $("composerInput").value=
+    message.body || "";
 
-        alert(error.message);
+
+  renderReplyBar();
+
+  $("composerInput").focus();
+
+}
+
+
+async function deleteMessage(id){
+
+  if(!confirm(
+    "Delete this message?"
+  ))
+    return;
+
+
+  try{
+
+    await api(
+      "/api/messages/"+id,
+      {
+        method:"DELETE"
+      }
+    );
+
+
+    const index=
+      state.messages.findIndex(
+        x=>x.id===id
+      );
+
+
+    if(index>=0){
+
+      state.messages[index]={
+        ...state.messages[index],
+        body:null,
+        deleted:true
+      };
+
     }
+
+
+    renderMessages(false);
+
+  }
+
+  catch(error){
+
+    toast(error.message);
+
+  }
+
+}
+
+
+/* =========================================================
+   REPLIES
+========================================================= */
+
+function replyMessage(id){
+
+  const message=
+    state.messages.find(
+      x=>x.id===id
+    );
+
+
+  if(!message)
+    return;
+
+
+  state.replyTo=message;
+  state.editingId=null;
+
+
+  renderReplyBar();
+
+  $("composerInput")
+    .focus();
+
+}
+
+
+function renderReplyBar(){
+
+  const bar=$("replyBar");
+
+  if(!bar)
+    return;
+
+
+  if(
+    !state.replyTo &&
+    !state.editingId
+  ){
+
+    bar.classList.add(
+      "hidden"
+    );
+
+    bar.innerHTML="";
+
+    return;
+
+  }
+
+
+  bar.classList.remove(
+    "hidden"
+  );
+
+
+  if(state.editingId){
+
+    bar.innerHTML=`
+
+      <div>
+
+        <b>Editing message</b>
+
+        <small>
+          Change the text below.
+        </small>
+
+      </div>
+
+      <button
+        class="ghost"
+        onclick="cancelCompose()"
+      >
+        Cancel
+      </button>
+
+    `;
+
+    return;
+
+  }
+
+
+  bar.innerHTML=`
+
+    <div>
+
+      <b>
+        Replying to
+        ${escapeHTML(
+          state.replyTo.sender_display_name ||
+          state.replyTo.sender_username
+        )}
+      </b>
+
+      <small>
+        ${escapeHTML(
+          state.replyTo.body ||
+          state.replyTo.reply_preview ||
+          "Message"
+        )}
+      </small>
+
+    </div>
+
+    <button
+      class="ghost"
+      onclick="cancelCompose()"
+    >
+      Cancel
+    </button>
+
+  `;
+
+}
+
+
+function cancelCompose(){
+
+  state.replyTo=null;
+  state.editingId=null;
+
+  $("composerInput").value="";
+
+  renderReplyBar();
+
+}
+
+
+/* =========================================================
+   REACTIONS
+========================================================= */
+
+async function reactMessage(id,reaction){
+
+  try{
+
+    const data =
+      await api(
+        "/api/messages/"+id+"/react",
+        {
+          method:"POST",
+
+          body:JSON.stringify({
+            reaction
+          })
+        }
+      );
+
+
+    /*
+      Backend returns the user's resulting
+      reaction but not their previous reaction.
+
+      Therefore reload the current messages
+      after adding/changing a reaction so the
+      aggregate counts stay accurate.
+    */
+
+    await loadMessages(
+      state.activeId
+    );
+
+
+    renderMessages(false);
+
+  }
+
+  catch(error){
+
+    toast(error.message);
+
+  }
+
+}
+
+
+/* =========================================================
+   READ / TYPING / REALTIME
+========================================================= */
+
+async function markRead(){
+
+  if(!state.activeId)
+    return;
+
+
+  try{
+
+    await api(
+      "/api/conversations/"+
+      state.activeId+
+      "/read",
+      {
+        method:"POST"
+      }
+    );
+
+
+    const unread=
+      state.unread[
+        state.activeId
+      ];
+
+
+    if(unread)
+      unread.unread=0;
+
+
+    const conversation=
+      state.conversations.find(
+        x=>x.id===state.activeId
+      );
+
+
+    if(conversation)
+      conversation.unread=0;
+
+  }
+
+  catch{}
+
+}
+
+
+function handleTyping(){
+
+  if(!state.activeId)
+    return;
+
+
+  clearTimeout(
+    state.typingTimer
+  );
+
+
+  api(
+    "/api/conversations/"+
+    state.activeId+
+    "/typing",
+    {
+      method:"POST"
+    }
+  ).catch(()=>{});
+
+
+  state.typingTimer=
+    setTimeout(
+      ()=>{},
+      2500
+    );
+
+}
+
+
+async function pollActive(){
+
+  if(!state.activeId)
+    return;
+
+
+  try{
+
+    const after =
+      state.lastMessageId
+        ? "?after="+
+          encodeURIComponent(
+            state.lastMessageId
+          )
+        : "";
+
+
+    const data =
+      await api(
+        "/api/conversations/"+
+        state.activeId+
+        "/poll"+
+        after
+      );
+
+
+    const incoming=
+      data.messages || [];
+
+
+    if(incoming.length){
+
+      const known=
+        new Set(
+          state.messages.map(
+            message=>message.id
+          )
+        );
+
+
+      for(const message of incoming){
+
+        if(!known.has(message.id))
+          state.messages.push(
+            message
+          );
+
+      }
+
+
+      state.lastMessageId=
+        state.messages.at(-1)?.id ||
+        state.lastMessageId;
+
+
+      renderMessages(true);
+
+      await markRead();
+
+      await loadConversations();
+
+    }
+
+
+    if(data.members){
+
+      state.members=
+        state.members.map(
+          oldMember=>{
+
+            const fresh=
+              data.members.find(
+                member=>
+                  member.user_id===
+                  oldMember.id ||
+                  member.user_id===
+                  oldMember.user_id
+              );
+
+
+            return fresh
+              ? {
+                  ...oldMember,
+                  ...fresh
+                }
+              : oldMember;
+
+          }
+        );
+
+
+      const typing=
+        data.members
+          .filter(
+            member=>member.typing
+          );
+
+
+      $("typing").textContent=
+        typing.length
+          ? typing
+              .map(x=>x.username)
+              .join(", ")+
+            " typing…"
+          : "";
+
+
+      updateChatStatus(
+        data.members
+      );
+
+    }
+
+  }
+
+  catch{}
+
+}
+
+
+function updateChatStatus(members){
+
+  if(
+    state.activeMeta?.type===
+    "group"
+  )
+    return;
+
+
+  const status=
+    $("chatStatus");
+
+
+  if(!status)
+    return;
+
+
+  const member=
+    members[0];
+
+
+  if(!member){
+
+    status.textContent="";
+
+    return;
+
+  }
+
+
+  if(member.typing){
+
+    status.textContent=
+      "typing…";
+
+  }
+
+  else if(member.online){
+
+    status.textContent=
+      "online";
+
+  }
+
+  else{
+
+    status.textContent=
+      "offline";
+
+  }
+
+}
+
+
+function startActivePolling(){
+
+  clearTimeout(
+    state.activePolling
+  );
+
+
+  async function loop(){
+
+    await pollActive();
+
+
+    if(state.activeId){
+
+      state.activePolling=
+        setTimeout(
+          loop,
+          3500
+        );
+
+    }
+
+  }
+
+
+  loop();
+
+}
+
+
+async function backgroundPoll(){
+
+  if(!state.user)
+    return;
+
+
+  try{
+
+    if(state.activeId){
+
+      await pollActive();
+
+    }
+
+    else{
+
+      await loadConversations();
+
+    }
+
+  }
+
+  catch{}
+
+}
+
+
+/* =========================================================
+   GROUPS
+========================================================= */
+
+async function openCreateGroup(){
+
+  await loadFriends();
+
+
+  showModal(
+    "Create group",
+
+    `
+
+    <div class="field">
+
+      <label>Group name</label>
+
+      <input
+        id="groupTitle"
+        maxlength="50"
+        placeholder="My group"
+      >
+
+    </div>
+
+
+    <div
+      style="
+        color:var(--muted);
+        font-size:12px;
+        margin:10px 0
+      "
+    >
+      Select friends.
+    </div>
+
+
+    <div>
+
+      ${
+        state.friends.length
+
+        ? state.friends
+            .map(friend=>`
+
+              <label
+                class="user-row"
+                style="cursor:pointer"
+              >
+
+                <input
+                  type="checkbox"
+                  class="groupFriend"
+                  value="${friend.id}"
+                >
+
+                <div class="avatar">
+                  ${escapeHTML(
+                    initials(
+                      friend.display_name ||
+                      friend.username
+                    )
+                  )}
+                </div>
+
+                <div class="grow">
+
+                  <b>
+                    ${escapeHTML(
+                      friend.display_name ||
+                      friend.username
+                    )}
+                  </b>
+
+                  <div class="time">
+                    @${escapeHTML(
+                      friend.username
+                    )}
+                  </div>
+
+                </div>
+
+              </label>
+
+            `)
+            .join("")
+
+        : `
+          <div
+            style="
+              color:var(--muted);
+              font-size:12px
+            "
+          >
+            You need friends first.
+          </div>
+        `
+      }
+
+    </div>
+
+
+    <button
+      class="primary"
+      style="width:100%;margin-top:12px"
+      onclick="createGroup()"
+    >
+      Create group
+    </button>
+
+    `
+
+  );
+
+}
+
+
+async function createGroup(){
+
+  const title=
+    $("groupTitle")
+      .value
+      .trim();
+
+
+  const memberIds=
+    [...document.querySelectorAll(
+      ".groupFriend:checked"
+    )]
+    .map(x=>x.value);
+
+
+  if(!title){
+
+    toast(
+      "Enter a group name."
+    );
+
+    return;
+
+  }
+
+
+  if(!memberIds.length){
+
+    toast(
+      "Select at least one friend."
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    const data=
+      await api(
+        "/api/conversations",
+        {
+          method:"POST",
+
+          body:JSON.stringify({
+            type:"group",
+            title,
+            member_ids:memberIds
+          })
+        }
+      );
+
+
+    closeModal();
+
+    await loadConversations();
+
+    await openConversation(
+      data.id
+    );
+
+  }
+
+  catch(error){
+
+    toast(error.message);
+
+  }
+
+}
+
+
+/* =========================================================
+   CONVERSATION INFO
+========================================================= */
+
+async function openConversationInfo(){
+
+  if(!state.activeId)
+    return;
+
+
+  try{
+
+    const data=
+      await api(
+        "/api/conversations/"+
+        state.activeId
+      );
+
+
+    const c=data.conversation;
+
+    const members=
+      data.members || [];
+
+
+    showModal(
+
+      c.type==="group"
+        ? c.title || "Group"
+        : "Conversation",
+
+      `
+
+      <p>
+        ${
+          c.type==="group"
+            ? "Group members"
+            : "Participant"
+        }
+      </p>
+
+
+      ${
+        members
+          .map(member=>`
+
+            <div class="user-row">
+
+              <div class="avatar">
+                ${escapeHTML(
+                  initials(
+                    member.display_name ||
+                    member.username
+                  )
+                )}
+              </div>
+
+              <div class="grow">
+
+                <b>
+                  ${escapeHTML(
+                    member.display_name ||
+                    member.username
+                  )}
+                </b>
+
+                <div class="time">
+                  @${escapeHTML(
+                    member.username
+                  )}
+                  ·
+                  ${escapeHTML(
+                    member.role
+                  )}
+                </div>
+
+              </div>
+
+            </div>
+
+          `)
+          .join("")
+
+      }
+
+      `
+
+    );
+
+  }
+
+  catch(error){
+
+    toast(error.message);
+
+  }
+
+}
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+function openProfile(){
+
+  const user=
+    state.user;
+
+
+  showModal(
+
+    "Your profile",
+
+    `
+
+    <div style="text-align:center">
+
+      <div style="
+        width:72px;
+        height:72px;
+        border-radius:50%;
+        background:#293346;
+        display:grid;
+        place-items:center;
+        margin:8px auto 12px;
+        font-size:25px;
+        font-weight:800
+      ">
+
+        ${escapeHTML(
+          initials(
+            user.display_name ||
+            user.username
+          )
+        )}
+
+      </div>
+
+
+      <h2>
+        ${escapeHTML(
+          user.display_name ||
+          user.username
+        )}
+      </h2>
+
+
+      <div style="color:var(--muted)">
+        @${escapeHTML(
+          user.username
+        )}
+      </div>
+
+
+      <div style="
+        color:var(--muted);
+        font-size:12px;
+        margin-top:4px
+      ">
+        ${escapeHTML(
+          user.email || ""
+        )}
+      </div>
+
+    </div>
+
+
+    <div class="field">
+
+      <label>Display name</label>
+
+      <input
+        id="newDisplayName"
+        maxlength="50"
+        value="${escapeHTML(
+          user.display_name || ""
+        )}"
+      >
+
+    </div>
+
+
+    <button
+      class="primary"
+      style="width:100%"
+      onclick="saveProfile()"
+    >
+      Save profile
+    </button>
+
+    `
+
+  );
+
+}
+
+
+async function saveProfile(){
+
+  const displayName=
+    $("newDisplayName")
+      .value
+      .trim();
+
+
+  if(!displayName){
+
+    toast(
+      "Display name cannot be empty."
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    const data=
+      await api(
+        "/api/users/me",
+        {
+          method:"PUT",
+
+          body:JSON.stringify({
+            display_name:
+              displayName
+          })
+        }
+      );
+
+
+    state.user={
+      ...state.user,
+      ...data.user
+    };
+
+
+    saveSession();
+
+    closeModal();
+
+    toast(
+      "Profile updated."
+    );
+
+  }
+
+  catch(error){
+
+    toast(error.message);
+
+  }
+
 }
 
 
@@ -2401,371 +4099,269 @@ async function saveProfile() {
    LEGAL
 ========================================================= */
 
-function openLegal(type) {
+function showLegal(type){
 
-    if (type === "privacy") {
+  const pages={
 
-        openModal(
-            "Privacy Policy",
-            privacyPolicyHTML()
-        );
+    terms:{
+      title:"Terms of Service",
 
-        return;
-    }
-
-
-    if (type === "terms") {
-
-        openModal(
-            "Terms of Service",
-            termsHTML()
-        );
-
-        return;
-    }
-
-
-    if (type === "community") {
-
-        openModal(
-            "Community Guidelines",
-            communityHTML()
-        );
-
-        return;
-    }
-
-
-    if (type === "consent") {
-
-        openModal(
-            "Consent",
-            consentHTML()
-        );
-
-        return;
-    }
-}
-
-
-function privacyPolicyHTML() {
-
-    return `
-
-    <div class="legal-content">
+      body:`
 
         <p>
-            <strong>Last updated:</strong> October 7, 2026
-        </p>
-
-        <p>
-            This Privacy Policy explains how ChatApp collects,
-            uses, stores and protects personal information when
-            you use the service.
-        </p>
-
-        <h3>1. Information We Collect</h3>
-
-        <p>
-            Depending on how you use ChatApp, we may process:
+          ChatApp is a messaging project.
+          By creating an account, you agree
+          to use the service responsibly.
         </p>
 
         <ul>
-            <li>Username</li>
-            <li>Email address</li>
-            <li>Display name</li>
-            <li>Account authentication information</li>
-            <li>Messages you send through ChatApp</li>
-            <li>Friendship and conversation information</li>
-            <li>Basic technical information required to operate the service</li>
+
+          <li>
+            Do not impersonate other people.
+          </li>
+
+          <li>
+            Do not harass, threaten, scam,
+            or intentionally abuse users.
+          </li>
+
+          <li>
+            Do not attempt unauthorized
+            access to accounts or systems.
+          </li>
+
+          <li>
+            Do not use ChatApp for spam,
+            malicious software, or unlawful activity.
+          </li>
+
+          <li>
+            Keep your account credentials private.
+          </li>
+
+          <li>
+            The service may be changed,
+            suspended, or discontinued.
+          </li>
+
         </ul>
 
-        <h3>2. Why We Process Information</h3>
-
         <p>
-            Information may be processed to create and secure
-            accounts, authenticate users, provide messaging and
-            friendship features, maintain conversations, prevent
-            abuse, troubleshoot technical problems and operate
-            the service.
+          These project terms are not
+          professional legal advice.
         </p>
 
-        <h3>3. Messages</h3>
+      `
+    },
+
+
+    privacy:{
+      title:"Privacy Policy",
+
+      body:`
 
         <p>
-            Messages are processed so that ChatApp can deliver
-            them to the intended conversation participants and
-            maintain conversation history.
-        </p>
-
-        <h3>4. Data Minimization</h3>
-
-        <p>
-            ChatApp should only collect information reasonably
-            necessary for the features being provided.
-        </p>
-
-        <h3>5. Security</h3>
-
-        <p>
-            Reasonable technical and organizational measures
-            should be used to protect personal information from
-            unauthorized access, alteration, disclosure or loss.
-        </p>
-
-        <h3>6. Retention</h3>
-
-        <p>
-            Personal information should not be kept longer than
-            reasonably necessary for the purpose for which it was
-            collected, subject to legitimate operational,
-            security or legal requirements.
-        </p>
-
-        <h3>7. Your Rights</h3>
-
-        <p>
-            Depending on applicable law, users may have rights
-            concerning access, correction, objection, withdrawal
-            of consent, deletion and other rights relating to
-            their personal information.
-        </p>
-
-        <h3>8. Children and Age Requirement</h3>
-
-        <p>
-            ChatApp is intended for people who are
-            <strong>16 years old or older</strong>.
-            Users must honestly confirm their age during
-            registration.
-        </p>
-
-        <p>
-            This age requirement is a ChatApp product rule and
-            should not be interpreted as a statement that
-            Philippine law universally establishes 16 as the
-            minimum age for every online messaging service.
-        </p>
-
-        <h3>9. Third-Party Infrastructure</h3>
-
-        <p>
-            ChatApp may rely on hosting, database and other
-            infrastructure providers to operate the service.
-            Where applicable, information may be processed by
-            such providers for service operation and security.
-        </p>
-
-        <h3>10. Changes</h3>
-
-        <p>
-            This Privacy Policy may be updated when the service,
-            technology or legal requirements change.
-        </p>
-
-        <h3>11. Contact</h3>
-
-        <p>
-            Privacy questions or requests should be directed to
-            the contact address provided by the ChatApp operator.
-        </p>
-
-        <p>
-            This document is a project privacy policy template
-            and is not a substitute for professional legal advice.
-        </p>
-
-    </div>
-
-    `;
-}
-
-
-function termsHTML() {
-
-    return `
-
-    <div class="legal-content">
-
-        <p>
-            <strong>Last updated:</strong> October 7, 2026
-        </p>
-
-        <h3>1. Eligibility</h3>
-
-        <p>
-            ChatApp is intended for users who are
-            <strong>16 years old or older</strong>.
-            You must provide truthful information when creating
-            an account.
-        </p>
-
-        <h3>2. Account Responsibility</h3>
-
-        <p>
-            You are responsible for maintaining the security of
-            your account and password and for activity performed
-            through your account.
-        </p>
-
-        <h3>3. Prohibited Use</h3>
-
-        <p>
-            You must not use ChatApp to:
+          ChatApp processes information
+          required to operate the service.
         </p>
 
         <ul>
-            <li>Impersonate another person</li>
-            <li>Harass, threaten or intentionally abuse other users</li>
-            <li>Share private information without permission</li>
-            <li>Attempt unauthorized access to accounts or systems</li>
-            <li>Send spam or malicious content</li>
-            <li>Use the service for unlawful activity</li>
-            <li>Attempt to disrupt or damage the service</li>
+
+          <li>
+            <b>Account data:</b>
+            username, email, display name,
+            password hash, and timestamps.
+          </li>
+
+          <li>
+            <b>Messaging data:</b>
+            friendships, conversations,
+            messages, reactions, read status,
+            typing status, and presence.
+          </li>
+
+          <li>
+            <b>Purpose:</b>
+            authentication, messaging,
+            social features, security,
+            and service operation.
+          </li>
+
+          <li>
+            Passwords are stored as
+            bcrypt password hashes.
+          </li>
+
+          <li>
+            Data is retained as needed
+            to operate the account and service.
+          </li>
+
         </ul>
 
-        <h3>4. User Content</h3>
-
         <p>
-            You remain responsible for content you send through
-            ChatApp. Do not send information or material that you
-            are not permitted to share.
+          This describes the current project
+          behavior and is not a legal determination
+          that the service complies with every
+          applicable law.
         </p>
 
-        <h3>5. Safety</h3>
+      `
+    },
+
+
+    consent:{
+      title:"Consent",
+
+      body:`
 
         <p>
-            Users should not share passwords, authentication
-            tokens, private credentials or sensitive personal
-            information through chats.
+          By registering, you confirm that
+          you understand and consent to the
+          processing described in the Privacy Policy.
         </p>
-
-        <h3>6. Enforcement</h3>
 
         <p>
-            Accounts may be restricted, suspended or removed when
-            necessary to protect users, the service or comply with
-            applicable requirements.
+          You may contact the project operator
+          regarding your personal information
+          or applicable consent choices.
         </p>
 
-        <h3>7. Availability</h3>
+      `
+    },
 
-        <p>
-            ChatApp may experience outages, maintenance,
-            interruptions or technical failures. Continuous
-            availability is not guaranteed.
-        </p>
 
-        <h3>8. Changes</h3>
+    community:{
+      title:"Community Guidelines",
 
-        <p>
-            These Terms may change as the service develops.
-            Continued use after applicable changes may be subject
-            to the updated Terms.
-        </p>
+      body:`
 
-        <h3>9. Legal Notice</h3>
+        <ul>
 
-        <p>
-            These Terms are a project template and should be
-            reviewed and adapted by a qualified legal professional
-            before public commercial deployment.
-        </p>
+          <li>Respect other users.</li>
 
-    </div>
+          <li>
+            Do not harass, threaten,
+            stalk, or target people.
+          </li>
 
-    `;
+          <li>
+            Do not share another person's
+            private information without permission.
+          </li>
+
+          <li>
+            Do not impersonate people.
+          </li>
+
+          <li>
+            Do not attempt to exploit,
+            break, or disrupt ChatApp.
+          </li>
+
+        </ul>
+
+      `
+    }
+
+  };
+
+
+  const page=
+    pages[type];
+
+
+  showModal(
+    page.title,
+    page.body
+  );
+
 }
 
 
-function communityHTML() {
+/* =========================================================
+   MENU
+========================================================= */
 
-    return `
+function openMenu(){
 
-    <div class="legal-content">
+  showModal(
 
-        <h3>Be respectful</h3>
+    "ChatApp",
 
-        <p>
-            Do not use ChatApp to deliberately harass,
-            intimidate or threaten people.
-        </p>
+    `
 
-        <h3>Protect privacy</h3>
-
-        <p>
-            Do not publish another person's private information
-            without permission.
-        </p>
-
-        <h3>No impersonation</h3>
-
-        <p>
-            Do not pretend to be another person or intentionally
-            misrepresent your identity.
-        </p>
-
-        <h3>Keep accounts secure</h3>
-
-        <p>
-            Never share passwords, access tokens or authentication
-            information with other people.
-        </p>
-
-        <h3>No abuse of the platform</h3>
-
-        <p>
-            Do not attempt to break, overload, bypass or
-            unauthorizedly access ChatApp or its backend.
-        </p>
-
-        <h3>Report problems</h3>
-
-        <p>
-            If moderation and reporting tools are implemented,
-            use them to report abuse or suspicious activity.
-        </p>
-
-    </div>
-
-    `;
-}
+      <button
+        class="ghost"
+        style="
+          width:100%;
+          text-align:left;
+          padding:11px
+        "
+        onclick="
+          closeModal();
+          openProfile()
+        "
+      >
+        Profile settings
+      </button>
 
 
-function consentHTML() {
+      <button
+        class="ghost"
+        style="
+          width:100%;
+          text-align:left;
+          padding:11px
+        "
+        onclick="showLegal('terms')"
+      >
+        Terms of Service
+      </button>
 
-    return `
 
-    <div class="legal-content">
+      <button
+        class="ghost"
+        style="
+          width:100%;
+          text-align:left;
+          padding:11px
+        "
+        onclick="showLegal('privacy')"
+      >
+        Privacy Policy
+      </button>
 
-        <p>
-            By selecting the consent checkbox during registration,
-            you indicate that you have read the Privacy Policy and
-            consent to the processing of your personal information
-            for the purposes described there.
-        </p>
 
-        <p>
-            Consent should be informed, specific and freely given
-            where consent is the applicable legal basis for the
-            processing.
-        </p>
+      <button
+        class="ghost"
+        style="
+          width:100%;
+          text-align:left;
+          padding:11px
+        "
+        onclick="showLegal('consent')"
+      >
+        Consent
+      </button>
 
-        <p>
-            ChatApp should maintain an appropriate record of the
-            consent decision, including the version of the policy
-            presented at the time of consent.
-        </p>
 
-        <p>
-            Where applicable law provides a right to withdraw
-            consent, requests should be handled according to the
-            applicable requirements.
-        </p>
+      <button
+        class="ghost"
+        style="
+          width:100%;
+          text-align:left;
+          padding:11px
+        "
+        onclick="showLegal('community')"
+      >
+        Community Guidelines
+      </button>
 
-    </div>
+    `
 
-    `;
+  );
+
 }
 
 
@@ -2773,92 +4369,134 @@ function consentHTML() {
    MODALS
 ========================================================= */
 
-function openModal(title, content) {
+function showModal(title,body){
 
-    $("modalTitle").textContent =
-        title;
+  $("overlay").innerHTML=`
 
-    $("modalContent").innerHTML =
-        content;
+    <div
+      class="modal-back"
+      onclick="
+        if(event.target===this)
+          closeModal()
+      "
+    >
 
-    $("modal").classList.remove("hidden");
+      <div class="modal">
+
+        <div class="modal-header">
+
+          <h2>
+            ${escapeHTML(title)}
+          </h2>
+
+          <button
+            class="icon"
+            onclick="closeModal()"
+          >
+            ×
+          </button>
+
+        </div>
+
+        ${body}
+
+      </div>
+
+    </div>
+
+  `;
+
 }
 
 
-function closeModal() {
+function closeModal(){
 
-    $("modal").classList.add("hidden");
+  $("overlay").innerHTML="";
 
-    $("modalContent").innerHTML = "";
 }
 
 
-function closeModalOutside(event) {
+function closeMobileChat(){
 
-    if (
-        event.target === $("modal")
-    ) {
+  state.activeId=null;
 
-        closeModal();
-    }
+  $("app")
+    .classList.remove("chat-open");
+
+  $("chatView")
+    .classList.add("hidden");
+
+  $("emptyState")
+    .classList.remove("hidden");
+
+  loadConversations()
+    .catch(()=>{});
+
 }
 
 
 /* =========================================================
-   LEGAL FOOTER ON AUTH SCREEN
+   KEYBOARD
 ========================================================= */
 
-const legalFooter = document.createElement("div");
+document.addEventListener(
+  "keydown",
+  event=>{
 
-legalFooter.style.cssText = `
-    text-align:center;
-    margin-top:20px;
-    color:#8d96a3;
-    font-size:11px;
-`;
+    if(event.key==="Escape")
+      closeModal();
 
-legalFooter.innerHTML = `
-    <button class="link-button"
-        onclick="openLegal('terms')">
-        Terms
-    </button>
-    ·
-    <button class="link-button"
-        onclick="openLegal('privacy')">
-        Privacy
-    </button>
-    ·
-    <button class="link-button"
-        onclick="openLegal('community')">
-        Community
-    </button>
-    ·
-    <button class="link-button"
-        onclick="openLegal('consent')">
-        Consent
-    </button>
-    <br>
-    Age requirement: 16+
-`;
 
-$("authScreen").querySelector(".auth-box")
-    .appendChild(legalFooter);
+    if(
+      event.key==="Enter" &&
+      !event.shiftKey &&
+      document.activeElement?.id===
+        "composerInput"
+    ){
+
+      event.preventDefault();
+
+      $("composerInput")
+        .closest("form")
+        ?.requestSubmit();
+
+    }
+
+  }
+);
 
 
 /* =========================================================
-   STARTUP
+   START
 ========================================================= */
 
-(async function init() {
+(async function(){
 
-    if (accessToken) {
+  if(!loadSession())
+    return;
 
-        await startApp();
 
-    } else {
+  try{
 
-        showLogin();
-    }
+    await bootApp();
+
+  }
+
+  catch(error){
+
+    clearSession();
+
+    $("authScreen")
+      .classList.remove(
+        "hidden"
+      );
+
+    $("app")
+      .classList.add(
+        "hidden"
+      );
+
+  }
 
 })();
 
